@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import My from "./My";
+import My from "./views/My";
 
 export default {
   name: "App",

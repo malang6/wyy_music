@@ -2,7 +2,7 @@
   <div class="artist-outer">
     <div class="title">我的歌手(1)</div>
     <div class="item">
-      <img class="img" src="../../assets/my/images/test.jpg" alt="图片" />
+      <img class="img" src="../../../assets/my/images/test.jpg" alt="图片" />
       <div class="detail">
         <div class="name">网易云音乐</div>
         <div class="count">
@@ -47,5 +47,5 @@ export default {
         font-size 12px
         color #666
         .mv
-          margin-left 10px  
+          margin-left 10px
 </style>

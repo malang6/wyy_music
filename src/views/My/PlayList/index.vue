@@ -2,14 +2,14 @@
   <div class="playlist">
     <!-- 歌单信息部分 -->
     <div class="info">
-      <img class="song-list-img" src="../../assets/my/images/test.jpg" alt="" />
+      <img class="song-list-img" src="../../../assets/my/images/test.jpg" alt="" />
       <div class="edit">
         <div class="edit-title">
           <div class="title-cate"></div>
           <span class="title">我喜欢的音乐</span>
         </div>
         <div class="edit-user">
-          <img class="avatar" src="../../assets/my/images/test.jpg" alt="" />
+          <img class="avatar" src="../../../assets/my/images/test.jpg" alt="" />
           <span class="user-name">我我我我</span>
           <span class="create-time">2019-10-27 创建</span>
         </div>
@@ -54,7 +54,7 @@
         <span>共0条评论</span>
       </div>
       <div class="comment-ipt">
-        <img class="avatar" src="../../assets/my/images/test.jpg" alt="" />
+        <img class="avatar" src="../../../assets/my/images/test.jpg" alt="" />
         <div class="ipt">
           <span class="arrow">◆</span>
           <span class="arrow-inside">◆</span>
@@ -108,7 +108,7 @@ export default {
           display inline-block
           height 24px
           width 54px
-          background-image url('../../assets/my/images/icon.png')
+          background-image url('../../../assets/my/images/icon.png')
           background-position 0px -243px
       .edit-user
         margin-bottom 20px
@@ -132,7 +132,7 @@ export default {
           height 21px
           padding 5px
           padding-left 30px
-          background-image url('../../assets/my/images/button2.png')
+          background-image url('../../../assets/my/images/button2.png')
         .btn.play
           border-radius 5px 0 0 5px
           color #fff
@@ -269,13 +269,13 @@ export default {
             width 22px
             display inline-block
             margin-right 10px
-            background-image url('../../assets/my/images/icon.png')
+            background-image url('../../../assets/my/images/icon.png')
             background-position -37px -489px
           .call
             height 22px
             width 22px
             display inline-block
-            background-image url('../../assets/my/images/icon.png')
+            background-image url('../../../assets/my/images/icon.png')
             background-position -58px -489px
           .count
             font-size 12px
@@ -285,7 +285,7 @@ export default {
             display inline-block
             width 46px
             height 25px
-            background-image url('../../assets/my/images/button2.png')
+            background-image url('../../../assets/my/images/button2.png')
             background-position 0px -471px
             border-radius 3px
             text-align center

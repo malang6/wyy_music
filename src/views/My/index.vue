@@ -17,7 +17,7 @@
       <div v-show="isShowSongList">
         <router-link to="/my/playlist">
           <div class="songs" v-for="(item, index) in songList" :key="index">
-            <img class="img" src="../assets/my/images/test.jpg" alt="" />
+            <img class="img" src="../../assets/my/images/test.jpg" alt="" />
             <div>
               <div class="songs-name">{{ item.name }}</div>
               <span class="songs-count">{{ item.count }}首</span>
@@ -37,7 +37,7 @@
             v-for="(collection, index) in collectionList"
             :key="index"
           >
-            <img class="img" src="../assets/my/images/test.jpg" alt="" />
+            <img class="img" src="../../assets/my/images/test.jpg" alt="" />
             <div>
               <div class="songs-name">{{ collection.name }}</div>
               <span class="songs-count">{{ collection.count }}首</span>

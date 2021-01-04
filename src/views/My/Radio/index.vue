@@ -2,7 +2,7 @@
   <div class="radio-outer">
     <div class="title">我订阅的电台(1)</div>
     <div class="item">
-      <img class="img" src="../../assets/my/images/test.jpg" alt="图片" />
+      <img class="img" src="../../../assets/my/images/test.jpg" alt="图片" />
       <em class="superscript">19</em>
       <div class="detail">
         <div class="name">Arcaea(韵律源点)</div>

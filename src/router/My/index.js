@@ -1,7 +1,7 @@
 
-import Artist from "../../My/Artist"
-import PlayList from "../../My/PlayList"
-import Radio from "../../My/Radio"
+import Artist from "../../views/My/Artist"
+import PlayList from "../../views/My/PlayList"
+import Radio from "../../views/My/Radio"
 
 const my = [
     {
