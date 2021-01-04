@@ -1,19 +1,17 @@
 <template>
   <div id="app">
-    <Header/>
+    <Header />
   </div>
 </template>
 
 <script>
-import Header from "@comps/Header"
+import Header from "@comps/Header";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Header
-  }
-}
+    Header,
+  },
+};
 </script>
 
-<style lang="stylus" scoped>
-   
-</style>
+<style lang="stylus" scoped></style>
