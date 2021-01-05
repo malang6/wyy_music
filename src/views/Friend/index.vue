@@ -1,97 +1,104 @@
 <template>
   <div class="friend">
-    <!-- 动态 -->
-    <div class="message">
-      <div class="header">
-        <span>动态</span>
-        <div>
-          <span class="publish-msg"></span>
-          <span class="publish-video"></span>
-        </div>
-      </div>
-      <div class="content">
-        <div class="content-item" v-for="item in 6" :key="item">
-          <img class="avatar" src="../../assets/my/images/test.jpg" alt="" />
-          <div class="main">
-            <div>
-              <div>
-                <span class="name">超级黑的黑胶会员</span>
-                <span class="cate">分享单曲</span>
-              </div>
-              <span class="time">9分钟前</span>
-            </div>
-            <!-- 文本内容 -->
-            <div class="text">哈哈哈哈哈哈哈哈哈哈哈哈哈</div>
-            <!-- 引入歌曲 -->
-            <div class="song">
-              <img src="../../assets/my/images/test.jpg" class="song-img" />
-              <div class="insert-img"></div>
-              <div>
-                <div class="song-name">赵琦之歌</div>
-                <span class="song-author">赵琦</span>
-              </div>
-            </div>
-            <!-- 插入图片 -->
-            <img class="img" src="../../assets/my/images/test.jpg" alt="" />
-            <!-- 操作 -->
-            <div class="edit">
-              <div>
-                <span></span>
-                <span>转发（2）</span>
-                <span>评论（15）</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 个人信息 -->
-    <div class="user">
-      <div class="user-info">
-        <div>
-          <div class="user-avatar">
-            <div class="avatar-border">
-              <img
-                class="avatar"
-                src="../../assets/my/images/test.jpg"
-                alt=""
-              />
-            </div>
-            <div class="user-name">永恒之夜</div>
-          </div>
-        </div>
-        <div class="user-fans">
-          <div>
-            <div class="count">0</div>
-            <span>动态</span>
-          </div>
-          <div>
-            <div class="count">0</div>
-            <span>关注</span>
-          </div>
-          <div>
-            <div class="count">0</div>
-            <span>粉丝</span>
-          </div>
-        </div>
-      </div>
-      <div class="star">
+    <div v-if="isLogin">
+      <!-- 动态 -->
+      <div class="message">
         <div class="header">
-          <span>明星用户</span>
-          <span class="update">换一批</span>
-        </div>
-        <div class="star-item" v-for="item in 3" :key="item">
-          <img class="avatar" src="../../assets/my/images/test.jpg" alt="" />
+          <span>动态</span>
           <div>
-            <div class="name">赵琦</div>
-            <span class="status">著名音乐节目主持人</span>
+            <span class="publish-msg"></span>
+            <span class="publish-video"></span>
           </div>
-          <div class="btn">关注</div>
+        </div>
+        <div class="content">
+          <div class="content-item" v-for="item in 6" :key="item">
+            <img class="avatar" src="../../assets/my/images/test.jpg" alt="" />
+            <div class="main">
+              <div>
+                <div>
+                  <span class="name">超级黑的黑胶会员</span>
+                  <span class="cate">分享单曲</span>
+                </div>
+                <span class="time">9分钟前</span>
+              </div>
+              <!-- 文本内容 -->
+              <div class="text">哈哈哈哈哈哈哈哈哈哈哈哈哈</div>
+              <!-- 引入歌曲 -->
+              <div class="song">
+                <img src="../../assets/my/images/test.jpg" class="song-img" />
+                <div class="insert-img"></div>
+                <div>
+                  <div class="song-name">赵琦之歌</div>
+                  <span class="song-author">赵琦</span>
+                </div>
+              </div>
+              <!-- 插入图片 -->
+              <img class="img" src="../../assets/my/images/test.jpg" alt="" />
+              <!-- 操作 -->
+              <div class="edit">
+                <div>
+                  <span></span>
+                  <span>转发（2）</span>
+                  <span>评论（15）</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <!-- 个人信息 -->
+      <div class="user">
+        <div class="user-info">
+          <div>
+            <div class="user-avatar">
+              <div class="avatar-border">
+                <img
+                  class="avatar"
+                  src="../../assets/my/images/test.jpg"
+                  alt=""
+                />
+              </div>
+              <div class="user-name">永恒之夜</div>
+            </div>
+          </div>
+          <div class="user-fans">
+            <div>
+              <div class="count">0</div>
+              <span>动态</span>
+            </div>
+            <div>
+              <div class="count">0</div>
+              <span>关注</span>
+            </div>
+            <div>
+              <div class="count">0</div>
+              <span>粉丝</span>
+            </div>
+          </div>
+        </div>
+        <div class="star">
+          <div class="header">
+            <span>明星用户</span>
+            <span class="update">换一批</span>
+          </div>
+          <div class="star-item" v-for="item in 3" :key="item">
+            <img class="avatar" src="../../assets/my/images/test.jpg" alt="" />
+            <div>
+              <div class="name">赵琦</div>
+              <span class="status">著名音乐节目主持人</span>
+            </div>
+            <div class="btn">关注</div>
+          </div>
+        </div>
+      </div>
+      <!-- 返回top -->
+      <div class="top-btn" v-show="showTopBtn" @click="toTop"></div>
     </div>
-    <!-- 返回top -->
-    <div class="top-btn" v-show="showTopBtn" @click="toTop"></div>
+    <div class="not-login" v-else>
+      <div class="login-img">
+        <div class="login-btn"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -101,6 +108,7 @@ export default {
   data() {
     return {
       showTopBtn: false,
+      isLogin: false,
     };
   },
   methods: {
@@ -132,6 +140,7 @@ export default {
 <style lang="stylus" scoped>
 .friend
   width 980px
+  height 100%
   margin 0 auto
   display flex
   .message
@@ -317,4 +326,29 @@ export default {
     background-image url('../../assets/my/images/sprite2.png')
     background-position -265px -47px
     cursor pointer
+.not-login
+  margin 0 auto
+  border 1px solid #d3d3d3
+  background #fff
+  width 902px
+  height 100%
+  .login-img
+    position relative
+    width 902px
+    height 330px
+    margin-top 20px
+    padding-top 70px
+    background-image url('../../assets/my/images/notlogin.jpg')
+    background-position 20px 8px
+    .login-btn
+      cursor pointer
+      position absolute
+      bottom 84px
+      right 190px
+      width 155px
+      height 46px
+      background-image url('../../assets/my/images/notlogin.jpg')
+      background-position 320px 227px
+    .login-btn:hover
+      background-position -2px 57px
 </style>

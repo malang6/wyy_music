@@ -1,67 +1,74 @@
 <template>
   <div class="box">
-    <div class="song-list">
-      <router-link to="/my/artist" class="list">我的歌手(1)</router-link>
-      <router-link to="/my/radio" class="list">我的电台(1)</router-link>
-      <div class="list" @click="open">
-        <div class="arrow" :class="{ show: isShowSongList }"></div>
-        创建的歌单(7)
-        <button class="add" @click.stop="add">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-jia"></use>
-          </svg>
-          新建
-        </button>
-      </div>
-      <!-- 创建的歌单列表 -->
-      <div v-show="isShowSongList">
-        <div v-for="(item, index) in songList" :key="index">
-          <router-link class="songs" to="/my/playlist">
-            <img class="img" src="../../assets/my/images/test.jpg" alt="" />
-            <div>
-              <div class="songs-name">{{ item.name }}</div>
-              <span class="songs-count">{{ item.count }}首</span>
-            </div>
-          </router-link>
+    <div v-if="isLogin">
+      <div class="song-list">
+        <router-link to="/my/artist" class="list">我的歌手(1)</router-link>
+        <router-link to="/my/radio" class="list">我的电台(1)</router-link>
+        <div class="list" @click="open">
+          <div class="arrow" :class="{ show: isShowSongList }"></div>
+          创建的歌单(7)
+          <button class="add" @click.stop="add">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-jia"></use>
+            </svg>
+            新建
+          </button>
+        </div>
+        <!-- 创建的歌单列表 -->
+        <div v-show="isShowSongList">
+          <div v-for="(item, index) in songList" :key="index">
+            <router-link class="songs" to="/my/playlist">
+              <img class="img" src="../../assets/my/images/test.jpg" alt="" />
+              <div>
+                <div class="songs-name">{{ item.name }}</div>
+                <span class="songs-count">{{ item.count }}首</span>
+              </div>
+            </router-link>
+          </div>
+        </div>
+        <div class="list" @click="openCollection">
+          <div class="arrow" :class="{ show: isShowCollection }"></div>
+          收藏的歌单(2)
+        </div>
+        <!-- 收藏歌单列表 -->
+        <div v-show="isShowCollection">
+          <div v-for="(collection, index) in collectionList" :key="index">
+            <router-link class="songs" to="/my/playlist">
+              <img class="img" src="../../assets/my/images/test.jpg" alt="" />
+              <div>
+                <div class="songs-name">{{ collection.name }}</div>
+                <span class="songs-count">{{ collection.count }}首</span>
+              </div>
+            </router-link>
+          </div>
         </div>
       </div>
-      <div class="list" @click="openCollection">
-        <div class="arrow" :class="{ show: isShowCollection }"></div>
-        收藏的歌单(2)
+      <div class="song-content">
+        <router-view></router-view>
       </div>
-      <!-- 收藏歌单列表 -->
-      <div v-show="isShowCollection">
-        <div v-for="(collection, index) in collectionList" :key="index">
-          <router-link class="songs" to="/my/playlist">
-            <img class="img" src="../../assets/my/images/test.jpg" alt="" />
-            <div>
-              <div class="songs-name">{{ collection.name }}</div>
-              <span class="songs-count">{{ collection.count }}首</span>
-            </div>
-          </router-link>
+      <!-- 新建歌单窗口 -->
+      <div v-if="showAddWindow" class="add-window">
+        <div class="title">
+          <span>新建歌单</span>
+          <span class="close" @click="cancel">×</span>
+        </div>
+        <div class="form">
+          <div class="form-ipt">歌单名：<input class="ipt" type="text" /></div>
+          <span class="tap">可通过“收藏”将音乐添加到新歌单中</span>
+          <div class="edit">
+            <div class="add">新 建</div>
+            <div class="cancel" @click="cancel">取 消</div>
+          </div>
         </div>
       </div>
+      <!-- 返回top -->
+      <div class="top-btn" v-show="showTopBtn" @click="toTop"></div>
     </div>
-    <div class="song-content">
-      <router-view></router-view>
-    </div>
-    <!-- 新建歌单窗口 -->
-    <div v-if="showAddWindow" class="add-window">
-      <div class="title">
-        <span>新建歌单</span>
-        <span class="close" @click="cancel">×</span>
-      </div>
-      <div class="form">
-        <div class="form-ipt">歌单名：<input class="ipt" type="text" /></div>
-        <span class="tap">可通过“收藏”将音乐添加到新歌单中</span>
-        <div class="edit">
-          <div class="add">新 建</div>
-          <div class="cancel" @click="cancel">取 消</div>
-        </div>
+    <div class="not-login" v-else>
+      <div class="login-img">
+        <div class="login-btn"></div>
       </div>
     </div>
-    <!-- 返回top -->
-    <div class="top-btn" v-show="showTopBtn" @click="toTop"></div>
   </div>
 </template>
 
@@ -245,6 +252,7 @@ export default {
       isShowCollection: false,
       showAddWindow: false,
       showTopBtn: false,
+      isLogin: false,
     };
   },
   methods: {
@@ -292,6 +300,7 @@ export default {
 <style lang="stylus" scoped>
 .box
   width 980px
+  height 100%
   margin 0 auto
   display flex
   .song-list
@@ -437,4 +446,29 @@ export default {
     background-image url('../../assets/my/images/sprite2.png')
     background-position -265px -47px
     cursor pointer
+  .not-login
+    margin 0 auto
+    border 1px solid #d3d3d3
+    background #fff
+    width 902px
+    height 100%
+    .login-img
+      position relative
+      width 902px
+      height 274px
+      margin-top 20px
+      padding-top 70px
+      background url('../../assets/my/images/mymusic.png') no-repeat
+      background-position 73px 69px
+      .login-btn
+        cursor pointer
+        position absolute
+        bottom 29px
+        right 180px
+        width 167px
+        height 44px
+        background-image url('../../assets/my/images/mymusic.png')
+        background-position 325px 121px
+      .login-btn:hover
+        background-position 0px 45px
 </style>
