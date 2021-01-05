@@ -10,7 +10,7 @@
         <ul>
           <li>
             <span>
-              <a>
+              <a class="headerActive">
                 <em>发现音乐</em>
                 <i class="cor">&nbsp;</i>
               </a>
@@ -20,7 +20,7 @@
             <span>
               <a>
                 <em>我的音乐</em>
-                <i class="cor">&nbsp;</i>
+                <i>&nbsp;</i>
               </a>
             </span>
           </li>
@@ -28,7 +28,7 @@
             <span>
               <a>
                 <em>朋友</em>
-                <i class="cor">&nbsp;</i>
+                <i>&nbsp;</i>
               </a>
             </span>
           </li>
@@ -67,13 +67,14 @@
         <div class="header-lc">
           <a>创作者中心</a>
         </div>
-        <div class="head-portrait">
+        <!-- 登录后 -->
+        <div class="head-portrait" v-if="token?token:ltoken">
           <div class="hpp">
-            <img src="./img/01.jpg" />
+            <img :src="avatarUrl" />
             <div class="content">
               <span class="c-bor"></span>
               <ul class="contentList">
-                <li class="contentItem">
+                <li class="contentItem" @click="goUserHome">
                   <a>
                     <i class="icn icn-hm"></i>
                     <em>我的主页</em>
@@ -109,7 +110,7 @@
                     <em>实名认证</em>
                   </a>
                 </li>
-                <li class="contentItem">
+                <li class="contentItem" @click="exit">
                   <a>
                     <i class="icn icn-ex"></i>
                     <em>退出</em>
@@ -119,13 +120,18 @@
             </div>
           </div>
         </div>
+        <!-- 登录 -->
+        <div class="head-login" v-else>
+          <a @click="login">登录</a>
+        </div>
+        <Login v-show="isShowLogin" class="login"></Login>
       </div>
     </div>
     <div class="findBar">
       <div class="findBar-container">
         <ul class="navList">
           <li class="navItem">
-            <a class="navTitle">
+            <a class="navTitle navActive">
               <em>推荐</em>
             </a>
           </li>
@@ -164,8 +170,53 @@
 </template>
 
 <script>
+import Login from "@views/Login";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "Header",
+  data() {
+    return {
+      isLogin: false, //是否登录
+      ltoken: window.localStorage.getItem("token"),
+      avatarUrl: window.localStorage.getItem("avatarUrl"),
+    };
+  },
+  computed: {
+    ...mapState({
+      isShowLogin: (state) => state.user.isShowLogin,
+      token: (state) => state.user.token,
+      profile: (state) => state.user.profile,
+    }),
+  },
+  // watch: {
+  //   token: {
+  //     handler(newVal) {
+  //       console.log(newVal);
+  //     },
+  //     immediate: true,
+  //   },
+  // },
+  methods: {
+    ...mapMutations(["CHANGE_SHOW", "EXIT"]),
+    //点击登录
+    login() {
+      this.CHANGE_SHOW(true);
+    },
+    //去我的主页
+    goUserHome() {
+      this.$router.push("/user/home?id=" + this.profile.userId);
+    },
+    //退出登录
+    exit() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("avatarUrl");
+      this.EXIT();
+      window.location.reload();
+    },
+  },
+  components: {
+    Login,
+  },
 };
 </script>
 
@@ -215,7 +266,7 @@ export default {
               border-right 8px solid transparent
               border-top 8px solid transparent
               border-bottom 8px solid #C20C0C
-        &:hover a
+        &:hover a, a.headerActive
           background #000
           text-decoration none
           color #fff
@@ -228,6 +279,7 @@ export default {
           height 14px
           border-radius 25px
     .header-l
+      position relative
       display flex
       .header-search
         width 158px
@@ -348,6 +400,18 @@ export default {
                     color #fff
           &:hover .content
             display block
+      .head-login
+        margin 27px 0 0 20px
+        a
+          color #787878
+          cursor pointer
+        &:hover
+          text-decoration underline
+      .login
+        position absolute
+        top 204px
+        left -478px
+        z-index 999
   .findBar
     position relative
     width 100%
@@ -381,7 +445,7 @@ export default {
                 right 4px
                 width 8px
                 height 8px
-          &:hover
+          .navActive, &:hover
             cursor pointer
             em
               background #9B0909
