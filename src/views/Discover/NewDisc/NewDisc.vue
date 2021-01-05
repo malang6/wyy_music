@@ -8,13 +8,19 @@
         <i class="arrow"></i>
       </span>
     </div>
-    <div class="discSwiper"></div>
+    <div class="discSwiper">
+      <!-- <CarouselBottom/> -->
+    </div>
   </div>
 </template>
 
 <script>
+// import CarouselBottom from '../Carousel/CarouselBottom/CarouselBottom'
 export default {
   name: 'NewDisc',
+  // components:{
+  //   CarouselBottom
+  // }
 }
 </script>
 

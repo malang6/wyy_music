@@ -3,7 +3,7 @@
     <!-- 头部轮播图 -->
     <div class="header">
       <div class="banner">
-        <!-- <Carousel /> -->
+        <!-- <CarouselTop /> -->
         <img
           src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2072177575,1951826205&fm=26&gp=0.jpg"
           alt=""
@@ -37,6 +37,7 @@ import TopList from './TopList/TopList'
 import NewDisc from './NewDisc/NewDisc'
 import PersonalRecommend from './PersonalRecommend/PersonalRecommend'
 import PopularRecommend from './PopularRecommend/PopularRecommend'
+// import CarouselTop from './Carousel/CarouselTop/CarouselTop'
 export default {
   name: 'Discover',
   components:{
@@ -44,7 +45,8 @@ export default {
     TopList,
     NewDisc,
     PersonalRecommend,
-    PopularRecommend
+    PopularRecommend,
+    // CarouselTop
   }
 }
 </script>

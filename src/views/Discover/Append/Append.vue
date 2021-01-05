@@ -1,45 +1,45 @@
 <template>
   <div class="append">
     <!-- 用户信息 -->
-    <div class="unLogin">
+    <!-- <div class="unLogin" v-if="true">
       <span class="unLoginInfo"
         >登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</span
       >
       <a class="login" href="">用户登录</a>
+    </div> -->
+    <div class="userLogin">
+      <div class="userInfo">
+        <a href="">
+          <img src="../Carousel/static/nike.jpg" alt="" />
+        </a>
+        <div class="info">
+          <div class="name">
+            <a>用户名</a>
+            <span></span>
+          </div>
+          <p>
+            <a href="" class="grade">lv9</a>
+          </p>
+          <div>
+            <a href="" class="sign">签到</a>
+          </div>
+        </div>
+      </div>
+      <div class="activity">
+        <a href="">
+          <strong>0</strong>
+          <span>动态</span>
+        </a>
+        <a href="">
+          <strong>0</strong>
+          <span>动态</span>
+        </a>
+        <a href="">
+          <strong>0</strong>
+          <span>动态</span>
+        </a>
+      </div>
     </div>
-    <!-- <div class="userLogin">
-          <div class="userInfo">
-            <a href="">
-              <img src="./Carousel/static/nike.jpg" alt="">
-            </a>
-            <div>
-              <div>
-                <a>用户名</a>
-                <span></span>
-              </div>
-              <p>
-                <a href="">lv9</a>
-              </p>
-              <div>
-                <a href="">签到</a>
-              </div>
-            </div>
-          </div>
-          <div class="activity">
-            <a href="">
-              <strong>0</strong>
-              <span>动态</span>
-            </a>
-            <a href="">
-              <strong>0</strong>
-              <span>动态</span>
-            </a>
-            <a href="">
-              <strong>0</strong>
-              <span>动态</span>
-            </a>
-          </div>
-        </div> -->
     <!-- 入驻歌手 -->
     <div class="singer">
       <div class="inSinger">
@@ -172,6 +172,60 @@ export default {
       border-radius 5px
       &:hover
         background-color rgba(216, 26, 34, 0.8)
+  .userLogin
+    height 165px
+    padding-top 20px
+    .userInfo
+      height 90px
+      display flex
+      margin-left 20px
+      img 
+        width 80px
+        height 80px
+      .info
+        margin-left 18px
+        .name
+          font-size 14px
+          color #333
+          font-weight bold
+        .grade
+          border 1px solid #eaeaea
+          display inline-block
+          height 18px
+          line-height 18px
+          width 40px
+          border-radius 20px
+          color #999   
+          text-align center 
+          margin-top 5px
+        .sign
+          margin-top 15px
+          width 100px
+          height 31px
+          display inline-block
+          background-color rgb(46, 126, 203)
+          color #ffffff
+          border-radius 3px
+          line-height 31px
+          text-align center
+          &:hover
+            background-color rgba(46, 126, 203,.8)
+    .activity
+      margin 20px 0 0 22px
+      color #666
+      display flex
+      a
+        display flex 
+        flex-direction column
+        padding 0 15px
+        &:nth-child(2)
+          border-left 1px solid #eaeaea
+          border-right 1px solid #eaeaea
+        strong
+          font-size 20px
+        span
+          font-size 12px
+
   .singer
     margin-top 15px
     .inSinger
