@@ -90,12 +90,42 @@
         </div>
       </div>
     </div>
+    <!-- 返回top -->
+    <div class="top-btn" v-show="showTopBtn" @click="toTop"></div>
   </div>
 </template>
 
 <script>
 export default {
   name: "Friend",
+  data() {
+    return {
+      showTopBtn: false,
+    };
+  },
+  methods: {
+    //点击返回顶部
+    toTop() {
+      document.documentElement.scrollTop = 0;
+    },
+    //top按钮显示隐藏
+    scrollChange() {
+      const scroll = document.documentElement.scrollTop;
+      if (scroll > 0) {
+        this.showTopBtn = true;
+        return;
+      }
+      this.showTopBtn = false;
+    },
+  },
+  mounted() {
+    //绑定滚轮事件
+    document.addEventListener("scroll", this.scrollChange);
+  },
+  beforeDestory() {
+    //解除绑定滚轮事件
+    document.removeEventListener("scroll", this.scrollChange);
+  },
 };
 </script>
 
@@ -278,4 +308,13 @@ export default {
           line-height 20px
           background-image url('../../assets/my/images/button.png')
           background-position -1px -97px
+  .top-btn
+    position fixed
+    right 18%
+    bottom 18%
+    width 49px
+    height 44px
+    background-image url('../../assets/my/images/sprite2.png')
+    background-position -265px -47px
+    cursor pointer
 </style>

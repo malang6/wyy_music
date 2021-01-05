@@ -1,7 +1,7 @@
 <template>
   <div class="radio-outer">
-    <div class="title">我订阅的电台(1)</div>
-    <div class="item">
+    <div class="title">我订阅的电台(15)</div>
+    <div class="item" v-for="item in 15" :key="item">
       <img class="img" src="../../../assets/my/images/test.jpg" alt="图片" />
       <em class="superscript">19</em>
       <div class="detail">

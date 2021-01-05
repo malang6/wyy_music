@@ -1,7 +1,7 @@
 <template>
   <div class="artist-outer">
-    <div class="title">我的歌手(1)</div>
-    <div class="item">
+    <div class="title">我的歌手(6)</div>
+    <div class="item" v-for="item in 6" :key="item">
       <img class="img" src="../../../assets/my/images/test.jpg" alt="图片" />
       <div class="detail">
         <div class="name">网易云音乐</div>
