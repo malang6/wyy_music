@@ -19,9 +19,13 @@
           <div v-for="(item, index) in songList" :key="index">
             <router-link class="songs" to="/my/playlist">
               <img class="img" src="../../assets/my/images/test.jpg" alt="" />
-              <div>
+              <div class="songs-info">
                 <div class="songs-name">{{ item.name }}</div>
-                <span class="songs-count">{{ item.count }}首</span>
+                <div class="songs-count">{{ item.count }}首</div>
+              </div>
+              <div class="btn">
+                <router-link to="/my/edit" class="edit"></router-link>
+                <span class="del"></span>
               </div>
             </router-link>
           </div>
@@ -252,7 +256,7 @@ export default {
       isShowCollection: false,
       showAddWindow: false,
       showTopBtn: false,
-      isLogin: false,
+      isLogin: true,
     };
   },
   methods: {
@@ -318,13 +322,38 @@ export default {
         heihgt 40px
         width 40px
         margin-right 10px
-      .songs-name
-        margin-top 3px
-        font-size 12px
-        color #000
-      .songs-count
-        font-size 12px
-        color #999
+      .songs-info
+        .songs-name
+          margin-top 3px
+          font-size 12px
+          color #000
+        .songs-count
+          font-size 12px
+          color #999
+      .btn
+        margin-top 15px
+        width 50px
+        height 50px
+        position absolute
+        right 0
+        display none
+        .edit
+          height 15px
+          width 15px
+          margin-right 10px
+          background url('../../assets/my/images/icon.png')
+          background-position 1px -269px
+        .edit:hover
+          background-position -19px -269px
+        .del
+          height 15px
+          width 15px
+          background url('../../assets/my/images/icon.png')
+          background-position 1px -283px
+        .del:hover
+          background-position -19px -283px
+    .songs:hover .btn
+      display flex
     .songs:hover
       background-color rgb(242, 242, 242)
     .list
@@ -368,6 +397,7 @@ export default {
     .list:hover
       background-color rgb(238, 238, 238)
   .song-content
+    height 100%
     margin-left 242px
     width 740px
     background-color #fff
