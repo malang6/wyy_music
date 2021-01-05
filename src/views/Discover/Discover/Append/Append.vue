@@ -182,6 +182,8 @@ export default {
       img 
         width 80px
         height 80px
+        padding 3px
+        border 1px solid #ccc
       .info
         margin-left 18px
         .name

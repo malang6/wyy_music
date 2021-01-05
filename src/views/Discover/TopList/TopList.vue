@@ -1,503 +1,144 @@
 <template>
-  <div class="topList">
-    <div class="top">
-      <i class="circle"></i>
-      <a href="" class="title">榜单</a>
-      <span class="more">
-        <a href="">更多</a>
-        <i class="arrow"></i>
-      </span>
+  <div class="toplist">
+    <div class="listType">
+      <!-- 云音乐特色榜 -->
+      <div class="specialList list">
+        <h2 class="listTitle">云音乐特色榜</h2>
+        <div>
+          <div
+            :class="{
+              listItem: true,
+              active: special.id ? special.id === currentId : false,
+            }"
+            v-for="special in specialList"
+            :key="special.id"
+            @click="getListInfo(special.id, special.updateFrequency)"
+          >
+            <img :src="special.coverImgUrl" alt="" class="pic" />
+            <div class="info">
+              <p class="whichList">{{ special.name }}</p>
+              <p class="updateTime">{{ special.updateFrequency }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 全球媒体榜 -->
+      <div class="globalList list">
+        <h2 class="listTitle">全球媒体榜</h2>
+        <div>
+          <div
+            :class="{
+              listItem: true,
+              active: global.id ? global.id === currentId : false,
+            }"
+            v-for="global in globalList"
+            :key="global.id"
+            @click="getListInfo(global.id, global.updateFrequency)"
+          >
+            <img :src="global.coverImgUrl" alt="" class="pic" />
+            <div class="info">
+              <p class="whichList">{{ global.name }}</p>
+              <p class="updateTime">{{ global.updateFrequency }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="listContainer">
-      <dl class="listItem">
-        <dt class="listTitle">
-          <a href="">
-            <img src="../Carousel/static/nike.jpg" alt="" class="listPic" />
-          </a>
-          <div class="listType">
-            <a href="">
-              <h3>飙升榜</h3>
-            </a>
-            <div class="control">
-              <a href="" class="play"></a>
-              <a href="" class="add"></a>
-            </div>
-          </div>
-        </dt>
-        <dd>
-          <ol class="songList">
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-          </ol>
-          <div class="seeMore">
-            <a href="">查看全部></a>
-          </div>
-        </dd>
-      </dl>
-      <dl class="listItem">
-        <dt class="listTitle">
-          <a href="">
-            <img src="../Carousel/static/nike.jpg" alt="" class="listPic" />
-          </a>
-          <div class="listType">
-            <a href="">
-              <h3>飙升榜</h3>
-            </a>
-            <div class="control">
-              <a href="" class="play"></a>
-              <a href="" class="add"></a>
-            </div>
-          </div>
-        </dt>
-        <dd>
-          <ol class="songList">
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-          </ol>
-          <div class="seeMore">
-            <a href="">查看全部></a>
-          </div>
-        </dd>
-      </dl>
-      <dl class="listItem">
-        <dt class="listTitle">
-          <a href="">
-            <img src="../Carousel/static/nike.jpg" alt="" class="listPic" />
-          </a>
-          <div class="listType">
-            <a href="">
-              <h3>飙升榜</h3>
-            </a>
-            <div class="control">
-              <a href="" class="play"></a>
-              <a href="" class="add"></a>
-            </div>
-          </div>
-        </dt>
-        <dd>
-          <ol class="songList">
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-            <li class="song">
-              <span class="songNum">1</span>
-              <a href="" class="songName">逝去的歌</a>
-              <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
-              </div>
-            </li>
-          </ol>
-          <div class="seeMore">
-            <a href="">查看全部></a>
-          </div>
-        </dd>
-      </dl>
+      <PlayList :songList="songList" :updateFrequency="updateFrequency" />
     </div>
   </div>
 </template>
 
 <script>
+import PlayList from './PlayList/PlayList'
+import { reqTopList, reqListSong } from '@api/Discover/topList'
 export default {
-  name: 'TopList',
+  name: 'Toplist',
+  data() {
+    return {
+      topList: [],
+      currentId: '',
+      songList: {},
+      updateFrequency: '',
+    }
+  },
+  methods: {
+    // 点击获取歌曲列表
+    async getListInfo(id, updateFrequency) {
+      const songList = await reqListSong(id)
+      this.songList = songList.playlist
+      this.currentId = id
+      this.updateFrequency = updateFrequency
+    },
+    //
+  },
+  components: {
+    PlayList,
+  },
+  computed: {
+    specialList() {
+      return this.topList.length ? this.topList.slice(0, 4) : []
+    },
+    globalList() {
+      return this.topList.length ? this.topList.slice(4) : []
+    },
+  },
+  async mounted() {
+    const topList = await reqTopList()
+    const listId = topList.list[0].id
+    const updateFrequency = topList.list[0].updateFrequency
+    const songList = await reqListSong(listId)
+    // console.log(songList)
+    this.topList = topList.list
+    this.songList = songList.playlist
+    this.currentId = listId
+    this.updateFrequency = updateFrequency
+  },
 }
 </script>
 
 <style lang="stylus" scoped>
-.topList
-  .top
-    padding-right 10px
-    border-bottom 2px solid #C10D0C
-    height 33px
-    color #666
-    font-size 12px
-    .circle
-      float left
-      display inline-block
-      width 20px
-      height 20px
-      background url('../../../assets/Discover/images/sprit.png')
-      background-position -232px -162px
-      margin 5px 10px 0
-    .title
-      float left
-      font-size 20px
-      font-weight normal
-      line-height 28px
-      color #333
-    .more
-      float right
-      margin-top 10px
-      .arrow
-        display inline-block
-        background url('../../../assets/Discover/images/sprit.png')
-        background-position 1px -240px
-        width 12px
-        height 12px
-  .listContainer
-    border 1px solid #d3d3d3
-    border-right none
-    background-color #f5f5f5
-    display flex
-    margin-top 20px
-    width 693px
-    .listItem
-      border-right 1px solid #d3d3d3
-      width 230px
+.toplist
+  width 980px
+  margin 0 auto
+  border-left 1px solid rgb(211, 211, 211)
+  border-right 1px solid rgb(211, 211, 211)
+  background-color rgb(245, 245, 245)
+  display flex
+  .listType
+    width 240px
+    border-right 1px solid rgb(211, 211, 211)
+    background-color rgb(249, 249, 249)
+    .specialList
+      margin-top 40px
+    .globalList
+      margin-top 20px
+    .list
+      width 100%
       .listTitle
+        padding 0px 10px 12px 15px
+        font-size 14px
+        color rgb(0, 0, 0)
+      .listItem
+        padding 10px 0 10px 20px
+        width 220px
         display flex
-        height 100px
-        padding 20px 0 0 20px
-        .listPic
-          width 80px
-          height 80px
-        .listType
-          margin 6px 0 0 10px
-          h3
-            color #333
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-            &:hover
-              text-decoration underline
-          .control
-            margin-top 10px
-            .play, .add
-              display inline-block
-              width 22px
-              height 22px
-              margin-right 10px
-            .play
-              background url('../../../assets/Discover/images/sprit.png')
-              background-position -267px -205px
-              &:hover
-                background-position -267px -235px
-            .add
-              background url('../../../assets/Discover/images/sprit.png')
-              background-position -300px -205px
-              &:hover
-                background-position -300px -235px
-      .songList
-        .song
-          height 32px
-          font-size 12px
-          line-height 32px
-          position relative
-          .songNum
-            display inline-block
-            width 35px
-            height 100%
-            text-align center
-            margin-left 15px
-            color #666
-            font-size 16px
-          .songName
-            height 100%
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-            color #000
-            &:hover
-              text-decoration underline
-          .operate
-            position absolute
-            right 0
-            bottom 0
-            width 100px
-            height 32px
-            text-align right
-            &:hover a
-              display inline-block
-            a
-              width 17px
-              height 17px
-              margin 8px 10px 0 0
-              display none
-            .play
-              background url('../../../assets/Discover/images/sprit.png')
-              background-position -267px -268px
-              &:hover
-                background-position -267px -288px
-            .add
-              background url('../../../assets/Discover/images/sprit2.png')
-              background-position 2px -698px
-              &:hover
-                background-position -20px -698px
-            .collect
-              background url('../../../assets/Discover/images/sprit2.png')
-              background-position -44px -86px
-              &:hover
-                background-position -44px -109px
+        &.active
+          background-color rgb(230, 230, 230)
         &:hover
           cursor pointer
-        >li:nth-child(-n+3)
-          .songNum
-            color #c10d0c
-        >li:nth-child(odd)
-          background-color rgb(232, 232, 232)
-      .seeMore
-        background-color rgb(232, 232, 232)
-        height 32px
-        line-height 32px
-        text-align right
-        a
-          margin-right 20px
-          color #000
-          &:hover
-            text-decoration underline
+          background-color rgb(244, 242, 242)
+        img
+          width 40px
+          height 40px
+        .info
+          margin-left 10px
+          .whichList
+            margin-bottom 8px
+          .updateTime
+            color #999
+  .listContainer
+    width 739px
+    background-color rgb(255, 255, 255)
 </style>

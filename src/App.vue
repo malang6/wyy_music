@@ -1,15 +1,19 @@
 <template>
   <div id="app">
-    <Discover />
+    <Discover v-if="false"/>
+    <TopList v-else/>
   </div>
 </template>
 
 <script>
-// import Discover from './views/Home/Discover/Discover'
-import Discover from '@views/Discover/Discover'
+import Discover from '@views/Discover/Discover/Discover'
+import TopList from '@views/Discover/Toplist/Toplist'
 export default {
   name: 'App',
-  components: { Discover },
+  components: { 
+    Discover,
+    TopList 
+  }
 }
 </script>
 

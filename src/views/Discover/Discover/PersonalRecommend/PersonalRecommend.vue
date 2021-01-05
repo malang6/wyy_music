@@ -18,45 +18,20 @@
           每天6:00更新
         </p>
       </div>
-      <div class="recommendItem">
+      <div class="recommendItem" v-for="item in 3" :key="item">
         <div class="playList">
           <a href="">
             <img src="../Carousel/static/aj1.jpg" alt="" class="pic" />
           </a>
           <div class="control">
-            <span class="headphone">🎧</span>
+            <span class="headphone"></span>
             <span class="playCount">172万</span>
-            <a href="" class="play">🎧</a>
+            <a href="" class="play"></a>
           </div>
         </div>
         <a href="" class="info">赞新的一年，平安和美好都会接踵而来</a>
       </div>
-      <div class="recommendItem">
-        <div class="playList">
-          <a href="">
-            <img src="../Carousel/static/aj1.jpg" alt="" class="pic" />
-          </a>
-          <div class="control">
-            <span class="headphone">🎧</span>
-            <span class="playCount">172万</span>
-            <a href="" class="play">🎧</a>
-          </div>
-        </div>
-        <a href="" class="info">赞新的一年，平安和美好都会接踵而来</a>
-      </div>
-      <div class="recommendItem">
-        <div class="playList">
-          <a href="">
-            <img src="../Carousel/static/aj1.jpg" alt="" class="pic" />
-          </a>
-          <div class="control">
-            <span class="headphone">🎧</span>
-            <span class="playCount">172万</span>
-            <a href="" class="play">🎧</a>
-          </div>
-        </div>
-        <a href="" class="info">赞新的一年，平安和美好都会接踵而来</a>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -80,7 +55,7 @@ export default {
       display inline-block
       width 20px
       height 20px
-      background url('../../../assets/Discover/images/sprit.png')
+      background url('../../../../assets/Discover/images/sprit.png')
       background-position -232px -162px
       margin 5px 10px 0
     .title
@@ -169,7 +144,7 @@ export default {
             margin 8px 5px 0
             width 14px
             height 11px
-            background url('../../../assets/Discover/images/sprit3.png')
+            background url('../../../../assets/Discover/images/sprit3.png')
             background-position 0px -24px
           .playCount
             display inline-block
@@ -180,7 +155,7 @@ export default {
             width 20px
             height 20px
             margin 4px 5px 0
-            background url('../../../assets/Discover/images/sprit3.png')
+            background url('../../../../assets/Discover/images/sprit3.png')
             background-position -1px -86px
             &:hover
               background-position -1px -111px

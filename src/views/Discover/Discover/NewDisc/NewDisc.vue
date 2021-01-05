@@ -37,7 +37,7 @@ export default {
       display inline-block
       width 20px
       height 20px
-      background url('../../../assets/Discover/images/sprit.png')
+      background url('../../../../assets/Discover/images/sprit.png')
       background-position -232px -162px
       margin 5px 10px 0
     .title
@@ -51,7 +51,7 @@ export default {
       margin-top 10px
       .arrow
         display inline-block
-        background url('../../../assets/Discover/images/sprit.png')
+        background url('../../../../assets/Discover/images/sprit.png')
         background-position 1px -240px
         width 12px
         height 12px

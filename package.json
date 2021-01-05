@@ -8,9 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "less": "^4.0.0",
     "less-loader": "^7.2.1",
+    "moment": "^2.29.1",
+    "nprogress": "^0.2.0",
     "path": "^0.12.7",
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
