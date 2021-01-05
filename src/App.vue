@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <My />
+    <My v-if="false"/>
+    <Friend v-else/>
   </div>
 </template>
 
 <script>
 import My from "./views/My";
+import Friend from "./views/Friend";
 
 export default {
   name: "App",
   components: {
-    My,
+    Friend,
+    My
   },
 };
 </script>
