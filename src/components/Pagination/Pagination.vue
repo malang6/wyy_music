@@ -3,8 +3,9 @@
     <button
       :disabled="myCurrentPage <= 1"
       @click="setCurrentPage(myCurrentPage - 1)"
+      class="pre"
     >
-      上一页
+      &lt;上一页
     </button>
     <button :class="{ active: myCurrentPage === 1 }" @click="setCurrentPage(1)">
       1
@@ -29,10 +30,10 @@
     <button
       :disabled="myCurrentPage >= totalPages"
       @click="setCurrentPage(myCurrentPage + 1)"
+      class="next"
     >
-      下一页
+      下一页&gt;
     </button>
-    <button>总数：{{ total }}</button>
   </div>
 </template>
 
@@ -176,32 +177,36 @@ export default {
 };
 </script>
 
-<style lang='less' scoped>
-.pagination {
-  display: flex;
-  white-space: nowrap;
-  font-weight: 700;
-  button {
-    margin: 0 5px;
-    padding: 0 4px;
-    font-size: 13px;
-    min-width: 30px;
-    height: 28px;
-    line-height: 28px;
-    cursor: pointer;
-    box-sizing: border-box;
-    text-align: center;
-    border: none;
-    outline: none;
-    display: block;
-    background-color: #f4f4f5;
-    color: #606266;
-    border-radius: 2px;
-  }
-}
+<style lang='stylus' scoped>
+.pagination 
+  display flex
+  white-space nowrap
+  font-weight 700
+  margin-left 100px
+  button 
+    margin 0 2px
+    font-size 12px
+    min-width 25px
+    height 26px
+    line-height 26px
+    cursor pointer
+    box-sizing border-box
+    text-align center
+    outline none
+    display block
+    background-color #f4f4f5
+    color #606266
+    border-radius 2px
+    border 1px solid #ccc
+  .pre,.next
+    width 70px
+    background-color rgb(237, 237, 237)
+  
+
 
 button.active {
-  background-color: #409eff;
+  background-color: rgb(201, 11, 16);
   color: #fff;
+  border none
 }
 </style>

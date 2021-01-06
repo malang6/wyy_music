@@ -1,6 +1,7 @@
 <template>
   <div class="allComment">
-    <div class="niceComment">
+    <!-- 精彩评论 -->
+    <div class="niceComment" v-if="pageNo===1">
       <h4 class="title">精彩评论</h4>
       <div class="commentList">
         <div class="commentItem" v-for="item in 3" :key="item">
@@ -13,7 +14,7 @@
             <p class="detail">
               <a href="" class="username">帐号已注销</a>
               <span class="words">
-                ：震惊哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</span
+                ：许巍有《蓝莲花》高梨康治有《红莲》翁大涵有《白莲》马琪龙有《青莲》，最近又火了一个啥榴莲，我孙某人只有不要b莲</span
               >
             </p>
             <div class="control">
@@ -27,8 +28,10 @@
         </div>
       </div>
     </div>
+    <div v-else class="line"></div>
+    <!-- 最新评论 -->
     <div class="latestComment">
-      <h4 class="title">最新评论</h4>
+      <h4 class="title" v-if="pageNo===1">最新评论</h4>
       <div class="commentList">
         <div class="commentItem" v-for="(songComment,index) in songCommentList" :key="songComment.commentId">
           <img
@@ -58,6 +61,14 @@
         </div>
       </div>
     </div>
+    <!-- 分页器 -->
+    <Pagination
+    @current-change="handleCurrentChange"
+    :current-page="1"
+    :page-size="20"
+    :pager-count="9"
+    :total="totalComment"
+    />
   </div>
 </template>
 
@@ -65,17 +76,38 @@
 import moment from 'moment'
 import { mapState } from 'vuex'
 import { reqSongListComment } from '@api/Discover/topList'
+import Pagination from '@comps/Pagination/Pagination'
 export default {
   name: '',
   data() {
     return {
       songCommentList: [],
+      totalComment:0,
+      pageNo:1
     }
+  },
+  methods:{
+    // 发送请求评论函数
+    async getCommentList(currentId,time){
+      const songCommentList = await reqSongListComment(currentId,time)
+      this.songCommentList = songCommentList.comments
+      this.totalComment=songCommentList.total
+    },
+    // 点击分页
+    handleCurrentChange(pageNo){
+      this.pageNo=pageNo
+      const time=this.songCommentList[this.songCommentList.length-1].time
+      this.getCommentList(this.currentId,time)
+    }
+  },
+  components:{
+    Pagination
   },
   computed: {
     ...mapState({
       currentId: (state) => state.topList.currentId,
     }),
+
     // 计算评论时间
     commentTime(){
       const timeList=this.songCommentList.map(comment=>{
@@ -83,6 +115,7 @@ export default {
       })
       return timeList
     },
+
     // 主评论换行处理
     mainComment(){
       // 将\n全部替换成<br>
@@ -114,12 +147,12 @@ export default {
         return beforeComment + ' : ' + showComment + icon
       })
       return commentList
-    }
+    },
+
   },
   watch: {
-    async currentId() {
-      const songCommentList = await reqSongListComment(this.currentId)
-      this.songCommentList = songCommentList.comments
+    currentId() {
+      this.getCommentList(this.currentId)
     },
   },
 }
@@ -129,6 +162,8 @@ export default {
 .allComment
   width 670px
   margin 20px auto 0
+  .line
+    border-bottom 1px dashed #ccc
   .title
     width 100%
     border-bottom 1px solid #cfcfcf

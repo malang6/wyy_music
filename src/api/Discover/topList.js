@@ -17,9 +17,9 @@ export const reqListSong = (listId) => {
 }
 
 // 请求歌单评论
-export const reqSongListComment = (listId) => { 
+export const reqSongListComment = (listId,time='') => { 
   return request({
     method: "GET",
-    url:"/comment/playlist?id="+listId
+    url:`/comment/playlist?id=${listId}${time?'&before='+time:''}`
   })
 }

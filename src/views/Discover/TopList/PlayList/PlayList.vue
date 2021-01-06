@@ -2,10 +2,10 @@
   <div class="playlist">
     <!-- 歌单信息部分 -->
     <div class="info">
-      <img class="song-list-img" :src="this.songList.coverImgUrl" alt="" />
+      <img class="song-list-img" :src="songList.coverImgUrl" alt="" />
       <div class="edit">
         <div class="edit-title">
-          <span class="title">{{ this.songList.name }}</span>
+          <span class="title">{{ songList.name }}</span>
         </div>
         <div class="edit-user">
           <span class="clock"></span>
@@ -15,10 +15,10 @@
         <div class="edit-btn">
           <div class="btn play">播放</div>
           <div class="btn plus"></div>
-          <div class="btn collect">收藏</div>
-          <div class="btn share">分享</div>
+          <div class="btn collect">{{songList.subscribedCount}}</div>
+          <div class="btn share">{{songList.shareCount}}</div>
           <div class="btn down">下载</div>
-          <div class="btn comment">评论</div>
+          <div class="btn comment">{{songList.commentCount}}</div>
         </div>
       </div>
     </div>
@@ -220,6 +220,7 @@ export default {
         .btn
           display inline-block
           height 21px
+          line-height 21px
           padding 5px
           padding-left 30px
           background-image url('../../../../assets/Discover/images/button2.png')
