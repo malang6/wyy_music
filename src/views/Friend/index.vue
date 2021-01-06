@@ -20,6 +20,7 @@
               <img class="avatar" :src="dynamic.avatarUrl" alt="头像" />
               <!-- 用户动态内容 -->
               <div class="main">
+                <!-- 用户信息 -->
                 <div>
                   <div>
                     <span class="name">{{ dynamic.nickName }}</span>
@@ -27,108 +28,14 @@
                   </div>
                   <span class="time">{{ dynamic.showTime }}</span>
                 </div>
-                <!-- 文本内容 -->
-                <div class="text" v-html="dynamic.text"></div>
-                <!-- 引入歌曲 -->
-                <div v-if="dynamic.type === '分享单曲'" class="song">
-                  <img :src="dynamic.content.song.img80x80" class="song-img" />
-                  <div class="insert-img"></div>
-                  <div>
-                    <div class="song-name">{{ dynamic.content.song.name }}</div>
-                    <span class="song-author">{{
-                      dynamic.content.song.artists
-                        .reduce((p, c) => p + c.name + "/", "")
-                        .slice(0, -1)
-                    }}</span>
-                  </div>
-                </div>
-                <!-- 引入专辑 -->
-                <div v-if="dynamic.type === '分享专辑'" class="song">
-                  <img
-                    :src="dynamic.content.album.blurPicUrl"
-                    class="song-img"
-                  />
-                  <div class="insert-img"></div>
-                  <div>
-                    <div class="song-name">
-                      <span class="type">{{ dynamic.content.album.type }}</span
-                      >{{ dynamic.content.album.name }}
-                    </div>
-                    <span class="song-author">{{
-                      dynamic.content.album.artist.name
-                    }}</span>
-                  </div>
-                </div>
-                <!-- 引入视频 -->
-                <div v-if="dynamic.type === '分享MV'" class="video">
-                  <div
-                    class="video-img"
-                    :style="`background:url(${dynamic.content.mv.imgurl});backgroundSize:cover`"
-                  >
-                    <!-- 视频标题 -->
-                    <div class="video-header">
-                      <span class="video-type"></span>
-                      <span class="video-name">{{
-                        dynamic.content.mv.name
-                      }}</span>
-                      <span class="video-author"
-                        >-{{
-                          dynamic.content.mv.artists
-                            .reduce((p, c) => p + c.name + "/", "")
-                            .slice(0, -1)
-                        }}</span
-                      >
-                    </div>
-                  </div>
-                  <!-- 播放按钮 -->
-                  <span class="play-btn"></span>
-                  <!-- 视频底部 -->
-                  <div class="video-footer">
-                    <span class="play-count">
-                      <span class="play-count-icon"></span>
-                      {{ dynamic.content.mv.playCount }}
-                    </span>
-                    <span class="video-time">
-                      <span class="video-time-icon"></span>
-                      {{ dynamic.content.mv.duration | handleTime }}
-                    </span>
-                  </div>
-                </div>
-                <!-- 插入图片 -->
-                <div v-if="dynamic.image">
-                  <!-- 小图 -->
-                  <img
-                    v-show="!isBigImg"
-                    @click="changeSize(true)"
-                    class="img"
-                    :src="dynamic.image"
-                    alt=""
-                  />
-                  <!-- 大图 -->
-                  <div
-                    v-show="isBigImg"
-                    @click="changeSize(false)"
-                    class="img-big"
-                  >
-                    <div class="img-big-deit">
-                      <span>
-                        <span class="pack"></span>
-                        收起
-                      </span>
-                      <span>
-                        <span class="origin"></span>
-                        查看原图
-                      </span>
-                      <span>
-                        <span class="down"></span>
-                        下载
-                      </span>
-                    </div>
-                    <img class="img-big-img" :src="dynamic.image" alt="" />
-                  </div>
+                <!-- 动态内容主体 -->
+                <Dynamic :dynamic="dynamic" />
+                <!-- 转发内容 -->
+                <div class="retransmission" v-if="dynamic.type === '转发动态'">
+                  <Dynamic :dynamic="extractData(dynamic.content.event)" />
                 </div>
                 <!-- 操作 -->
-                <div class="edit">
+                <div class="edit" v-if="dynamic.type === '转发动态'">
                   <span class="edit-star">
                     <span class="edit-star-icon"></span>
                     ({{ dynamic.likedCount }})
@@ -145,12 +52,20 @@
                 :src="dynamic.content.coverPCListUrl"
               />
               <div class="advertisement-main">
-                <span class="advertisement-close">x</span>
+                <span
+                  class="advertisement-close"
+                  @click="closeAdvertisement(dynamic.id)"
+                  >x</span
+                >
                 <div class="advertisement-box">
                   <span class="advertisement-border"></span>
                   <div class="advertisement-content">
-                    <div class="advertisement-text"># {{dynamic.content.title}} #</div>
-                    <span class="advertisement-count">{{dynamic.content.participateCount}}人参与</span>
+                    <div class="advertisement-text">
+                      # {{ dynamic.content.title }} #
+                    </div>
+                    <span class="advertisement-count">
+                      {{ dynamic.content.participateCount }}人参与
+                    </span>
                   </div>
                 </div>
               </div>
@@ -164,26 +79,22 @@
           <div>
             <div class="user-avatar">
               <div class="avatar-border">
-                <img
-                  class="avatar"
-                  src="../../assets/my/images/test.jpg"
-                  alt=""
-                />
+                <img class="avatar" :src="userInfo.avatarUrl" alt="" />
               </div>
-              <div class="user-name">永恒之夜</div>
+              <div class="user-name">{{ userInfo.nickName }}</div>
             </div>
           </div>
           <div class="user-fans">
             <div>
-              <div class="count">0</div>
+              <div class="count">102</div>
               <span>动态</span>
             </div>
             <div>
-              <div class="count">0</div>
+              <div class="count">97</div>
               <span>关注</span>
             </div>
             <div>
-              <div class="count">0</div>
+              <div class="count">316155</div>
               <span>粉丝</span>
             </div>
           </div>
@@ -217,26 +128,24 @@
 <script>
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import dayjs from "dayjs";
+import Dynamic from "./Dynamic";
 export default {
   name: "Friend",
   data() {
     return {
       showTopBtn: false, //返回顶部按钮显示隐藏
       isLogin: false, //登录状态
-      isBigImg: false, //是否显示大图
     };
   },
-  filters: {
-    handleTime(value) {
-      return dayjs(value).format("mm:ss");
-    },
+  components: {
+    Dynamic,
   },
   computed: {
-    ...mapGetters(["friendDynamicList"]),
+    ...mapGetters(["friendDynamicList", "userInfo"]),
   },
   methods: {
-    ...mapMutations(["CHANGE_SHOW"]),
-    ...mapActions(["getFriendDynamic"]),
+    ...mapMutations(["CHANGE_SHOW", "DEL_ADVERTISEMENT"]),
+    ...mapActions(["getFriendDynamic", "getUser"]),
     //点击返回顶部
     toTop() {
       document.documentElement.scrollTop = 0;
@@ -254,9 +163,30 @@ export default {
     toLogin() {
       this.CHANGE_SHOW(true);
     },
-    //点击切换大小图
-    changeSize(flag) {
-      this.isBigImg = flag;
+    //动态数据抽取
+    extractData(value) {
+      return {
+        id: value.id, //id
+        avatarUrl: value.user.avatarUrl, //头像url
+        nickName: value.user.nickname, //账号名
+        text:
+          JSON.parse(value.json).msg &&
+          JSON.parse(value.json).msg.replace(/\n/g, "<br/>"), //文本内容
+        content: JSON.parse(value.json), //分享内容
+        imageList: value.pics && value.pics.map((item) => item.originUrl), //分享图片
+        showTime: dayjs(value.showTime).format("HH:mm"), //发布时间
+        type:
+          value.info.commentThread.resourceTitle &&
+          value.info.commentThread.resourceTitle.split("：")[0], //动态类型
+        commentCount: value.info.commentCount, //评论数
+        likedCount: value.info.likedCount, //点赞数
+        insiteForwardCount: value.insiteForwardCount, //转发数
+        isRetransmission: true, //被转发内容标记
+      };
+    },
+    //关闭广告
+    closeAdvertisement(id) {
+      this.DEL_ADVERTISEMENT(id);
     },
   },
   mounted() {
@@ -268,6 +198,8 @@ export default {
     if (this.isLogin) {
       //请求动态数据
       this.getFriendDynamic();
+      //请求用户数据
+      this.getUser();
     }
   },
   beforeDestory() {
@@ -333,144 +265,9 @@ export default {
             .time
               font-size 12px
               color #999
-            .text
-              margin-top 10px
-              font-size 14px
-              line-height 24px
-            .song
-              padding 10px
-              margin 4px 0 5px
-              height 40px
-              display flex
+            .retransmission
               background #f5f5f5
-              position relative
-              .insert-img
-                height 22px
-                width 22px
-                background-image url('../../assets/my/images/sprite.png')
-                background-position -109px -79px
-                position absolute
-                top 20px
-                left 20px
-                z-index 10
-              .song-img
-                display inline-block
-                height 40px
-                width 40px
-                margin-right 10px
-              .song-name
-                height 22px
-                font-size 14px
-                color #333
-                .type
-                  color #e03f40
-                  border 1px solid #e03f40
-                  font-size 12px
-                  width 27px
-                  height 14px
-                  margin-right 5px
-              .song-author
-                height 22px
-                font-size 12px
-                color #666
-            .video
-              position relative
-              .video-img
-                width 318px
-                height 169px
-                margin-top 10px
-                padding 10px 10px
-                .video-header
-                  height 15px
-                  .video-type
-                    margin-right 5px
-                    display inline-block
-                    width 21px
-                    height 12px
-                    background url('../../assets/my/images/sprite.png')
-                    background-position 0 -210px
-                  .video-name
-                    font-size 12px
-                    color #fff
-                  .video-author
-                    font-size 12px
-                    color rgb(128, 128, 128)
-              .play-btn
-                display inline-block
-                position absolute
-                top 90px
-                left 148px
-                width 40px
-                height 40px
-                background-image url('../../assets/my/images/sprite.png')
-                background-position 0 -510px
-                opacity 0.8
-              .play-btn:hover
-                opacity 1
-                cursor pointer
-              .video-footer
-                padding 0 10px
-                font-size 12px
-                color #fff
-                height 25px
-                line-height 25px
-                width 318px
-                background black
-                .play-count
-                  .play-count-icon
-                    display inline-block
-                    width 10px
-                    height 10px
-                    background-image url('../../assets/my/images/sprite.png')
-                    background-position -50px -510px
-                .video-time
-                  float right
-                  .video-time-icon
-                    display inline-block
-                    width 10px
-                    height 10px
-                    background-image url('../../assets/my/images/sprite.png')
-                    background-position -50px -530px
-            .img
-              height 338px
-              margin-top 5px
-            .img:hover
-              cursor zoom-in
-            .img-big
-              background rgb(245, 245, 245)
-              padding 12px 20px
-              .img-big-deit
-                padding-bottom 8px
-                font-size 12px
-                color #666
-                .pack
-                  display inline-block
-                  width 13px
-                  height 13px
-                  background url('../../assets/my/images/sprite.png')
-                  background-position -108px -19px
-                .origin
-                  display inline-block
-                  width 13px
-                  height 13px
-                  background url('../../assets/my/images/sprite.png')
-                  background-position -180px -20px
-                .down
-                  display inline-block
-                  width 13px
-                  height 13px
-                  background url('../../assets/my/images/sprite.png')
-                  background-position -45px -58px
-              .img-big-deit>span
-                padding-right 10px
-                cursor pointer
-              .img-big-deit>span:nth-child(n+2)
-                padding-left 10px
-                border-left 1px solid rgb(215, 215, 215)
-              .img-big-img
-                width 525px
-              .img-big-img:hover
-                cursor zoom-out
+              padding 10px
             .edit
               height 16px
               margin-top 18px
@@ -486,9 +283,11 @@ export default {
                   background-position 0 -20px
             .edit>span
               padding 0 10px
+              cursor pointer
             .edit>span:nth-child(n+2)
               border-left 1px solid #999
           .advertisement
+            cursor pointer
             margin 0 auto
             width 565px
             height 247px
@@ -515,15 +314,15 @@ export default {
                 font-size 20px
                 z-index 19
               .advertisement-box
-                position absolute 
+                position absolute
                 top 50%
                 left 50%
-                transform translate(-50%,-50%)
-                .advertisement-border 
+                transform translate(-50%, -50%)
+                .advertisement-border
                   display inline-block
                   border 1px solid #ffffff
                   width 100%
-                  opacity .2
+                  opacity 0.2
                 .advertisement-content
                   margin 20px
                   text-align left
@@ -532,7 +331,7 @@ export default {
                     color #fff
                     margin-bottom 20px
                     padding 0 5px
-                    white-space:nowrap
+                    white-space nowrap
                   .advertisement-count
                     color #ffffff
   .user

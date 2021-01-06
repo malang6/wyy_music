@@ -4,13 +4,13 @@ export default {
         profile: {},
         token: "",
         isShowLogin: false, //是否显示登录组件
-        oldTimeTemp:0,
+        oldTimeTemp: 0,
     },
     getters: {},
     actions: {
         async getUserInfo(store, { phone, password }) {
             const res = await phoneLogin(phone, password);
-            // console.log(res)
+            console.log(res)
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("avatarUrl", res.data.profile.avatarUrl);
             store.commit("GET_USERINFO", res);
@@ -25,11 +25,11 @@ export default {
             state.profile = res.data.profile;
         },
         //关闭登录
-        CHANGE_SHOW(state,flag) {
+        CHANGE_SHOW(state, flag) {
             state.isShowLogin = flag;
         },
         //退出登录
-        EXIT(state){
+        EXIT(state) {
             state.token = ""
             state.profile = {}
         },
