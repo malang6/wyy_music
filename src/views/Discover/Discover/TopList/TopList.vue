@@ -35,14 +35,12 @@
                 <a href="" class="collect"></a>
               </div>
             </li>
-            
           </ol>
           <div class="seeMore">
             <a href="">查看全部></a>
           </div>
         </dd>
       </dl>
-      
     </div>
   </div>
 </template>
@@ -156,13 +154,12 @@ export default {
             width 100px
             height 32px
             text-align right
-            &:hover a
-              display inline-block
+            display none
             a
               width 17px
               height 17px
               margin 8px 10px 0 0
-              display none
+              display inline-block
             .play
               background url('../../../../assets/Discover/images/sprit.png')
               background-position -267px -268px
@@ -178,8 +175,10 @@ export default {
               background-position -44px -86px
               &:hover
                 background-position -44px -109px
-        &:hover
-          cursor pointer
+          &:hover
+            cursor pointer
+            >.operate
+              display block
         >li:nth-child(-n+3)
           .songNum
             color #c10d0c

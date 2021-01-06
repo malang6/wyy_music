@@ -40,43 +40,40 @@
         <div class="header time">时长</div>
         <div class="header singer">歌手</div>
       </div>
-      <div class="table-content" @mousemove="setToPlay" @mouseleave="clearId">
+      <div class="table-content">
         <div
           class="song-list"
           v-for="(track, index) in songList.tracks"
           :key="track.id"
         >
-          <div class="song order" :data-id="track.id">{{ index + 1 }}</div>
-          <div class="song title" :data-id="track.id">
+          <div class="song order">{{ index + 1 }}</div>
+          <div class="song title">
             <img
               :src="track.al.picUrl"
               alt=""
               v-if="index < 3"
-              :data-id="track.id"
             />
-            <a class="playSong" href="" :data-id="track.id"></a>
-            <span class="songName" :data-id="track.id"><a href="">{{ track.name }}</a></span>
-            <span class="append" :data-id="track.id">{{
+            <a class="playSong" href=""></a>
+            <span class="songName"><a href="">{{ track.name }}</a></span>
+            <span class="append">{{
               track.alia.length ? '-(' + track.alia[0] + ')' : ''
             }}</span>
           </div>
           <div
             class="song time control"
-            v-if="track.id == hoverId"
-            :data-id="track.id"
           >
-            <div class="pad" :data-id="track.id">
-              <a class="add" href="" :data-id="track.id"></a>
-              <a class="collect" href="" :data-id="track.id"></a>
-              <a class="share" href="" :data-id="track.id"></a>
-              <a class="download" href="" :data-id="track.id"></a>
+            <div class="pad">
+              <a class="add" href=""></a>
+              <a class="collect" href=""></a>
+              <a class="share" href=""></a>
+              <a class="download" href=""></a>
             </div>
           </div>
-          <div class="song time" v-else :data-id="track.id">
+          <div class="song time show">
             {{ songTime[index] }}
           </div>
-          <div class="song singer" :data-id="track.id">
-            <a href="" :data-id="track.id">{{ track.ar[0].name }}</a>
+          <div class="song singer">
+            <a href="">{{ track.ar[0].name }}</a>
           </div>
         </div>
       </div>
@@ -124,7 +121,6 @@ export default {
   name: 'PlayList',
   data() {
     return {
-      hoverId: '',
       songList:[]
     }
   },
@@ -132,20 +128,7 @@ export default {
     CommentList,
   },
   methods: {
-    // 鼠标移入时切换按钮
-    setToPlay(e) {
-      if (this.trigger) return
-      this.trigger = true
-      setTimeout(() => {
-        this.hoverId = e.target.dataset.id
-        this.trigger = false
-      }, 50)
-    },
-    clearId() {
-      setTimeout(() => {
-        this.hoverId = ''
-      }, 51)
-    },
+    
   },
   watch:{
     // 歌单ID发生变化，请求歌单
@@ -330,6 +313,7 @@ export default {
         .time
           width 70px
           &.control
+            display none
             .pad
               width 86px
               a
@@ -363,6 +347,12 @@ export default {
                   background-position -103px -174px
         .singer
           width 153px
+        &:hover
+          >.control
+            display inline-block
+          >.show
+            display none
+
       .song-list:nth-child(odd)
         background-color rgb(247, 247, 247)
       .song-list:nth-child(-n+3)

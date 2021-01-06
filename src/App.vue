@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Discover v-if="false"/>
+    <Discover v-if="true"/>
     <TopList v-else/>
   </div>
 </template>
