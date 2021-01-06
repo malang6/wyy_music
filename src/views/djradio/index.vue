@@ -3,7 +3,7 @@
     <div class="anchor_cont">
       <!-- 头部导航 -->
       <AnchorHeader></AnchorHeader>
-      <template v-if="$route.path === '/'">
+      <template v-if="$route.path === '/discover/djradio'">
         <!-- 歌曲列表 -->
         <div class="songList">
           <AnchorContent :recommondList="recommondList"></AnchorContent>
@@ -19,7 +19,7 @@
         </div>
       </template>
       <template v-else>
-        <Category></Category>
+        <router-view></router-view>
       </template>
     </div>
   </div>
@@ -31,7 +31,7 @@ import AnchorHeader from "./AnchorHeader";
 import AnchorContent from "./AnchorContent";
 import AnchorRadioType from "./AnchorRadioType";
 import AnchorRecommond from "./AnchorRecommond/";
-import Category from "@views/category";
+// import Category from "@views/category";
 export default {
   name: "Djradio",
   data() {
@@ -50,7 +50,7 @@ export default {
     this.topList = topList.data.toplist;
     const arr = [3, 2, 2001, 6];
     for (let i = 0; i < arr.length; i++) {
-      const res = await recommondType(arr[i]);
+      const res = await recommondType(arr[i], 30);
       this.recommondType.push({ [`a${i}`]: res.data.djRadios });
     }
   },
@@ -59,7 +59,7 @@ export default {
     AnchorContent,
     AnchorRadioType,
     AnchorRecommond,
-    Category,
+    // Category,
   },
 };
 </script>

@@ -4,6 +4,9 @@ const Djradio = () => import("@views/djradio");
 const Category = () => import("@views/category");
 const Artist = () => import("@views/artist");
 const UserHome = () => import("@views/UserHome");
+const Discover = () => import("@views/discover");
+const NavCont = () => import("@views/artist/navCont");
+const SingerTypeCont = () => import("@views/artist/singerTypeCont");
 const push = VueRouter.prototype.push;
 VueRouter.prototype.push = function(location, onComplete, onAbort) {
   if (onComplete && onAbort) {
@@ -22,39 +25,56 @@ const router = new VueRouter({
   routes: [
     {
       path: "/",
-      // component:Discover,
-      // component:Header,
+      component: Discover,
       children: [
         {
-          path: "/djradio",
-          component: Djradio,
+          path: "discover",
+          component: Discover,
           children: [
             {
-              name: "category",
-              path: "category",
-              component: Category
+              name: "djradio",
+              path: "djradio",
+              component: Djradio,
+              children: [
+                {
+                  name: "category",
+                  path: "category",
+                  component: Category
+                }
+              ]
+            },
+
+            {
+              name: "artist",
+              path: "artist",
+              component: Artist,
+              children: [
+                {
+                  name: "recommond",
+                  path: "recommond",
+                  component: NavCont
+                },
+                {
+                  name: "signed",
+                  path: "signed",
+                  component: NavCont
+                },
+                {
+                  name: "cat",
+                  path: "cat",
+                  component: SingerTypeCont
+                },
+                {
+                  path: "",
+                  redirect: "recommond"
+                }
+              ]
             }
           ]
-        },
-        {
-          name: "artist",
-          path: "/artist",
-          component: Artist
         }
-        // {
-        //     path: '/album',
-        //     component: Album,
-        // }
       ]
     },
-    // {
-    //     path:"/my/m/music/playlist",
-    //     component:MyMusic
-    // },
-    // {
-    //     path:"/friend",
-    //     component:Friend
-    // },
+
     {
       path: "/user/home",
       component: UserHome

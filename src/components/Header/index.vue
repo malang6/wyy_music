@@ -148,12 +148,12 @@
               </em>
             </a>
           </li>
-          <li class="navItem" @click="$router.push({ name: 'category' })">
+          <li class="navItem" @click="$router.push({ name: 'djradio' })">
             <a class="navTitle">
               <em>主播电台</em>
             </a>
           </li>
-          <li class="navItem">
+          <li class="navItem" @click="goToSinger">
             <a class="navTitle">
               <em>歌手</em>
             </a>
@@ -198,6 +198,16 @@ export default {
   // },
   methods: {
     ...mapMutations(["CHANGE_SHOW", "EXIT"]),
+    // 跳转歌手页面
+    goToSinger() {
+      this.$router.push({ path: "/discover/artist" });
+      let status = {
+        count: 0,
+        type: null,
+        area: null,
+      };
+      window.sessionStorage.setItem("status", JSON.stringify(status));
+    },
     //点击登录
     login() {
       this.CHANGE_SHOW(true);

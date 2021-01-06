@@ -58,7 +58,6 @@ export default {
       .item_img
         width 120px
         height 120px
-        background-color red
       .item_desc
         margin-left 30px
         h4
