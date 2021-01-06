@@ -2,12 +2,7 @@
   <div class="playlist">
     <!-- 歌单信息部分 -->
     <div class="info">
-      <img
-        class="song-list-img"
-        :src="this.songList.coverImgUrl"
-        alt=""
-        id="top"
-      />
+      <img class="song-list-img" :src="this.songList.coverImgUrl" alt="" />
       <div class="edit">
         <div class="edit-title">
           <span class="title">{{ this.songList.name }}</span>
@@ -45,25 +40,44 @@
         <div class="header time">时长</div>
         <div class="header singer">歌手</div>
       </div>
-      <div class="table-content" @mousemove="setToPlay">
+      <div class="table-content" @mousemove="setToPlay" @mouseleave="clearId">
         <div
           class="song-list"
           v-for="(track, index) in songList.tracks"
           :key="track.id"
-          :data-id="track.id"
         >
-          <div class="song order">{{ index + 1 }}</div>
-          <div class="song title">
-            <img :src="track.al.picUrl" alt="" v-if="index < 3" />
-            <a class="playSong" href=""></a>
-            <span class="songName">{{ track.name }}</span>
-            <span class="append">{{
+          <div class="song order" :data-id="track.id">{{ index + 1 }}</div>
+          <div class="song title" :data-id="track.id">
+            <img
+              :src="track.al.picUrl"
+              alt=""
+              v-if="index < 3"
+              :data-id="track.id"
+            />
+            <a class="playSong" href="" :data-id="track.id"></a>
+            <span class="songName" :data-id="track.id"><a href="">{{ track.name }}</a></span>
+            <span class="append" :data-id="track.id">{{
               track.alia.length ? '-(' + track.alia[0] + ')' : ''
             }}</span>
           </div>
-          <div class="song time" v-if="track.id === hoverId">1</div>
-          <div class="song time" v-else>{{ songTime[index] }}</div>
-          <div class="song singer">{{ track.ar[0].name }}</div>
+          <div
+            class="song time control"
+            v-if="track.id == hoverId"
+            :data-id="track.id"
+          >
+            <div class="pad" :data-id="track.id">
+              <a class="add" href="" :data-id="track.id"></a>
+              <a class="collect" href="" :data-id="track.id"></a>
+              <a class="share" href="" :data-id="track.id"></a>
+              <a class="download" href="" :data-id="track.id"></a>
+            </div>
+          </div>
+          <div class="song time" v-else :data-id="track.id">
+            {{ songTime[index] }}
+          </div>
+          <div class="song singer" :data-id="track.id">
+            <a href="" :data-id="track.id">{{ track.ar[0].name }}</a>
+          </div>
         </div>
       </div>
     </div>
@@ -98,37 +112,59 @@
     </div>
     <!-- 精彩/最新评论 -->
     <CommentList />
-    <!-- 回到顶部 -->
-    <div class="returnTop">
-      <a href="#top">Top^</a>
-    </div>
   </div>
 </template>
 
 <script>
-import CommentList from '../CommentList/CommentList'
+import {mapState} from 'vuex'
 import moment from 'moment'
+import CommentList from '../CommentList/CommentList'
+import {reqListSong} from '@api/Discover/topList'
 export default {
   name: 'PlayList',
   data() {
     return {
       hoverId: '',
+      songList:[]
     }
   },
   components: {
     CommentList,
   },
   methods: {
+    // 鼠标移入时切换按钮
     setToPlay(e) {
-      // if(!e.target.dataset.id)return
-      console.log(e.target)
+      if (this.trigger) return
+      this.trigger = true
+      setTimeout(() => {
+        this.hoverId = e.target.dataset.id
+        this.trigger = false
+      }, 50)
+    },
+    clearId() {
+      setTimeout(() => {
+        this.hoverId = ''
+      }, 51)
     },
   },
-  props: ['songList', 'updateFrequency'],
+  watch:{
+    // 歌单ID发生变化，请求歌单
+    async currentId(){
+      const songList=await reqListSong(this.currentId)
+      this.songList=songList.playlist
+    }
+  },
   computed: {
+    // 
+    ...mapState({
+      updateFrequency:(state)=>state.topList.updateFrequency,
+      currentId:(state)=>state.topList.currentId
+    }),
+    // 计算更新时间
     updateTime() {
       return moment(this.songList.updateTime).format('MM月DD日')
     },
+    // 计算歌曲长度
     songTime() {
       const time = this.songList.tracks.map((track) => {
         const tick = Math.floor(track.dt / 1000)
@@ -261,6 +297,9 @@ export default {
           height 18px
           font-size 12px
           color #666
+          a
+            &:hover
+              text-decoration underline
         .order
           width 68px
         .title
@@ -289,6 +328,38 @@ export default {
             white-space nowrap
         .time
           width 70px
+          &.control
+            .pad
+              width 86px
+              a
+                display inline-block
+                width 18px
+                height 16px
+                background-color red
+                margin 0 2px
+              .add
+                width 13px
+                height 13px
+                margin-bottom 2px
+                background url('../../../../assets/Discover/images/icon.png')
+                background-position 0 -700px
+                &:hover
+                  background-position -22px -700px
+              .collect
+                background url('../../../../assets/Discover/images/icon.png')
+                background-position -44px -86px
+                &:hover
+                  background-position -44px -109px
+              .share
+                background url('../../../../assets/Discover/images/icon.png')
+                background-position -44px -136px
+                &:hover
+                  background-position -44px -159px
+              .download
+                background url('../../../../assets/Discover/images/table.png')
+                background-position -82px -174px
+                &:hover
+                  background-position -103px -174px
         .singer
           width 153px
       .song-list:nth-child(odd)
@@ -369,18 +440,4 @@ export default {
             color #fff
             font-size 14px
             line-height 25px
-  .returnTop
-    position fixed
-    border 1px solid #ccc
-    border-radius 3px
-    left 50%
-    margin-left 500px
-    bottom 100px
-    background-color rgb(245, 245, 245)
-    a
-      width 50px
-      height 50px
-      display inline-block
-      line-height 50px
-      text-align center
 </style>

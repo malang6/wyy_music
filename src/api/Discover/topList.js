@@ -15,3 +15,11 @@ export const reqListSong = (listId) => {
     url:"/playlist/detail?id="+listId
   })
 }
+
+// 请求歌单评论
+export const reqSongListComment = (listId) => { 
+  return request({
+    method: "GET",
+    url:"/comment/playlist?id="+listId
+  })
+}

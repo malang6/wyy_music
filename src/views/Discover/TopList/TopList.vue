@@ -1,5 +1,5 @@
 <template>
-  <div class="toplist">
+  <div class="toplist" id="top">
     <div class="listType">
       <!-- 云音乐特色榜 -->
       <div class="specialList list">
@@ -45,14 +45,22 @@
       </div>
     </div>
     <div class="listContainer">
-      <PlayList :songList="songList" :updateFrequency="updateFrequency" />
+      <PlayList/>
+    </div>
+    <!-- 回到顶部 -->
+    <div class="returnTop" :style="{'display':returnUpIsShow}">
+      <a href="#top">
+        <span>^</span>
+        <span>Top</span>
+      </a>
     </div>
   </div>
 </template>
 
 <script>
+import {mapMutations} from 'vuex'
 import PlayList from './PlayList/PlayList'
-import { reqTopList, reqListSong } from '@api/Discover/topList'
+import { reqTopList} from '@api/Discover/topList'
 export default {
   name: 'Toplist',
   data() {
@@ -61,17 +69,23 @@ export default {
       currentId: '',
       songList: {},
       updateFrequency: '',
+      returnUpIsShow:'none'
     }
   },
   methods: {
+    ...mapMutations(['saveData']),
     // 点击获取歌曲列表
-    async getListInfo(id, updateFrequency) {
-      const songList = await reqListSong(id)
-      this.songList = songList.playlist
-      this.currentId = id
-      this.updateFrequency = updateFrequency
+    async getListInfo(currentId, updateFrequency) {
+      this.saveData({currentId,updateFrequency})
     },
-    //
+    //组件挂载时获取歌单和更新数据
+    async getDataBegin(){
+      const topList = await reqTopList()
+      this.topList = topList.list
+      const {id:currentId,updateFrequency}=topList.list[0]
+      this.saveData({currentId,updateFrequency})
+    }
+
   },
   components: {
     PlayList,
@@ -84,17 +98,19 @@ export default {
       return this.topList.length ? this.topList.slice(4) : []
     },
   },
-  async mounted() {
-    const topList = await reqTopList()
-    const listId = topList.list[0].id
-    const updateFrequency = topList.list[0].updateFrequency
-    const songList = await reqListSong(listId)
-    // console.log(songList)
-    this.topList = topList.list
-    this.songList = songList.playlist
-    this.currentId = listId
-    this.updateFrequency = updateFrequency
+  mounted() {
+    this.getDataBegin()
+    window.addEventListener('scroll',()=>{
+      if(window.pageYOffset!==0){
+        this.returnUpIsShow='block'
+      }else(
+        this.returnUpIsShow='none'
+      )
+    })
   },
+  beforeDestroy(){
+     window.removeEventListener('scroll')
+  }
 }
 </script>
 
@@ -141,4 +157,21 @@ export default {
   .listContainer
     width 739px
     background-color rgb(255, 255, 255)
+
+  .returnTop
+    position fixed
+    border 1px solid #ccc
+    border-radius 3px
+    left 50%
+    margin-left 500px
+    bottom 100px
+    background-color rgb(245, 245, 245)
+    a
+      width 50px
+      display flex
+      flex-direction column
+      span 
+        height 25px
+        text-align center
+        line-height 25px
 </style>
