@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 import modules from "./modules"
 
-const store = new Vue.Store({
+const store = new Vuex.Store({
     modules
 })
 
