@@ -70,3 +70,18 @@ export const reqDelPlayList = (id) => {
         }
     })
 }
+//请求歌单标签
+export const reqPlayListTags = () => {
+    return axios({
+        method: "GET",
+        url: "/playlist/highquality/tags"
+    })
+}
+//更新歌单
+export const reqUpdatePlayList = (data) => {
+    return axios({
+        method: "GET",
+        url: "/playlist/update",
+        params:data
+    })
+}

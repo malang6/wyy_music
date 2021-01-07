@@ -20,7 +20,7 @@
         </div>
         <!-- 创建的歌单列表 -->
         <div v-show="isShowSongList">
-          <div v-for="playList in createPlayList" :key="playList.id">
+          <div v-for="(playList, index) in createPlayList" :key="playList.id">
             <span
               class="songs"
               @click="toPlayListDetail(playList.id, playList)"
@@ -30,11 +30,21 @@
                 <div class="songs-name">{{ playList.name }}</div>
                 <div class="songs-count">{{ playList.trackCount }}首</div>
               </div>
-              <div class="btn">
-                <router-link to="/my/edit" class="edit"></router-link>
+              <div class="btn" v-if="index !== 0">
+                <span
+                  class="edit"
+                  @click.stop="
+                    toEditPlayList(
+                      playList.id,
+                      playList.name,
+                      playList.image,
+                      playList.description
+                    )
+                  "
+                ></span>
                 <span
                   class="del"
-                  @click="showWindow('showDelWindow', playList.id)"
+                  @click.stop="showWindow('showDelWindow', playList.id)"
                 ></span>
               </div>
             </span>
@@ -54,7 +64,7 @@
               <img class="img" :src="collection.image" />
               <div class="songs-info">
                 <div class="songs-name">{{ collection.name }}</div>
-                <span class="songs-count">{{ collection.trackCount }}首</span>
+                <span class="songs-count">{{ collection.trackCount }}首 by {{collection.nickName}}</span>
               </div>
             </span>
           </div>
@@ -137,6 +147,18 @@ export default {
       "addPlayList",
       "delPlayList",
     ]),
+    //编辑歌单
+    toEditPlayList(id, name, image, description) {
+      this.$router.push({
+        path: "/my/edit",
+        query: {
+          id,
+          name,
+          image,
+          description,
+        },
+      });
+    },
     //显示删除或添加歌单提示窗口
     showWindow(type, id) {
       this[type] = true;
@@ -156,6 +178,7 @@ export default {
     create() {
       this.addPlayList(this.playListName);
       this.showAddWindow = false;
+      this.playListName = "";
     },
     //展开创建的列表
     open() {
@@ -214,10 +237,12 @@ export default {
   margin 0 auto
   display flex
   .song-list
+    overflow auto
     position fixed
     width 240px
-    height 100%
+    height 800px
     padding-top 40px
+    padding-bottom 10px
     border-left 1px solid rgb(213, 213, 213)
     border-right 1px solid rgb(213, 213, 213)
     background-color rgb(249, 249, 249)

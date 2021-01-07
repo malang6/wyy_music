@@ -1,4 +1,4 @@
-import { reqUserPlayList, reqPlayListDerail, reqArtist, reqRadio, reqSubcount, reqPlayListComment, reqCreatePlayList, reqDelPlayList } from "@api/my"
+import { reqUserPlayList, reqPlayListDerail, reqArtist, reqRadio, reqSubcount, reqPlayListComment, reqCreatePlayList, reqDelPlayList, reqPlayListTags,reqUpdatePlayList } from "@api/my"
 const state = {
     createPlayList: [], //创建的歌单
     collectPlayList: [], //收藏的歌单
@@ -8,6 +8,7 @@ const state = {
     subCountList: {}, //收藏的歌单、歌手和电台数量
     commentList: [], //歌单评论
     hotCommentList: [], //歌单热门评论
+    tags:[], //歌单分类标签
 }
 const getters = {
     createPlayList: state => state.createPlayList,
@@ -18,6 +19,7 @@ const getters = {
     subCountList: state => state.subCountList,
     commentList: state => state.commentList,
     hotCommentList: state => state.hotCommentList,
+    tags: state => state.tags,
 }
 const actions = {
     //请求用户歌单
@@ -29,6 +31,7 @@ const actions = {
     //请求歌单详情
     async getPlayListDerail({ commit }, id) {
         const result = await reqPlayListDerail(id)
+        // console.log("歌单详情", result)
         commit("WRITE_PLAY_LIST_DETAIL", result.data.playlist)
     },
     //请求收藏的歌手列表
@@ -60,6 +63,16 @@ const actions = {
     async delPlayList({ commit }, id) {
         await reqDelPlayList(id)
         commit("DEL_PLAY_LIST", id)
+    },
+    //获取歌单标签分类
+    async getPlayListTags({commit}) {
+        const result = await reqPlayListTags()
+        commit("WRITE_TAGS",result.data.tags)
+    },
+    //更新歌单
+    updatePlayList({commit},data){
+        console.log(commit)
+        reqUpdatePlayList(data)
     }
 }
 const mutations = {
@@ -98,6 +111,7 @@ const mutations = {
             commentCount: res.commentCount, //歌单评论数
             shareCount: res.shareCount, //歌单分享数
             subscribedCount: res.subscribedCount, //歌单收藏数
+            description: res.description, //歌单介绍
             songList: res.tracks.map(item => ({
                 name: item.name, //歌曲名
                 time: item.dt, //歌曲时长
@@ -162,6 +176,13 @@ const mutations = {
     },
     DEL_PLAY_LIST(state, id) {
         state.createPlayList = state.createPlayList.filter(item => item.id !== id)
+    },
+    WRITE_TAGS(state,res){
+        state.tags = res.map(item => ({
+            name:item.name, //标签名
+            category:item.category, //标签种类
+            id:item.id, //id
+        }))
     }
 }
 

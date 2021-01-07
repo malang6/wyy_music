@@ -2,7 +2,7 @@
   <div class="playlist">
     <!-- 歌单信息部分 -->
     <div class="info">
-      <img class="song-list-img" :src="playListInfo.image" alt="" />
+      <img class="song-list-img" :src="playListInfo.image" />
       <div class="edit">
         <div class="edit-title">
           <div class="title-cate"></div>
@@ -39,7 +39,7 @@
             }}
           </div>
         </div>
-        <div class="edit-label" v-if="playListInfo.tags">
+        <div class="edit-label" v-if="playListInfo.tags.length">
           标签：
           <span
             class="label"
@@ -73,7 +73,7 @@
       </div>
     </div>
     <!-- 歌单曲目 -->
-    <div class="table" :class="{border:+playListInfo.trackCount}">
+    <div class="table" :class="{ border: +playListInfo.trackCount }">
       <div class="table-title">
         <span class="table-name">歌曲列表</span>
         <span class="table-total">{{ playListInfo.trackCount }}首歌</span>
@@ -96,7 +96,8 @@
           暂无音乐！
         </div>
         <div class="noSong-course">
-          点击<span class="noSong-course-icon"></span>即可将你喜欢的音乐收藏到"我的音乐" 马上去发现
+          点击<span class="noSong-course-icon"></span
+          >即可将你喜欢的音乐收藏到"我的音乐" 马上去发现
           <span class="noSong-course-discover">发现音乐</span>
         </div>
       </div>
@@ -114,6 +115,7 @@
             <span class="song-btn collect"></span>
             <span class="song-btn down"></span>
             <span class="song-btn share"></span>
+            <span class="song-btn del"></span>
           </div>
           <div class="song singer">
             {{
@@ -128,7 +130,7 @@
     <div class="comment" v-if="+playListInfo.trackCount">
       <div class="comment-title">
         <span class="title">评论</span>
-        <span>共14条评论</span>
+        <span>共{{ playListDetail.commentCount }}条评论</span>
       </div>
       <div class="comment-ipt">
         <img class="avatar" :src="avatarUrl" />
@@ -409,7 +411,7 @@ export default {
         text-align center
         margin-bottom 38px
         .noSong-icon
-          background url("../../../assets/my/images/icon.png")
+          background url('../../../assets/my/images/icon.png')
           background-position 0 -347px
           display inline-block
           width 64px
@@ -419,11 +421,11 @@ export default {
         color #999
         text-align center
         .noSong-course-icon
-          display inline-block 
-          width 16px 
+          display inline-block
+          width 16px
           height 14px
           margin 0px 7px 0px 9px
-          background-image url("../../../assets/my/images/icon.png")
+          background-image url('../../../assets/my/images/icon.png')
           background-position 0 -400px
         .noSong-course-discover
           color #0c73c2
@@ -455,7 +457,7 @@ export default {
           position relative
           .song-btn
             display inline-block
-            height 18px 
+            height 18px
             width 18px
           .song-btn.add
             background url('../../../assets/my/images/icon.png')
@@ -480,6 +482,12 @@ export default {
             background-position -80px -173px
           .song-btn.share:hover
             background-position -103px -173px
+            cursor pointer
+          .song-btn.del
+            background url('../../../assets/my/images/table.png')
+            background-position 0 -216px
+          .song-btn.del:hover
+            background-position -20px -216px
             cursor pointer
         .singer
           width 83px
