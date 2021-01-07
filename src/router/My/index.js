@@ -16,6 +16,7 @@ const my = [
             },
             {
                 path: "/my/playlist",
+                name:"myPlaylist",
                 component: PlayList
             },
             {
@@ -28,7 +29,7 @@ const my = [
             },
         ]
     }
-
+    
 ]
 
 export default my

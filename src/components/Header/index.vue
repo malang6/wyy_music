@@ -18,10 +18,10 @@
           </li>
           <li>
             <span>
-              <a>
+              <router-link to="/my">
                 <em>我的音乐</em>
                 <i>&nbsp;</i>
-              </a>
+              </router-link>
             </span>
           </li>
           <li>

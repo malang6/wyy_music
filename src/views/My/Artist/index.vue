@@ -1,13 +1,13 @@
 <template>
   <div class="artist-outer">
-    <div class="title">我的歌手(6)</div>
-    <div class="item" v-for="item in 6" :key="item">
-      <img class="img" src="../../../assets/my/images/test.jpg" alt="图片" />
+    <div class="title">我的歌手({{ collectArtist.length }})</div>
+    <div class="item" v-for="item in collectArtist" :key="item.id">
+      <img class="img" :src="item.artistImg" alt="图片" />
       <div class="detail">
-        <div class="name">网易云音乐</div>
+        <div class="name">{{ item.name }}</div>
         <div class="count">
-          <span>14个专辑</span>
-          <span class="mv">6个MV</span>
+          <span>{{ item.albumCount }}个专辑</span>
+          <span class="mv">{{ item.mvCount }}个MV</span>
         </div>
       </div>
     </div>
@@ -15,8 +15,19 @@
 </template>
  
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Artist",
+  computed: {
+    ...mapGetters(["collectArtist"]),
+  },
+  methods: {
+    ...mapActions(["getArtist"]),
+  },
+  mounted() {
+    //获取歌手列表
+    this.getArtist();
+  },
 };
 </script>
 
@@ -34,6 +45,7 @@ export default {
     border-bottom 1px solid #ddd
     display flex
     align-items center
+    position relative
     .img
       width 80px
       height 80px

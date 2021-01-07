@@ -2,11 +2,11 @@
   <div class="box">
     <div v-if="isLogin">
       <div class="song-list">
-        <router-link to="/my/artist" class="list">我的歌手(1)</router-link>
-        <router-link to="/my/radio" class="list">我的电台(1)</router-link>
+        <router-link to="/my/artist" class="list">我的歌手({{subCountList.artistCount}})</router-link>
+        <router-link to="/my/radio" class="list">我的电台({{subCountList.djRadioCount}})</router-link>
         <div class="list" @click="open">
           <div class="arrow" :class="{ show: isShowSongList }"></div>
-          创建的歌单(7)
+          创建的歌单({{createPlayList.length}})
           <button class="add" @click.stop="add">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-jia"></use>
@@ -16,34 +16,34 @@
         </div>
         <!-- 创建的歌单列表 -->
         <div v-show="isShowSongList">
-          <div v-for="(item, index) in songList" :key="index">
-            <router-link class="songs" to="/my/playlist">
-              <img class="img" src="../../assets/my/images/test.jpg" alt="" />
+          <div v-for="playList in createPlayList" :key="playList.id">
+            <span class="songs" @click="toPlayListDetail(playList.id,playList)">
+              <img class="img" :src="playList.image" alt="" />
               <div class="songs-info">
-                <div class="songs-name">{{ item.name }}</div>
-                <div class="songs-count">{{ item.count }}首</div>
+                <div class="songs-name">{{ playList.name }}</div>
+                <div class="songs-count">{{ playList.trackCount }}首</div>
               </div>
               <div class="btn">
                 <router-link to="/my/edit" class="edit"></router-link>
                 <span class="del"></span>
               </div>
-            </router-link>
+            </span>
           </div>
         </div>
         <div class="list" @click="openCollection">
           <div class="arrow" :class="{ show: isShowCollection }"></div>
-          收藏的歌单(2)
+          收藏的歌单({{collectPlayList.length}})
         </div>
         <!-- 收藏歌单列表 -->
         <div v-show="isShowCollection">
-          <div v-for="(collection, index) in collectionList" :key="index">
-            <router-link class="songs" to="/my/playlist">
-              <img class="img" src="../../assets/my/images/test.jpg" alt="" />
+          <div v-for="collection in collectPlayList" :key="collection.id">
+            <span class="songs" @click="toPlayListDetail(collection.id,collection)">
+              <img class="img" :src="collection.image"/>
               <div>
-                <div class="songs-name">{{ collection.name }}</div>
-                <span class="songs-count">{{ collection.count }}首</span>
+                <div class="songs-name">{{collection.name}}</div>
+                <span class="songs-count">{{ collection.trackCount }}首</span>
               </div>
-            </router-link>
+            </span>
           </div>
         </div>
       </div>
@@ -77,181 +77,11 @@
 </template>
 
 <script>
+import {mapActions,mapGetters} from "vuex"
 export default {
   name: "My",
   data() {
     return {
-      songList: [
-        {
-          name: "我喜欢的歌单",
-          count: 48,
-          img: "",
-          songs: [
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-          ],
-        },
-        {
-          name: "我喜欢的歌单",
-          count: 48,
-          img: "",
-          songs: [
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-          ],
-        },
-        {
-          name: "我喜欢的歌单",
-          count: 48,
-          img: "",
-          songs: [
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-          ],
-        },
-        {
-          name: "我喜欢的歌单",
-          count: 48,
-          img: "",
-          songs: [
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-          ],
-        },
-      ],
-      collectionList: [
-        {
-          name: "很强",
-          count: 2,
-          img: "",
-          songs: [
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-            {
-              songName: "哈行哈",
-              time: 210,
-              singer: "呢",
-              album: "专辑",
-            },
-          ],
-        },
-      ],
       isShowSongList: false,
       isShowCollection: false,
       showAddWindow: false,
@@ -259,7 +89,11 @@ export default {
       isLogin: true,
     };
   },
+  computed:{
+    ...mapGetters(["createPlayList","collectPlayList","collectArtist","subCountList"])
+  },
   methods: {
+    ...mapActions(["getUserPlayList","getPlayListDerail","getSubcount"]),
     //展开创建的列表
     open() {
       this.isShowSongList = !this.isShowSongList;
@@ -289,10 +123,27 @@ export default {
     toTop() {
       document.documentElement.scrollTop = 0;
     },
+    //获取歌单详情
+    toPlayListDetail(id,data){
+      //发送歌单详情请求
+      this.getPlayListDerail(id)
+      //路由传参
+      this.$router.push({
+        path:"/my/playlist",
+        query:{
+          ...data,
+          id
+        }
+      })
+    }
   },
   mounted() {
     //绑定滚轮事件
     document.addEventListener("scroll", this.scrollChange);
+    //请求歌单数据
+    const uid = localStorage.getItem("userId")
+    this.getUserPlayList(uid)
+    this.getSubcount()
   },
   beforeDestory() {
     //解除绑定滚轮事件

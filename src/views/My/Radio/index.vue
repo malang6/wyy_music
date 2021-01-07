@@ -1,21 +1,32 @@
 <template>
   <div class="radio-outer">
-    <div class="title">我订阅的电台(15)</div>
-    <div class="item" v-for="item in 15" :key="item">
-      <img class="img" src="../../../assets/my/images/test.jpg" alt="图片" />
-      <em class="superscript">19</em>
+    <div class="title">我订阅的电台({{collectRadio.length}})</div>
+    <div class="item" v-for="item in collectRadio" :key="item.id">
+      <img class="img" :src="item.image" alt="图片" />
+      <em class="superscript" v-if="item.newProgramCount" >{{item.newProgramCount}}</em>
       <div class="detail">
-        <div class="name">Arcaea(韵律源点)</div>
-        <div class="author">by Arcaea_Team</div>
+        <div class="name">{{item.name}}</div>
+        <div class="author">by {{item.nickName}}</div>
       </div>
-      <div class="count">211期</div>
+      <div class="count">{{item.programCount}}期</div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions,mapGetters } from "vuex";
 export default {
   name: "Radio",
+  computed:{
+    ...mapGetters(["collectRadio"])
+  },
+  methods: {
+    ...mapActions(["getRadio"]),
+  },
+  mounted() {
+    //获取电台列表
+    this.getRadio();
+  },
 };
 </script>
 
@@ -42,7 +53,7 @@ export default {
       font-style normal
       border-radius 7px
       height 14px
-      width 20px
+      padding 0 3px
       font-size 12px
       font-weight bold
       color #fff
@@ -50,7 +61,7 @@ export default {
       line-height 14px
       position absolute
       top 2px
-      left 40px
+      left 42px
     .detail
       margin-left 10px
       padding-right 57px

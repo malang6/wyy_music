@@ -2,62 +2,70 @@
   <div class="playlist">
     <!-- 歌单信息部分 -->
     <div class="info">
-      <img
-        class="song-list-img"
-        src="../../../assets/my/images/test.jpg"
-        alt=""
-      />
+      <img class="song-list-img" :src="playListInfo.image" alt="" />
       <div class="edit">
         <div class="edit-title">
           <div class="title-cate"></div>
-          <span class="title">我喜欢的音乐</span>
+          <span class="title">{{ playListInfo.name }}</span>
         </div>
         <div class="edit-user">
-          <img class="avatar" src="../../../assets/my/images/test.jpg" alt="" />
-          <span class="user-name">我我我我</span>
-          <span class="create-time">2019-10-27 创建</span>
+          <img class="avatar" :src="playListInfo.avatarUrl" alt="" />
+          <span class="user-name">{{ playListInfo.nickName }}</span>
+          <span class="create-time">{{ playListInfo.createTime }} 创建</span>
         </div>
         <div class="edit-btn">
           <div class="btn play">播放</div>
           <div class="btn plus"></div>
-          <div class="btn collect">收藏</div>
-          <div class="btn share">分享</div>
+          <div class="btn collect">
+            {{
+              playListDetail.subscribedCount
+                ? "(" + playListDetail.subscribedCount + ")"
+                : "收藏"
+            }}
+          </div>
+          <div class="btn share">
+            {{
+              playListDetail.subscribedCount
+                ? "(" + playListDetail.shareCount + ")"
+                : "分享"
+            }}
+          </div>
           <div class="btn down">下载</div>
-          <div class="btn comment">评论</div>
+          <div class="btn comment">
+            {{
+              playListDetail.subscribedCount
+                ? "(" + playListDetail.commentCount + ")"
+                : "评论"
+            }}
+          </div>
         </div>
-        <div class="edit-label">
+        <div class="edit-label" v-if="playListInfo.tags">
           标签：
-          <span class="label">日系</span>
-          <span class="label">致郁</span>
-          <span class="label">燃</span>
+          <span
+            class="label"
+            v-for="(tag, index) in playListInfo.tags"
+            :key="index"
+            >{{ tag }}</span
+          >
         </div>
-        <div class="edit-description">
-          <div v-if="descriptionSimple">
-            <p>
-              介绍：马老师个人专辑《我大E了啊》<br />
-              马老师个人全新专辑，包含曲目：<br />
-              《发生肾摸石了》 <br />
-              《英国大力士》 <br />
-              《健身房没有用》 等热门曲目<br />
-              本次专辑的主打曲《耗子尾汁》一经发出，便获得2020年全球小聪明奖
-              亚洲最佳个性曲目奖...
-            </p>
-            <span class="open" @click="descriptionSimple = false">
+        <div class="edit-description" v-if="playListInfo.description">
+          <div v-if="playListInfo.simpleDescription && descriptionSimple">
+            <p v-html="'介绍：' + playListInfo.simpleDescription"></p>
+            <span
+              class="open"
+              @click="descriptionSimple = false"
+              v-if="playListInfo.simpleDescription"
+            >
               <span class="text">展开</span>
             </span>
           </div>
           <div v-else>
-            <p>
-              介绍：马老师个人专辑《我大E了啊》<br />
-              马老师个人全新专辑，包含曲目：<br />
-              《发生肾摸石了》 <br />
-              《英国大力士》 <br />
-              《健身房没有用》 等热门曲目<br />
-              本次专辑的主打曲《耗子尾汁》一经发出，便获得2020年全球小聪明奖
-              亚洲最佳个性曲目奖,以及最谢谢朋友们奖<br />
-              马老师自出道以来，1年内共获得19个全球大奖以及24个全国大奖，更是曾被邀请与比利共进晚餐<br />
-            </p>
-            <span class="close" @click="descriptionSimple = true">
+            <p v-html="'介绍：' + playListInfo.description"></p>
+            <span
+              class="close"
+              @click="descriptionSimple = true"
+              v-if="playListInfo.simpleDescription"
+            >
               <span class="text">收起</span>
             </span>
           </div>
@@ -68,8 +76,11 @@
     <div class="table">
       <div class="table-title">
         <span class="table-name">歌曲列表</span>
-        <span class="table-total">48首歌</span>
-        <span class="table-count">播放：<span class="num">666</span>次</span>
+        <span class="table-total">{{ playListInfo.trackCount }}首歌</span>
+        <span class="table-count"
+          >播放：<span class="num">{{ playListInfo.playCount }}</span
+          >次</span
+        >
       </div>
       <div class="table-header">
         <div class="header order"></div>
@@ -79,12 +90,20 @@
         <div class="header album">专辑</div>
       </div>
       <div class="table-content">
-        <div class="song-list" v-for="item in 33" :key="item">
-          <div class="song order">{{ item }}</div>
-          <div class="song title">哈行</div>
-          <div class="song time">213213</div>
-          <div class="song singer">213</div>
-          <div class="song album">123</div>
+        <div
+          class="song-list"
+          v-for="(item, index) in playListInfo.songList"
+          :key="item.id"
+        >
+          <div class="song order">{{ index + 1 }}</div>
+          <div class="song title">{{ item.name }}</div>
+          <div class="song time">{{ item.time | timeFormat }}</div>
+          <div class="song singer">
+            {{
+              item.singerList.reduce((p, c) => p + c + " / ", "").slice(0, -3)
+            }}
+          </div>
+          <div class="song album">{{ item.album }}</div>
         </div>
       </div>
     </div>
@@ -112,39 +131,84 @@
           </div>
         </div>
       </div>
-      <!-- 评论内容 -->
-      <div class="comment-content">
-        <div class="comment-header">精彩评论</div>
-        <div class="comment-item" v-for="item in 14" :key="item">
-          <img class="avatar" src="../../../assets/my/images/test.jpg" alt="" />
-          <div>
-            <div class="text">
-              <span class="name">我</span>:
-              太强了吧？太强了吧？太强了吧？太强了吧？太强了吧？太强了吧？太强了吧？太强了吧？太强了吧？太强了吧？太强了吧？
-            </div>
-            <div class="footer">
-              <span>2020年6月15日</span>
-              <div class="edit">
-                <span class="star">
-                  <span class="count">(123)</span>
-                </span>
-                <span class="reply">回复</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- 精彩评论内容 -->
+      <Comment
+        v-if="hotCommentList"
+        :commentList="hotCommentList"
+        :type="'精彩评论'"
+      />
+      <!-- 最新评论内容 -->
+      <Comment
+        v-if="commentList"
+        :commentList="commentList"
+        :type="'最新评论'"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import dayjs from "dayjs";
+import Comment from "./Comment";
 export default {
   name: "PlayList",
   data() {
     return {
       descriptionSimple: true,
+      playListInfo: {},
     };
+  },
+  components: {
+    Comment,
+  },
+  watch: {
+    //监听路由
+    $route() {
+      this.getPlayListInfo();
+    },
+  },
+  filters: {
+    timeFormat(value) {
+      return dayjs(value).format("mm:ss");
+    },
+  },
+  computed: {
+    ...mapGetters(["playListDetail", "commentList", "hotCommentList"]),
+  },
+  methods: {
+    ...mapActions(["getPlayListDerail", "getPlayListComment"]),
+    //请求更新歌单数据和评论数据
+    async getPlayListInfo() {
+      const query = this.$route.query;
+      //请求歌单数据
+      await this.getPlayListDerail(query.id);
+      //歌单数据提取
+      this.playListInfo = {
+        avatarUrl: query.avatarUrl, //用户头像
+        createTime: dayjs(query.createTime).format("YYYY-MM-DD"), //歌单创建时间
+        tags: query.tags, //歌单标签
+        nickName: query.nickName, //歌单创建者
+        trackCount: query.trackCount, //歌单曲目数
+        playCount: query.playCount, //歌单播放数量
+        description:
+          query.description && query.description.replace(/\n/g, "<br/>"), //歌单详细介绍
+        simpleDescription:
+          query.description &&
+          (+query.description.length > 200
+            ? query.description.replace(/\n/g, "<br/>").slice(0, 200) + "..."
+            : ""), //歌单简单介绍
+        image: query.image, //歌单封面图
+        name: query.name, //歌单名
+        songList: this.playListDetail.songList, //歌单歌曲
+        id: this.playListDetail.id,
+      };
+      //请求歌单评论
+      await this.getPlayListComment(query.id);
+    },
+  },
+  mounted() {
+    this.getPlayListInfo();
   },
 };
 </script>
@@ -205,6 +269,7 @@ export default {
           color #fff
           font-size 14px
           background-position -5px 3272px
+          white-space nowrap
         .btn.plus
           background-position 0px 2403px
         .btn.collect
@@ -212,19 +277,23 @@ export default {
           margin 0 5px
           border-right 1px solid rgb(204, 204, 204)
           background-position 0px 2841px
+          white-space nowrap
         .btn.share
           border-radius 0 5px 5px 0
           border-right 1px solid rgb(204, 204, 204)
           background-position 0px 2765px
+          white-space nowrap
         .btn.down
           border-radius 0 5px 5px 0
           margin 0 5px
           border-right 1px solid rgb(204, 204, 204)
           background-position 0px 1229px
+          white-space nowrap
         .btn.comment
           border-radius 0 5px 5px 0
           border-right 1px solid rgb(204, 204, 204)
           background-position 0px 2525px
+          white-space nowrap
       .edit-label
         font-size 12px
         color #666
@@ -402,45 +471,4 @@ export default {
             color #fff
             font-size 14px
             line-height 25px
-    .comment-content
-      margin 0 30px
-      .comment-header
-        height 20px
-        font-weight bold
-        font-size 12px
-        color #333
-        border-bottom 1px solid #cfcfcf
-      .comment-item
-        display flex
-        padding 15px 0
-        .avatar
-          margin-right 10px
-          height 50px
-          width 50px
-        .text
-          font-size 12px
-          width 616px
-          .name
-            color #0c73c2
-        .footer
-          height 16px
-          margin-top 15px
-          font-size 12px
-          color #999
-          display flex
-          justify-content space-between
-          .edit
-            .star
-              height 14px
-              background-image url('../../../assets/my/images/icon2.png')
-              background-position -148px 1px
-              padding-left 20px
-              margin-right 10px
-              .count
-                background #fff
-            .reply
-              padding 0 10px
-              border-left 1px solid rgb(211, 211, 211)
-      .comment-item:nth-child(n+3)
-        border-top 1px dotted #ccc
 </style>
