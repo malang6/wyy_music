@@ -1,5 +1,5 @@
 <template>
-  <div class="discoverContainer">
+  <div class="discoverContainer" id="top">
     <!-- 头部轮播图 -->
     <div class="header">
       <div class="banner">
@@ -36,7 +36,7 @@
         <!-- 热门推荐 -->
         <PopularRecommend />
         <!-- 个性化推荐 -->
-        <PersonalRecommend />
+        <PersonalRecommend v-if="false"/>
         <!-- 新碟上架 -->
         <NewDisc />
         <!-- 榜单 -->
@@ -45,6 +45,9 @@
       <!-- 右侧内容区 -->
       <Append />
     </div>
+
+    <!-- 回到顶部 -->
+    <ReturnTop :returnUpIsShow="returnUpIsShow"/>
   </div>
 </template>
 
@@ -54,23 +57,37 @@ import TopList from './TopList/TopList'
 import NewDisc from './NewDisc/NewDisc'
 import PersonalRecommend from './PersonalRecommend/PersonalRecommend'
 import PopularRecommend from './PopularRecommend/PopularRecommend'
-// import CarouselTop from './Carousel/CarouselTop/CarouselTop'
+import ReturnTop from '@comps/ReturnTop/ReturnTop'
 import {reqBanner} from '@api/Discover/recommend'
 export default {
   name: 'Discover',
   data() {
     return {
       carouselList: [],
+      returnUpIsShow:'none'
     }
   },
   methods:{
+    // 请求轮播图
     async getBanner(){
       const bannerList=await reqBanner()
       this.carouselList=bannerList.data.blocks[0].extInfo.banners   
+    },
+    // 回到顶部函数
+    scroll(){
+      if(window.pageYOffset!==0){
+        this.returnUpIsShow='block'
+      }else(
+        this.returnUpIsShow='none'
+      )
     }
   },
   mounted(){
     this.getBanner()
+    window.addEventListener('scroll',this.scroll)
+  },
+  beforeDestroy(){
+    window.removeEventListener('scroll',this.scroll)
   },
   components: {
     Append,
@@ -78,7 +95,7 @@ export default {
     NewDisc,
     PersonalRecommend,
     PopularRecommend,
-    // CarouselTop
+    ReturnTop
   },
 }
 </script>
@@ -123,7 +140,6 @@ export default {
         
   .content
     width 980px
-    height 1732px
     margin 0 auto
     display flex
     background-color rgb(255, 255, 255)

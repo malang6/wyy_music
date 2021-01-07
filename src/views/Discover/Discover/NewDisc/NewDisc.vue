@@ -70,7 +70,7 @@ export default {
       }
       this.keyPoint--
       setTimeout(()=>{
-        if(this.keyPoint===1){
+        if(this.keyPoint<=1){
         this.keyPoint=4
       }
       },500)
@@ -87,7 +87,7 @@ export default {
       }
       this.keyPoint++
       setTimeout(()=>{
-        if(this.keyPoint===3){
+        if(this.keyPoint>=3){
           this.keyPoint=0
         }
       },500)

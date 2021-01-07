@@ -15,10 +15,10 @@
         <div class="edit-btn">
           <div class="btn play">播放</div>
           <div class="btn plus"></div>
-          <div class="btn collect">{{songList.subscribedCount}}</div>
-          <div class="btn share">{{songList.shareCount}}</div>
+          <div class="btn collect">{{ songList.subscribedCount }}</div>
+          <div class="btn share">{{ songList.shareCount }}</div>
           <div class="btn down">下载</div>
-          <div class="btn comment">{{songList.commentCount}}</div>
+          <div class="btn comment">{{ songList.commentCount }}</div>
         </div>
       </div>
     </div>
@@ -48,20 +48,16 @@
         >
           <div class="song order">{{ index + 1 }}</div>
           <div class="song title">
-            <img
-              :src="track.al.picUrl"
-              alt=""
-              v-if="index < 3"
-            />
+            <img :src="track.al.picUrl" alt="" v-if="index < 3" />
             <a class="playSong" href=""></a>
-            <span class="songName"><a href="">{{ track.name }}</a></span>
+            <span class="songName"
+              ><a href="">{{ track.name }}</a></span
+            >
             <span class="append">{{
               track.alia.length ? '-(' + track.alia[0] + ')' : ''
             }}</span>
           </div>
-          <div
-            class="song time control"
-          >
+          <div class="song time control">
             <div class="pad">
               <a class="add" href=""></a>
               <a class="collect" href=""></a>
@@ -113,35 +109,39 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 import moment from 'moment'
 import CommentList from '../CommentList/CommentList'
-import {reqListSong} from '@api/Discover/topList'
+// import { reqListSong } from '@api/Discover/topList'
 export default {
   name: 'PlayList',
   data() {
-    return {
-      songList:[]
-    }
+    return {}
   },
   components: {
     CommentList,
   },
-  methods: {
-    
-  },
-  watch:{
+  props:['songList'],
+  methods: {},
+  watch: {
     // 歌单ID发生变化，请求歌单
-    async currentId(){
-      const songList=await reqListSong(this.currentId)
-      this.songList=songList.playlist
-    }
+    // async currentId(){
+    //   const songList=await reqListSong(this.currentId)
+    //   this.songList=songList.playlist
+    // },
+    // $route: {
+    //   async handler(){
+    //     if(!this.$route.query.id)return 
+    //     const songList = await reqListSong(this.$route.query.id)
+    //     this.songList = songList.playlist 
+    //   },
+    //   immediate:true
+    // },
   },
   computed: {
-    // 
     ...mapState({
-      updateFrequency:(state)=>state.topList.updateFrequency,
-      currentId:(state)=>state.topList.currentId
+      updateFrequency: (state) => state.topList.updateFrequency,
+      currentId: (state) => state.topList.currentId,
     }),
     // 计算更新时间
     updateTime() {
@@ -155,7 +155,7 @@ export default {
       })
       return time
     },
-  },
+  }
 }
 </script>
 
@@ -352,7 +352,6 @@ export default {
             display inline-block
           >.show
             display none
-
       .song-list:nth-child(odd)
         background-color rgb(247, 247, 247)
       .song-list:nth-child(-n+3)

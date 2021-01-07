@@ -112,12 +112,14 @@ export default {
       height 204px
       .playList
         position relative
+        width 140px
+        height 140px
         .pic
           width 100%
           height 140px
         .control
           position absolute
-          bottom 2px
+          bottom 0
           left 0
           width 100%
           height 27px
@@ -145,6 +147,7 @@ export default {
               background-position -1px -111px
       .info
         font-size 14px
+        margin-top 8px
         color #000
         width 100%
         &:hover

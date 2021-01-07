@@ -15,13 +15,13 @@
         :key="songList.id"
       >
         <dt class="listTitle">
-          <a href="">
+          <router-link :to="'/toplist?id='+songList.id">
             <img :src="songList.coverImgUrl" alt="" class="listPic" />
-          </a>
+          </router-link>
           <div class="listType">
-            <a href="">
+            <router-link :to="'/toplist?id='+songList.id">
               <h3>{{ songList.name }}</h3>
-            </a>
+            </router-link>
             <div class="control">
               <a href="" class="play"></a>
               <a href="" class="add"></a>
