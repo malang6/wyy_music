@@ -4,11 +4,7 @@
       <i class="circle"></i>
       <a href="" class="title">热门推荐</a>
       <div class="category">
-        <a href="" class="item">话语</a>
-        <a href="" class="item">流星</a>
-        <a href="" class="item">话语</a>
-        <a href="" class="item">话语</a>
-        <a href="" class="item">话语</a>
+        <a href="" class="item" v-for="SongList in hotSongList" :key="SongList.id">{{SongList.name}}</a>
       </div>
       <span class="more">
         <a href="">更多</a>
@@ -16,18 +12,18 @@
       </span>
     </div>
     <div class="recommendContainer">
-      <div class="recommendItem" v-for="item in 8" :key="item">
+      <div class="recommendItem" v-for="listOnline in hotListOnline" :key="listOnline.id">
         <div class="playList">
           <a href="">
-            <img src="../Carousel/static/aj1.jpg" alt="" class="pic" />
+            <img :src="listOnline.coverImgUrl" alt="" class="pic" />
           </a>
           <div class="control">
             <span class="headphone"></span>
-            <span class="playCount">172万</span>
+            <span class="playCount">{{listOnline.playCount>10000?Math.floor(listOnline.playCount/10000)+'万':listOnline.playCount}}</span>
             <a href="" class="play"></a>
           </div>
         </div>
-        <a href="" class="info">赞新的一年，平安和美好都会接踵而来</a>
+        <a href="" class="info">{{listOnline.name}}</a>
       </div>
      
     </div>
@@ -35,8 +31,31 @@
 </template>
 
 <script>
+import {reqHotSongList,reqHotListOnline} from '@api/Discover/recommend'
 export default {
   name: 'PopularRecommend',
+  data(){
+    return {
+      hotSongList:[],
+      hotListOnline:[]
+    }
+  },
+  methods:{
+    // 请求推荐歌单类名
+    async getHotSongList(){
+      const hotSongList=await reqHotSongList()
+      this.hotSongList=hotSongList.tags.slice(0,5)
+    },
+    // 请求网友精品歌单
+    async getHotListOnline(){
+      const hotListOnline=await reqHotListOnline()
+      this.hotListOnline=hotListOnline.playlists.slice(0,8)
+    }
+  },
+  mounted(){
+    this.getHotSongList()
+    this.getHotListOnline()
+  }
 }
 </script>
 
@@ -102,7 +121,7 @@ export default {
           left 0
           width 100%
           height 27px
-          background-color rgba(0, 0, 0, 0.5)
+          background-color rgba(0, 0, 0, 0.6)
           color #ccc
           .headphone
             display inline-block

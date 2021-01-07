@@ -1,13 +1,13 @@
 <template>
   <div class="append">
     <!-- 用户信息 -->
-    <!-- <div class="unLogin" v-if="true">
+    <div class="unLogin" v-if="true">
       <span class="unLoginInfo"
         >登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</span
       >
       <a class="login" href="">用户登录</a>
-    </div> -->
-    <div class="userLogin">
+    </div>
+    <div class="userLogin" v-else>
       <div class="userInfo">
         <a href="">
           <img src="../Carousel/static/nike.jpg" alt="" />
@@ -47,39 +47,18 @@
         <a href="">查看全部></a>
       </div>
       <div class="singerInfo">
-        <a href="" class="eachSinger">
-          <img src="../Carousel/static/ajlogo.png" alt="" />
+        <a
+          href=""
+          class="eachSinger"
+          v-for="singer in singerList"
+          :key="singer.id"
+        >
+          <img :src="singer.img1v1Url" alt="" />
           <div class="singerName">
-            <strong class="name">张惠妹</strong>
-            <span class="region">台湾歌手张惠妹</span>
-          </div>
-        </a>
-        <a href="" class="eachSinger">
-          <img src="../Carousel/static/ajlogo.png" alt="" />
-          <div class="singerName">
-            <strong class="name">张惠妹</strong>
-            <span class="region">台湾歌手张惠妹</span>
-          </div>
-        </a>
-        <a href="" class="eachSinger">
-          <img src="../Carousel/static/ajlogo.png" alt="" />
-          <div class="singerName">
-            <strong class="name">张惠妹</strong>
-            <span class="region">台湾歌手张惠妹</span>
-          </div>
-        </a>
-        <a href="" class="eachSinger">
-          <img src="../Carousel/static/ajlogo.png" alt="" />
-          <div class="singerName">
-            <strong class="name">张惠妹</strong>
-            <span class="region">台湾歌手张惠妹</span>
-          </div>
-        </a>
-        <a href="" class="eachSinger">
-          <img src="../Carousel/static/ajlogo.png" alt="" />
-          <div class="singerName">
-            <strong class="name">张惠妹</strong>
-            <span class="region">台湾歌手张惠妹</span>
+            <strong class="name">{{ singer.name }}</strong>
+            <span class="region">{{
+              singer.alias.length > 0 ? singer.alias[0] : ''
+            }}</span>
           </div>
         </a>
       </div>
@@ -89,49 +68,13 @@
     <div class="dj">
       <h4 class="hotDj">热门主播</h4>
       <div class="djs">
-        <div class="eachDj">
+        <div class="eachDj" v-for="dj in djList" :key="dj.id">
           <a href="">
-            <img src="../Carousel/static/ajlogo.png" alt="" class="pic" />
+            <img :src="dj.avatarUrl" alt="" class="pic" />
           </a>
           <div class="info">
-            <a href="">陈立</a>
-            <span>独立DJ，CRI环球旅游广播特约主持人</span>
-          </div>
-        </div>
-        <div class="eachDj">
-          <a href="">
-            <img src="../Carousel/static/ajlogo.png" alt="" class="pic" />
-          </a>
-          <div class="info">
-            <a href="">陈立</a>
-            <span>独立DJ，CRI环球旅游广播特约主持人</span>
-          </div>
-        </div>
-        <div class="eachDj">
-          <a href="">
-            <img src="../Carousel/static/ajlogo.png" alt="" class="pic" />
-          </a>
-          <div class="info">
-            <a href="">陈立</a>
-            <span>独立DJ，CRI环球旅游广播特约主持人</span>
-          </div>
-        </div>
-        <div class="eachDj">
-          <a href="">
-            <img src="../Carousel/static/ajlogo.png" alt="" class="pic" />
-          </a>
-          <div class="info">
-            <a href="">陈立</a>
-            <span>独立DJ，CRI环球旅游广播特约主持人</span>
-          </div>
-        </div>
-        <div class="eachDj">
-          <a href="">
-            <img src="../Carousel/static/ajlogo.png" alt="" class="pic" />
-          </a>
-          <div class="info">
-            <a href="">陈立</a>
-            <span>独立DJ，CRI环球旅游广播特约主持人</span>
+            <a href="">{{ dj.nickName }}</a>
+            <span>独立DJ</span>
           </div>
         </div>
       </div>
@@ -140,8 +83,31 @@
 </template>
 
 <script>
+import { reqHotSinger, reqHotDj } from '@api/Discover/recommend'
 export default {
   name: 'Append',
+  data() {
+    return {
+      singerList: [],
+      djList: [],
+    }
+  },
+  methods: {
+    // 请求歌手
+    async getSingerList() {
+      const singerList = await reqHotSinger()
+      this.singerList = singerList.list.artists.slice(0, 5)
+    },
+    // 请求dj
+    async getDjList() {
+      const djList = await reqHotDj()
+      this.djList = djList.data.list.slice(0, 5)
+    },
+  },
+  mounted() {
+    this.getSingerList()
+    this.getDjList()
+  },
 }
 </script>
 
@@ -155,7 +121,7 @@ export default {
     display flex
     flex-direction column
     align-items center
-    background-color rgb(237, 237, 237)
+    background url('../../../../assets/Discover/images/sprit.png')
     .unLoginInfo
       padding 16px 0
       color #666
@@ -179,7 +145,7 @@ export default {
       height 90px
       display flex
       margin-left 20px
-      img 
+      img
         width 80px
         height 80px
         padding 3px
@@ -197,8 +163,8 @@ export default {
           line-height 18px
           width 40px
           border-radius 20px
-          color #999   
-          text-align center 
+          color #999
+          text-align center
           margin-top 5px
         .sign
           margin-top 15px
@@ -211,13 +177,13 @@ export default {
           line-height 31px
           text-align center
           &:hover
-            background-color rgba(46, 126, 203,.8)
+            background-color rgba(46, 126, 203, 0.8)
     .activity
       margin 20px 0 0 22px
       color #666
       display flex
       a
-        display flex 
+        display flex
         flex-direction column
         padding 0 15px
         &:nth-child(2)
@@ -227,7 +193,6 @@ export default {
           font-size 20px
         span
           font-size 12px
-
   .singer
     margin-top 15px
     .inSinger

@@ -9,14 +9,14 @@
       </span>
     </div>
     <div class="listContainer">
-      <dl class="listItem" v-for="item in 3" :key="item">
+      <dl class="listItem" v-for="(songList,index) in topSongList" :key="songList.id">
         <dt class="listTitle">
           <a href="">
-            <img src="../Carousel/static/nike.jpg" alt="" class="listPic" />
+            <img :src="songList.coverImgUrl" alt="" class="listPic" />
           </a>
           <div class="listType">
             <a href="">
-              <h3>飙升榜</h3>
+              <h3>{{ songList.name }}</h3>
             </a>
             <div class="control">
               <a href="" class="play"></a>
@@ -26,9 +26,9 @@
         </dt>
         <dd>
           <ol class="songList">
-            <li class="song" v-for="item in 10" :key="item">
-              <span class="songNum">{{item}}</span>
-              <a href="" class="songName">逝去的歌</a>
+            <li class="song" v-for="(song,songIndex) in totalSongList[index]" :key="song.id">
+              <span class="songNum">{{songIndex+1 }}</span>
+              <a href="" class="songName">{{song.name}}</a>
               <div class="operate">
                 <a href="" class="play"></a>
                 <a href="" class="add"></a>
@@ -46,8 +46,44 @@
 </template>
 
 <script>
+import { reqTopList, reqListSong } from '@api/Discover/topList'
 export default {
   name: 'TopList',
+  data() {
+    return {
+      topSongList: [],
+      totalSongList:[]
+    }
+  },
+  watch:{
+    topSongList(){
+      this.getSongList()
+    }
+  },
+  // computed:{
+  //   matchSongList(){
+
+  //   }
+  // },
+  methods: {
+    // 请求榜单
+    async getTopSongList() {
+      const topSongList = await reqTopList()
+      this.topSongList = topSongList.list.slice(0, 3)
+    },
+    // 获取榜单内歌曲
+    getSongList() {
+      this.topSongList.map(async (songList) => {
+        const outSongList = await reqListSong(songList.id)
+        this.totalSongList.push(outSongList.playlist.tracks.slice(0,10))
+        return 
+      })
+    },
+  },
+  mounted() {
+    this.getTopSongList()
+    
+  },
 }
 </script>
 
@@ -99,6 +135,7 @@ export default {
         .listPic
           width 80px
           height 80px
+          box-shadow 0 5px 5px #707171
         .listType
           margin 6px 0 0 10px
           h3

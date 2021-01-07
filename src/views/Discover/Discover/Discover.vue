@@ -3,11 +3,28 @@
     <!-- 头部轮播图 -->
     <div class="header">
       <div class="banner">
+        <!-- 自己封装的轮播图 -->
         <!-- <CarouselTop /> -->
-        <img
+
+        <!-- element-ui轮播图 -->
+        <div class="block">
+          <el-carousel trigger="click" height="284px" indicator-position="none">
+            <el-carousel-item
+              v-for="carousel in carouselList"
+              :key="carousel.bannerId"
+            >
+              <img :src="carousel.pic" alt="" class="swiperPic" />
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+        <div class="download">
+          <a href="" class="downloadLink"></a>
+          <span class="platform">PC 安卓 iPhone WP iPad Mac 六大客户端</span>
+        </div>
+        <!-- <img
           src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2072177575,1951826205&fm=26&gp=0.jpg"
           alt=""
-        />
+        /> -->
       </div>
       <div class="download"></div>
     </div>
@@ -17,16 +34,16 @@
       <!-- 左侧内容区 -->
       <div class="main">
         <!-- 热门推荐 -->
-        <PopularRecommend/>
+        <PopularRecommend />
         <!-- 个性化推荐 -->
-        <PersonalRecommend/>
+        <PersonalRecommend />
         <!-- 新碟上架 -->
-        <NewDisc/>
+        <NewDisc />
         <!-- 榜单 -->
-        <TopList/>
+        <TopList />
       </div>
       <!-- 右侧内容区 -->
-      <Append/>
+      <Append />
     </div>
   </div>
 </template>
@@ -38,16 +55,31 @@ import NewDisc from './NewDisc/NewDisc'
 import PersonalRecommend from './PersonalRecommend/PersonalRecommend'
 import PopularRecommend from './PopularRecommend/PopularRecommend'
 // import CarouselTop from './Carousel/CarouselTop/CarouselTop'
+import {reqBanner} from '@api/Discover/recommend'
 export default {
   name: 'Discover',
-  components:{
+  data() {
+    return {
+      carouselList: [],
+    }
+  },
+  methods:{
+    async getBanner(){
+      const bannerList=await reqBanner()
+      this.carouselList=bannerList.data.blocks[0].extInfo.banners   
+    }
+  },
+  mounted(){
+    this.getBanner()
+  },
+  components: {
     Append,
     TopList,
     NewDisc,
     PersonalRecommend,
     PopularRecommend,
     // CarouselTop
-  }
+  },
 }
 </script>
 
@@ -58,13 +90,37 @@ export default {
   background-color rgb(245, 245, 245)
   .header
     width 100%
+    // background-color #352f05
     .banner
       width 980px
       height 285px
       margin 0 auto
-      img
-        width 100%
-        height 100%
+      display flex
+      .block
+        width 738px
+        .swiperPic
+          width 738px
+      .download
+        width 242px
+        height 284px
+        background url('../../../assets/Discover/images/download.png')
+        background-position -5px 0
+        display flex
+        flex-direction column
+        align-items center
+        justify-content flex-end
+        .downloadLink
+          width 220px
+          height 60px
+          border-radius 3px
+          &:hover
+            background url('../../../assets/Discover/images/download.png')
+            background-position 4px -287px
+        .platform
+          color #8d8d8d
+          text-align center
+          margin 10px 0 15px 0
+        
   .content
     width 980px
     height 1732px
