@@ -50,3 +50,23 @@ export const reqPlayListComment = (id) => {
         }
     })
 }
+//创建歌单
+export const reqCreatePlayList = (name) => {
+    return axios({
+        method: "GET",
+        url: "/playlist/create",
+        params:{
+            name
+        }
+    })
+}
+//删除歌单
+export const reqDelPlayList = (id) => {
+    return axios({
+        method: "GET",
+        url: "/playlist/delete",
+        params:{
+            id
+        }
+    })
+}

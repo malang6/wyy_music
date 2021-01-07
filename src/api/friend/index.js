@@ -7,10 +7,13 @@ export const reqFriendDynamic = () => {
     })
 }
 //请求朋友页面-用户数据
-export const reqUser = () => {
+export const reqUser = (uid) => {
     return axios({
         methods: "GET",
-        url: "/user/account"
+        url: "/user/detail",
+        params:{
+            uid
+        }
     })
 }
 //请求视频播放地址

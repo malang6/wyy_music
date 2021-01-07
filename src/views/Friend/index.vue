@@ -86,15 +86,15 @@
           </div>
           <div class="user-fans">
             <div>
-              <div class="count">102</div>
+              <div class="count">{{userInfo.eventCount}}</div>
               <span>动态</span>
             </div>
             <div>
-              <div class="count">97</div>
+              <div class="count">{{userInfo.follows}}</div>
               <span>关注</span>
             </div>
             <div>
-              <div class="count">316155</div>
+              <div class="count">{{userInfo.followers}}</div>
               <span>粉丝</span>
             </div>
           </div>
@@ -199,7 +199,8 @@ export default {
       //请求动态数据
       this.getFriendDynamic();
       //请求用户数据
-      this.getUser();
+      const id = localStorage.getItem("userId")
+      this.getUser(id);
     }
   },
   beforeDestory() {
@@ -418,8 +419,9 @@ export default {
           background-position -1px -97px
   .top-btn
     position fixed
-    right 18%
+    left 40%
     bottom 18%
+    margin-left 700px
     width 49px
     height 44px
     background-image url('../../assets/my/images/sprite2.png')

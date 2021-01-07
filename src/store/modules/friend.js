@@ -16,9 +16,10 @@ const actions = {
         const result = await reqFriendDynamic()
         commit("WRITE_FRIEND_DYNAMIC", result.data.event)
     },
-    //请求明星用户数据
-    async getUser({ commit }) {
-        const result = await reqUser()
+    //请求用户数据
+    async getUser({ commit },id) {
+        const result = await reqUser(id)
+        console.log("用户数据",result.data)
         commit("WRITE_USER_INFO", result.data)
     },
     //请求视频播放地址
@@ -46,8 +47,11 @@ const mutations = {
     },
     WRITE_USER_INFO(state, res) {
         state.userInfo = {
-            nickName: res.profile.nickname,
-            avatarUrl: res.profile.avatarUrl,
+            nickName: res.profile.nickname, //用户名
+            avatarUrl: res.profile.avatarUrl, //头像url
+            eventCount:res.profile.eventCount, //动态数
+            follows:res.profile.follows, //关注数
+            followers:res.profile.followeds, //粉丝数
         }
     },
     //删除广告

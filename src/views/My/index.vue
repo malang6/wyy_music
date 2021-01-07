@@ -2,12 +2,16 @@
   <div class="box">
     <div v-if="isLogin">
       <div class="song-list">
-        <router-link to="/my/artist" class="list">我的歌手({{subCountList.artistCount}})</router-link>
-        <router-link to="/my/radio" class="list">我的电台({{subCountList.djRadioCount}})</router-link>
+        <router-link to="/my/artist" class="list"
+          >我的歌手({{ subCountList.artistCount }})</router-link
+        >
+        <router-link to="/my/radio" class="list"
+          >我的电台({{ subCountList.djRadioCount }})</router-link
+        >
         <div class="list" @click="open">
           <div class="arrow" :class="{ show: isShowSongList }"></div>
-          创建的歌单({{createPlayList.length}})
-          <button class="add" @click.stop="add">
+          创建的歌单({{ createPlayList.length }})
+          <button class="add" @click.stop="showWindow('showAddWindow')">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-jia"></use>
             </svg>
@@ -17,30 +21,39 @@
         <!-- 创建的歌单列表 -->
         <div v-show="isShowSongList">
           <div v-for="playList in createPlayList" :key="playList.id">
-            <span class="songs" @click="toPlayListDetail(playList.id,playList)">
-              <img class="img" :src="playList.image" alt="" />
+            <span
+              class="songs"
+              @click="toPlayListDetail(playList.id, playList)"
+            >
+              <img class="img" :src="playList.image" />
               <div class="songs-info">
                 <div class="songs-name">{{ playList.name }}</div>
                 <div class="songs-count">{{ playList.trackCount }}首</div>
               </div>
               <div class="btn">
                 <router-link to="/my/edit" class="edit"></router-link>
-                <span class="del"></span>
+                <span
+                  class="del"
+                  @click="showWindow('showDelWindow', playList.id)"
+                ></span>
               </div>
             </span>
           </div>
         </div>
         <div class="list" @click="openCollection">
           <div class="arrow" :class="{ show: isShowCollection }"></div>
-          收藏的歌单({{collectPlayList.length}})
+          收藏的歌单({{ collectPlayList.length }})
         </div>
         <!-- 收藏歌单列表 -->
         <div v-show="isShowCollection">
           <div v-for="collection in collectPlayList" :key="collection.id">
-            <span class="songs" @click="toPlayListDetail(collection.id,collection)">
-              <img class="img" :src="collection.image"/>
-              <div>
-                <div class="songs-name">{{collection.name}}</div>
+            <span
+              class="songs"
+              @click="toPlayListDetail(collection.id, collection)"
+            >
+              <img class="img" :src="collection.image" />
+              <div class="songs-info">
+                <div class="songs-name">{{ collection.name }}</div>
                 <span class="songs-count">{{ collection.trackCount }}首</span>
               </div>
             </span>
@@ -54,14 +67,30 @@
       <div v-if="showAddWindow" class="add-window">
         <div class="title">
           <span>新建歌单</span>
-          <span class="close" @click="cancel">×</span>
+          <span class="close" @click="hideWindow('showAddWindow')">×</span>
         </div>
         <div class="form">
-          <div class="form-ipt">歌单名：<input class="ipt" type="text" /></div>
+          <div class="form-ipt">
+            歌单名：<input class="ipt" type="text" v-model="playListName" />
+          </div>
           <span class="tap">可通过“收藏”将音乐添加到新歌单中</span>
           <div class="edit">
-            <div class="add">新 建</div>
-            <div class="cancel" @click="cancel">取 消</div>
+            <div class="add" @click="create">新 建</div>
+            <div class="cancel" @click="hideWindow('showAddWindow')">取 消</div>
+          </div>
+        </div>
+      </div>
+      <!-- 删除歌单窗口 -->
+      <div v-if="showDelWindow" class="add-window">
+        <div class="title">
+          <span>删除歌单</span>
+          <span class="close" @click="hideWindow('showDelWindow')">×</span>
+        </div>
+        <div class="form">
+          <span class="tap">是否删除此歌单？</span>
+          <div class="edit">
+            <div class="add" @click="del(willDelPlayListId)">删 除</div>
+            <div class="cancel" @click="hideWindow('showDelWindow')">取 消</div>
           </div>
         </div>
       </div>
@@ -77,23 +106,57 @@
 </template>
 
 <script>
-import {mapActions,mapGetters} from "vuex"
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "My",
   data() {
     return {
-      isShowSongList: false,
-      isShowCollection: false,
-      showAddWindow: false,
-      showTopBtn: false,
-      isLogin: true,
+      isShowSongList: false, //是否展开个人创建的歌单列表
+      isShowCollection: false, //是否展开收藏歌单列表
+      showAddWindow: false, //新建歌单窗口显示从动态
+      showTopBtn: false, //返回顶部按钮显示状态
+      isLogin: true, //是否登录状态
+      playListName: "", //新建歌单名
+      showDelWindow: false, //删除确认窗口显示状态
+      willDelPlayListId: "", //即将删除歌单Id
     };
   },
-  computed:{
-    ...mapGetters(["createPlayList","collectPlayList","collectArtist","subCountList"])
+  computed: {
+    ...mapGetters([
+      "createPlayList",
+      "collectPlayList",
+      "collectArtist",
+      "subCountList",
+    ]),
   },
   methods: {
-    ...mapActions(["getUserPlayList","getPlayListDerail","getSubcount"]),
+    ...mapActions([
+      "getUserPlayList",
+      "getPlayListDerail",
+      "getSubcount",
+      "addPlayList",
+      "delPlayList",
+    ]),
+    //显示删除或添加歌单提示窗口
+    showWindow(type, id) {
+      this[type] = true;
+      this.willDelPlayListId = id;
+    },
+    //隐藏删除或添加歌单提示窗口
+    hideWindow(type) {
+      this[type] = false;
+      this.willDelPlayListId = "";
+    },
+    //确定删除歌单
+    del(id) {
+      this.delPlayList(id);
+      this.showDelWindow = false;
+    },
+    //确定新建歌单
+    create() {
+      this.addPlayList(this.playListName);
+      this.showAddWindow = false;
+    },
     //展开创建的列表
     open() {
       this.isShowSongList = !this.isShowSongList;
@@ -101,14 +164,6 @@ export default {
     //展开收藏列表
     openCollection() {
       this.isShowCollection = !this.isShowCollection;
-    },
-    //添加新列表
-    add() {
-      this.showAddWindow = true;
-    },
-    //取消添加新列表
-    cancel() {
-      this.showAddWindow = false;
     },
     //top按钮显示隐藏
     scrollChange() {
@@ -123,27 +178,27 @@ export default {
     toTop() {
       document.documentElement.scrollTop = 0;
     },
-    //获取歌单详情
-    toPlayListDetail(id,data){
+    //获取歌单详情,跳转路由
+    toPlayListDetail(id, data) {
       //发送歌单详情请求
-      this.getPlayListDerail(id)
+      this.getPlayListDerail(id);
       //路由传参
       this.$router.push({
-        path:"/my/playlist",
-        query:{
+        path: "/my/playlist",
+        query: {
           ...data,
-          id
-        }
-      })
-    }
+          id,
+        },
+      });
+    },
   },
   mounted() {
     //绑定滚轮事件
     document.addEventListener("scroll", this.scrollChange);
     //请求歌单数据
-    const uid = localStorage.getItem("userId")
-    this.getUserPlayList(uid)
-    this.getSubcount()
+    const uid = localStorage.getItem("userId");
+    this.getUserPlayList(uid);
+    this.getSubcount();
   },
   beforeDestory() {
     //解除绑定滚轮事件
@@ -167,22 +222,27 @@ export default {
     border-right 1px solid rgb(213, 213, 213)
     background-color rgb(249, 249, 249)
     .songs
-      padding 6px 0 6px 20px
+      padding 6px 0px 6px 20px
       display flex
+      cursor pointer
       .img
         heihgt 40px
         width 40px
         margin-right 10px
       .songs-info
         .songs-name
-          margin-top 3px
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+          margin 5px 0
           font-size 12px
           color #000
+          width 140px
         .songs-count
           font-size 12px
           color #999
       .btn
-        margin-top 15px
+        margin-top 28px
         width 50px
         height 50px
         position absolute
@@ -248,7 +308,7 @@ export default {
     .list:hover
       background-color rgb(238, 238, 238)
   .song-content
-    height 100%
+    min-height 100%
     margin-left 242px
     width 740px
     background-color #fff
@@ -320,8 +380,9 @@ export default {
         cursor pointer
   .top-btn
     position fixed
-    right 18%
+    left 40%
     bottom 18%
+    margin-left 700px
     width 49px
     height 44px
     background-image url('../../assets/my/images/sprite2.png')

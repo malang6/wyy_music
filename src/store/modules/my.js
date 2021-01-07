@@ -1,4 +1,4 @@
-import { reqUserPlayList, reqPlayListDerail, reqArtist, reqRadio, reqSubcount, reqPlayListComment } from "@api/my"
+import { reqUserPlayList, reqPlayListDerail, reqArtist, reqRadio, reqSubcount, reqPlayListComment, reqCreatePlayList, reqDelPlayList } from "@api/my"
 const state = {
     createPlayList: [], //创建的歌单
     collectPlayList: [], //收藏的歌单
@@ -23,6 +23,7 @@ const actions = {
     //请求用户歌单
     async getUserPlayList({ commit }, uid) {
         const result = await reqUserPlayList(uid)
+        // console.log("用户歌单",result.data.playlist)
         commit("WRITE_USER_PLAY_LIST", result.data.playlist)
     },
     //请求歌单详情
@@ -48,8 +49,17 @@ const actions = {
     //获取歌单评论
     async getPlayListComment({ commit }, id) {
         const result = await reqPlayListComment(id)
-        console.log(result.data)
         commit("WRITE_COMMENT", result.data)
+    },
+    //新建歌单
+    async addPlayList({ commit }, name) {
+        const result = await reqCreatePlayList(name)
+        commit("WRITE_ADD_PLAY_LIST", result.data.playlist)
+    },
+    //删除歌单
+    async delPlayList({ commit }, id) {
+        await reqDelPlayList(id)
+        commit("DEL_PLAY_LIST", id)
     }
 }
 const mutations = {
@@ -120,25 +130,38 @@ const mutations = {
     },
     WRITE_COMMENT(state, res) {
         state.commentList = res.comments.map(item => ({
-            id:item.id, //id
+            id: item.id, //id
             content: item.content, //评论内容
             avatarUrl: item.user.avatarUrl, //用户头像
             nickname: item.user.nickname, //用户名
             likedCount: item.likedCount, //评论点赞数
             beRepliedContent: item.beReplied[0] && item.beReplied[0].content, //引用评论内容
             beRepliedNickName: item.beReplied[0] && item.beReplied[0].user.nickname, //引用评论用户id
-            time:item.time, //发布时间
+            time: item.time, //发布时间
         }))
         state.hotCommentList = res.hotComments.map(item => ({
-            id:item.id, //id
+            id: item.id, //id
             content: item.content, //评论内容
             avatarUrl: item.user.avatarUrl, //用户头像
             nickname: item.user.nickname, //用户名
             likedCount: item.likedCount, //评论点赞数
             beRepliedContent: item.beReplied[0] && item.beReplied[0].content, //引用评论内容
             beRepliedNickName: item.beReplied[0] && item.beReplied[0].user.nickname, //引用评论用户id
-            time:item.time, //发布时间
+            time: item.time, //发布时间
         }))
+    },
+    WRITE_ADD_PLAY_LIST(state, res) {
+        state.createPlayList.push({
+            name: res.name, //歌单名
+            image: res.coverImgUrl, //歌单封面图
+            createTime: res.createTime, //歌单创建时间
+            trackCount: res.trackCount, //歌单歌曲数量
+            playCount: res.playCount, //歌单播放数量
+            id: res.id, //歌单id
+        })
+    },
+    DEL_PLAY_LIST(state, id) {
+        state.createPlayList = state.createPlayList.filter(item => item.id !== id)
     }
 }
 
