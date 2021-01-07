@@ -37,6 +37,14 @@ export const reqHotDj = () => {
   })
 }
 
+// 新碟上架
+export const reqNewAlbum = () => { 
+  return request({
+    method: "GET",
+    url:"/album/newest"
+  })
+}
+
 // 每日推荐歌单/recommend/resource
 // 榜单 
 // 新碟上架 /album/newest

@@ -13,18 +13,18 @@
     <div class="discSwiper">
       <a class="pre" @click="preRoll" ref="pre"></a>
       <div class="carousel">
-        <div class="showRoll">
-          <ul class="discList" v-for="item in 4" :key="item">
-            <li v-for="item in 5" :key="item" class="discItem">
+        <div :class="{'showRoll':true,'p0':keyPoint===0,'p1':keyPoint===1,'p2':keyPoint===2,'p3':keyPoint===3,'p4':keyPoint===4}">
+          <ul class="discList" v-for="(list,index) in discList" :key="index">
+            <li v-for="album in list" :key="album.id" class="discItem">
               <a href="" class="cover">
                 <img
-                  src="../../../../assets/Discover/images/discCover.jpg"
+                  :src="album.blurPicUrl"
                   alt=""
                   class="pic"
                 />
               </a>
-              <a href="" class="albumName">狼殿下 影视原声碟PART.1</a>
-              <a href="" class="artists">群星</a>
+              <a href="" class="albumName">{{album.name}}</a>
+              <a href="" class="artists">{{album.artist.name}}</a>
             </li>
           </ul>
         </div>
@@ -36,17 +36,74 @@
 
 <script>
 // import CarouselBottom from '../Carousel/CarouselBottom/CarouselBottom'
+import {reqNewAlbum} from '@api/Discover/recommend' 
 export default {
   name: 'NewDisc',
+  data(){
+    return{
+      keyPoint:3,
+      newAlbum:[]
+    }
+  },
+  computed:{
+    discList(){
+      const discListFront=this.newAlbum.slice(0,5)
+      const discListAfter=this.newAlbum.slice(5,10)
+      let finalList=[]
+      for(var i=1;i<4;i++){
+        if(i===2){
+          finalList.push(discListFront)
+        }else{
+          finalList.push(discListAfter)
+        }
+      }
+      return finalList
+    }
+  },
   methods: {
-    // 向前滚
-    preRoll() {},
-    // 向后滚
+    // 轮播向前滚
+    preRoll() {
+      if(this.preTrigger)return 
+      this.preTrigger=true
+      if(this.keyPoint===4){
+        this.keyPoint=3
+      }
+      this.keyPoint--
+      setTimeout(()=>{
+        if(this.keyPoint===1){
+        this.keyPoint=4
+      }
+      },500)
+      setTimeout(()=>{
+        this.preTrigger=false
+      },501)
+    },
+    // 轮播向后滚
     nextRoll() {
-      console.log(this.$refs.next)
-      
+      if(this.nextTrigger)return 
+      this.nextTrigger=true
+      if(this.keyPoint===0){
+        this.keyPoint=1
+      }
+      this.keyPoint++
+      setTimeout(()=>{
+        if(this.keyPoint===3){
+          this.keyPoint=0
+        }
+      },500)
+      setTimeout(()=>{
+        this.nextTrigger=false
+      },501)
+    },
+    // 请求新碟
+    async getNewAlbum() {
+      const newAlbum = await reqNewAlbum()
+      this.newAlbum = newAlbum.albums
     },
   },
+  mounted(){
+    this.getNewAlbum()
+  }
 }
 </script>
 
@@ -100,7 +157,6 @@ export default {
       &:hover
         background-position -281px -75px
     .next
-      margin-left -10px
       background-image url('../../../../assets/Discover/images/sprit.png')
       background-position -298px -75px
       &:hover
@@ -114,9 +170,21 @@ export default {
       .showRoll
         display flex
         position absolute
-        left -645px
+        &.p1
+          left 0px
+          transition left 500ms
+        &.p2
+          left -645px
+          transition left 500ms
+        &.p3
+          left -1290px
+          transition left 500ms
+        &.p0
+          left 0px
+        &.p4
+          left -1290px
         .discList
-          width 100%
+          width 645px
           height 100%
           display flex
           justify-content space-between
@@ -126,6 +194,9 @@ export default {
             margin-left 10px
             display flex
             flex-direction column
+            .pic
+              width 100px
+              height 100px
             .cover
               width 118px
               height 100px
@@ -138,4 +209,9 @@ export default {
               white-space nowrap
               text-overflow ellipsis
               line-height 18px
+              &:hover
+                text-decoration underline
+            .albumName
+              color #000
+              
 </style>

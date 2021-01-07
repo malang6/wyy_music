@@ -9,7 +9,11 @@
       </span>
     </div>
     <div class="listContainer">
-      <dl class="listItem" v-for="(songList,index) in topSongList" :key="songList.id">
+      <dl
+        class="listItem"
+        v-for="(songList, index) in topSongList"
+        :key="songList.id"
+      >
         <dt class="listTitle">
           <a href="">
             <img :src="songList.coverImgUrl" alt="" class="listPic" />
@@ -26,9 +30,13 @@
         </dt>
         <dd>
           <ol class="songList">
-            <li class="song" v-for="(song,songIndex) in totalSongList[index]" :key="song.id">
-              <span class="songNum">{{songIndex+1 }}</span>
-              <a href="" class="songName">{{song.name}}</a>
+            <li
+              class="song"
+              v-for="(song, songIndex) in totalSongList[index]"
+              :key="song.id"
+            >
+              <span class="songNum">{{ songIndex + 1 }}</span>
+              <a href="" class="songName">{{ song.name }}</a>
               <div class="operate">
                 <a href="" class="play"></a>
                 <a href="" class="add"></a>
@@ -52,13 +60,13 @@ export default {
   data() {
     return {
       topSongList: [],
-      totalSongList:[]
+      totalSongList: [],
     }
   },
-  watch:{
-    topSongList(){
+  watch: {
+    topSongList() {
       this.getSongList()
-    }
+    },
   },
   // computed:{
   //   matchSongList(){
@@ -75,14 +83,13 @@ export default {
     getSongList() {
       this.topSongList.map(async (songList) => {
         const outSongList = await reqListSong(songList.id)
-        this.totalSongList.push(outSongList.playlist.tracks.slice(0,10))
-        return 
+        this.totalSongList.push(outSongList.playlist.tracks.slice(0, 10))
+        return
       })
     },
   },
   mounted() {
     this.getTopSongList()
-    
   },
 }
 </script>
@@ -168,6 +175,9 @@ export default {
           font-size 12px
           line-height 32px
           position relative
+          white-space nowrap
+          overflow hidden
+          text-overflow ellipsis
           .songNum
             display inline-block
             width 35px
@@ -178,14 +188,14 @@ export default {
             font-size 16px
           .songName
             height 100%
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
             color #000
+            display relative
+            z-index 19
             &:hover
               text-decoration underline
           .operate
             position absolute
+            z-index 20
             right 0
             bottom 0
             width 100px
