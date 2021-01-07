@@ -51,13 +51,13 @@ export default {
   data() {
     return {
       singerList: singerData,
-      count: JSON.parse(window.sessionStorage.getItem("status")).count, // 推荐栏样式控制器
-      type: JSON.parse(window.sessionStorage.getItem("status")).type, // 请求参数
-      area: JSON.parse(window.sessionStorage.getItem("status")).area, // 请求参数
+      count: JSON.parse(window.sessionStorage.getItem("status"))?.count || 0, // 推荐栏样式控制器
+      type: JSON.parse(window.sessionStorage.getItem("status"))?.type || null, // 请求参数
+      area: JSON.parse(window.sessionStorage.getItem("status"))?.area || null, // 请求参数
       name: "",
     };
   },
- 
+
   methods: {
     ...mapActions(["getSinger"]),
     // 持久化存储状态
@@ -102,9 +102,9 @@ export default {
       this.getSinger({ type, area, initial: -1 });
     },
   },
-  // mounted() {
-  //   this.saveStatus(0);
-  // },
+  mounted() {
+    this.saveStatus(0);
+  },
 };
 </script>
 

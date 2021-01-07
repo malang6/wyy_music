@@ -188,14 +188,7 @@ export default {
       profile: (state) => state.user.profile,
     }),
   },
-  // watch: {
-  //   token: {
-  //     handler(newVal) {
-  //       console.log(newVal);
-  //     },
-  //     immediate: true,
-  //   },
-  // },
+
   methods: {
     ...mapMutations(["CHANGE_SHOW", "EXIT"]),
     // 跳转歌手页面
