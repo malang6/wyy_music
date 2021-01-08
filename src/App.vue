@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Header />
+    <router-view></router-view>
     <Footer />
   </div>
 </template>
@@ -17,4 +18,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+#app
+  background #f5f5f5
+</style>

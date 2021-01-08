@@ -2,17 +2,17 @@
   <div class="login" :style="{height:height}">
     <div class="login-container">
       <div class="login-bar">
-        <span>{{isPhoneLogin?'手机号登录':'登录'}}</span>
+        <span>{{isLogin?isPhoneLogin?'手机号登录':'手机号注册':'登录'}}</span>
         <a @click="$store.commit('CHANGE_SHOW',false)">X</a>
       </div>
-      <div v-if="!isPhoneLogin">
+      <div v-if="!isLogin">
         <div class="container">
           <div class="left">
             <img src="./img/platform.png" alt="platform" />
-            <div class="btn btnLogin" @click="phoneLogin">
+            <div class="btn btnLogin" @click="changeDialog('phoneLogin')">
               <a>手机号登录</a>
             </div>
-            <div class="btn btnRij">
+            <div class="btn btnRij" @click="changeDialog('register')">
               <a>注 册</a>
             </div>
           </div>
@@ -56,7 +56,10 @@
           <img src="./img/qrcode_bar.png" alt="qrcode_bar" />
         </div>
       </div>
-      <PhoneLogin v-else :isPhoneLogin.sync="isPhoneLogin"/>
+      <div v-else>
+        <PhoneLogin v-if="isPhoneLogin" :isLogin.sync="isLogin" :isPhoneLogin.sync="isPhoneLogin"/>
+        <Register v-else :isLogin.sync="isLogin" />
+      </div>
     </div>
     <div class="checkedTxt" :class="btxt?'b-txt':''">
       <span>请先勾选同意《服务条款》《隐私政策》《儿童隐私政策》</span>
@@ -66,19 +69,21 @@
 
 <script>
 import PhoneLogin from "./PhoneLogin";
+import Register from "./Register";
 export default {
   name: "Login",
   data() {
     return {
       isChecked: false, //是否勾选
       btxt: false, //是否显示文字
+      isLogin: false, //是否显示登录界面
       isPhoneLogin: false, //是否是手机登录界面
       height: "370px",
     };
   },
   methods: {
     //手机号登录
-    phoneLogin() {
+    changeDialog(dialog) {
       if (!this.isChecked) {
         this.btxt = true;
         setTimeout(() => {
@@ -86,12 +91,21 @@ export default {
         }, 1500);
         return;
       }
-      this.isPhoneLogin = true;
+      // 手机号登录
+      if (dialog === "phoneLogin") {
+        this.isLogin = true;
+        this.isPhoneLogin = true;
+      }
+      //注册页面
+      if (dialog === "register") {
+        this.isLogin = true;
+      }
       this.height = 0;
     },
   },
   components: {
     PhoneLogin,
+    Register,
   },
 };
 </script>
@@ -100,9 +114,9 @@ export default {
 .login
   position relative
   width 530px
-  border-radius 4px
-  box-shadow 0 5px 16px rgba(0, 0, 0, 0.8)
   .login-container
+    border-radius 4px
+    box-shadow 0 5px 16px rgba(0, 0, 0, 0.8)
     .login-bar
       display flex
       justify-content space-between
@@ -206,7 +220,7 @@ export default {
     position relative
     z-index 1000
     width 200px
-    margin -135px auto 0
+    margin -240px auto 0
     background-color #333
     padding 10px
     span
