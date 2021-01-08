@@ -184,6 +184,7 @@ export default {
     async comment(){
       if(this.inputText.length===0) return alert('请输入评论') 
       await commentSongList(1,2,this.currentId,this.inputText)
+      // this.inputText=''
       console.log(1)
       const currentId=this.currentId
       const time=''

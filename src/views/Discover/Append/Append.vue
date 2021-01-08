@@ -238,7 +238,7 @@ export default {
           width 124px
           border 1px solid #e9e9e9
           border-left none
-          img
+          .name
             color #333
             font-size 14px
             font-weight bold
