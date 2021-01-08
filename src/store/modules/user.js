@@ -25,11 +25,11 @@ export default {
             state.listenSongs = res.data.listenSongs
         },
         //关闭登录
-        CHANGE_SHOW(state,flag) {
+        CHANGE_SHOW(state, flag) {
             state.isShowLogin = flag;
         },
         //退出登录
-        EXIT(state){
+        EXIT(state) {
             state.token = ""
             state.profile = {}
         },

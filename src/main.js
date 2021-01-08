@@ -5,14 +5,11 @@ import store from "@store";
 import "./styles/reset.css";
 import "./styles/iconfont.css";
 import "./plugins/element.js";
-
+import "./assets/my/iconfont/plus/iconfont"
 Vue.config.productionTip = false;
 
-import VueLazyLoad from "vue-lazyload";
-import "./plugins/element.js";
-import "./styles/iconfont.css";
-Vue.use(VueLazyLoad);
-Vue.config.productionTip = false;
+
+
 new Vue({
   render: h => h(App),
   router,

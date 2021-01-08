@@ -11,8 +11,14 @@ import User from "@views/User";
 import UHome from "@views/User/UHome";
 import UEvent from "@views/User/UEvent";
 import UFollow from "@views/User/UFollow";
-
+import Friend from "@views/Friend";
+import My from "@views/My";
+import myArtist from "@views/My/Artist";
+import Edit from "@views/My/Edit";
+import PlayList from "@views/My/PlayList";
+import Radio from "@views/My/Radio";
 import SearchSong from "@views/SearchSong";
+
 const push = VueRouter.prototype.push;
 const replace = VueRouter.prototype.replace;
 
@@ -118,6 +124,37 @@ const router = new VueRouter({
     {
       path: "/search/m/",
       component: SearchSong
+    },
+    {
+      path: "/friend",
+      component: Friend
+    },
+    {
+      path: "/my",
+      component: My,
+      children: [
+        {
+          name: "artist",
+          path: "artist",
+          component: myArtist
+        },
+        {
+          path: "edit",
+          component: Edit
+        },
+        {
+          path: "playList",
+          component: PlayList
+        },
+        {
+          path: "radio",
+          component: Radio
+        },
+        {
+          path: "",
+          redirect: "artist"
+        }
+      ]
     }
   ],
   scrollBehavior() {

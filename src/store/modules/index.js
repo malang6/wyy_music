@@ -3,8 +3,9 @@ import { default as singer } from "./singer";
 import { default as btmPlayMusic } from "./btmPlayMusic";
 import userInfo from "./userInfo";
 import topList from "./topList";
-
+import my from "./my.js";
 import user from "./user";
+import friend from "./friend";
 
 export default {
   goodAnchorList,
@@ -12,5 +13,7 @@ export default {
   singer,
   btmPlayMusic,
   userInfo,
-  topList
+  topList,
+  my,
+  friend
 };

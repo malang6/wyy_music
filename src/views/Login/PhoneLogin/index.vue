@@ -12,7 +12,7 @@
         </span>
         <span class="right">忘记密码？</span>
       </div>
-      <p v-if="msg" class="errorMsg">{{msg}}</p>
+      <p v-if="msg" class="errorMsg">{{ msg }}</p>
       <div class="btn" @click="login">
         <a>登 录</a>
       </div>
