@@ -2,9 +2,9 @@
   <div id="app">
     <Header />
     <router-view></router-view>
-    <Footer v-if="$route.path!=='/my/artist'"  />
+    <Footer v-if="$route.path !== '/my/artist'" />
     <div class="btm_bar">
-      <MusicPlayer/>
+      <MusicPlayer />
     </div>
   </div>
 </template>
@@ -23,8 +23,4 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
-
-</script>
-
-
+<style lang="stylus" scoped></style>
