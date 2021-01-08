@@ -1,0 +1,439 @@
+.music_player
+	position absolute
+	top 10px
+	width 100%
+	height 53px
+	background-image url('/images/playbar.png')
+	background-position 0 0
+	visibility visible
+	transition all 0.3s linear
+	&.isShow
+		top -33px
+	.play_line
+		position absolute
+		top -10px
+		width 100%
+		height 20px
+		cursor pointer
+	a
+		cursor pointer
+	.center
+		position absolute
+		width 980px
+		height 47px
+		left 50%
+		top 6px
+		transform translateX(-50%)
+		display flex
+		.status
+			width 137px
+			padding 6px 0 0
+			display flex
+			justify-content space-between
+			a
+				display block
+				width 28px
+				height 28px
+				margin-right 8px
+				margin-top 5px
+			.pre
+				background-image url('/images/playbar.png')
+				background-position 0 -130px
+			.pre:hover
+				background-position -30px -130px
+			.pause_play
+				width 36px
+				height 36px
+				margin-top 0
+				background-image url('/images/playbar.png')
+				background-position 0 -204px
+			.pause_play:hover
+				background-position -40px -204px
+			.play
+				width 36px
+				height 36px
+				margin-top 0
+				background-image url('/images/playbar.png')
+				background-position 0 -165px
+			.play:hover
+				background-position -40px -165px
+			.next
+				background-image url('/images/playbar.png')
+				background-position -80px -130px
+			.next:hover
+				background-position -110px -130px
+		.logo
+			width 34px
+			height 34px
+			margin 6px 15px 0 20px
+		.defaultImg
+			background-image url('/images/playbar.png')
+			background-position 0 -80px
+		.play
+			width 608px
+			.title
+				height 28px
+				overflow hidden
+				color #e8e8e8
+				line-height 28px
+				text-shadow 0 1px 0 #171717
+				display flex
+				.hid
+					overflow hidden
+					text-overflow ellipsis
+					white-space nowrap
+				.hid:hover
+					text-decoration underline
+				.name
+					max-width 300px
+					// color #e8e8e8
+				color red
+			.author
+				max-width 220px
+				margin-left 15px
+				color #9b9b9b
+			.link
+				width 14px
+				height 14px
+				line-height 28px
+				margin 7px 0 0 13px
+				background-image url('/images/playbar.png')
+				background-position -110px -103px
+			.link:hover
+				background-position -130px -103px
+		.noop
+			width 493px
+			display flex
+			justify-content space-between
+			.process_bar
+				width 493px
+				position relative
+				height 9px
+				background-image url('/images/statbar.png')
+				background-position right 0
+				.ready
+					width 0px
+					height 9px
+					background-image url('/images/statbar.png')
+					background-position right -30px
+				.current
+					position absolute
+					top 0
+					left 0
+					width 0%
+					height 9px
+					background-image url('/images/statbar.png')
+					background-position left -66px
+					
+					.btn
+						position absolute
+						top -3px
+						right -13px
+						width 14px
+						height 14px
+						margin-left -11px
+						background-color #fff
+						border-radius 50%
+						background-image url('/images/icon.png')
+						background-position -65px -121px
+			.time
+				margin-left 10px
+				height 9px
+				line-height 9px
+				display flex
+				justify-content space-between
+				color #a1a1a1
+		.fun
+			width 173px
+			height 37px
+			margin-left -56px
+			display flex
+			.icn
+				height 25px
+				margin 11px 2px 0 0
+				text-indent -9999px
+				background-image url('/images/playbar.png')
+			.left
+				width 60px
+				height 37px
+				display flex
+				.col
+					margin-top 12px
+					width 26px
+					background-position -60px -502px
+				.col:hover
+					background-position -90px -502px
+				.share
+					width 25px
+					height 25px
+					margin 11px 2px 0 0
+					background-position -114px -163px
+				.share:hover
+					background-position -114px -189px
+			.right
+				width 113px
+				height 37px
+				display flex
+				.icn
+					width 25px
+					height 25px
+					margin 11px 2px 0 0
+					a
+						position absolute
+						top -49px
+						left -25px
+						width 81px
+						height 39px
+						line-height 39px
+						text-indent 0
+						text-align center
+						color #fff
+						background-image url('/images/playbar.png')
+				.volume
+					background-position -2px -248px
+				.volume:hover
+					background-position -31px -248px
+				.play_mode
+					position relative
+				.single_circle
+					background-position -93px -344px
+				.loop
+					background-position -33px -344px
+				.random
+					background-position -93px -248px
+				.play_list
+					width 38px
+					padding-left 21px
+					line-height 27px
+					text-align center
+					text-shadow 0 1px 0 #080707
+					background-position -42px -68px
+					text-indent 0
+					position relative
+				.play_list:hover
+					background-position -42px -98px
+				.play-list
+					position absolute
+					left 50%
+					bottom 46px
+					width 976px
+					height 301px
+					margin-left -493px
+					.ico
+						height 16px
+					.list_head
+						background-image url('/images/playlist_bg.png')
+						background-position 0 0
+						height 41px
+						.title
+							position relative
+							height 40px
+							.ico
+								float left
+								margin 1px 6px 0 0
+								background-image url('/images/playlist.png')
+							a
+								color #ccc
+							h4
+								position absolute
+								left 25px
+								top 0
+								height 39px
+								line-height 39px
+								font-size 14px
+								color #e2e2e2
+							.addAll
+								position absolute
+								left 398px
+								top 12px
+								height 15px
+								line-height 15px
+								cursor pointer
+								background-image none
+								.ico_add
+									width 16px
+									background-position -24px 0
+							.line
+								position absolute
+								top 13px
+								left 477px
+								height 15px
+								border-left 1px solid #000
+								border-right 1px solid #2c2c2c
+							.clear
+								position absolute
+								left 490px
+								top 12px
+								height 15px
+								line-height 15px
+								cursor pointer
+								background-image none
+								.icn_del
+									width 13px
+									background-position -51px 0
+							.lytit
+								position absolute
+								left 595px
+								top 0
+								width 346px
+								text-align center
+								height 39px
+								line-height 39px
+								color #fff
+								font-size 14px
+							.close
+								position absolute
+								top 6px
+								right 8px
+								width 30px
+								height 30px
+								overflow hidden
+								text-indent -999px
+								cursor pointer
+								background-image url('/images/playlist.png')
+								background-position -195px 9px
+					.list_body
+						position absolute
+						left 0
+						top 41px
+						width 976px
+						height 260px
+						overflow hidden
+						// padding 0 5px
+						background-position -1014px 0
+						background-repeat repeat-y
+						background-image url('/images/playlist_bg.png')
+						.msk
+							position absolute
+							left 2px
+							top 0
+							z-index 2
+							width 558px
+							height 260px
+							background #121212
+							opacity 0.5
+						.list
+							position absolute
+							left 2px
+							top 0
+							z-index 4
+							height 260px
+							width 553px
+							overflow hidden
+							ul
+								color #ccc
+								overflow hidden
+								li
+									float left
+									width 100%
+									.col
+										float left
+										padding-left 10px
+										height 28px
+										line-height 28px
+										overflow hidden
+										cursor pointer
+									.col_1
+										width 10px
+										.playicn
+											margin-top 8px
+											width 10px
+											height 13px
+											background-image url('/images/playlist.png')
+											background-position -182px 0
+									.col_2
+										width 256px
+									.col_3
+										width 78px
+										position relative
+										.icns
+											display none
+											position absolute
+											right 0
+											top 0
+											width 100px
+											height 23px
+											.ico
+												float right
+												overflow hidden
+												margin 7px 0 0 10px
+												background-image url('/images/playlist.png')
+												text-indent -9999px
+											.icn_del
+												width 13px
+												background-position -51px 0
+											.icn_dl
+												width 14px
+												background-position -57px -50px
+											.icn_share
+												width 14px
+												background-position 0 0
+											.icn_add
+												width 16px
+												background-position -24px 0
+									.col_4
+										width 70px
+										overflow hidden
+										white-space nowrap
+										text-overflow ellipsis
+										position relative
+										a
+											position absolute
+											top 50%
+											left 50%
+											transform translateX(-50%) translateY(-50%)
+											background-image none
+									.col_5
+										width 35px
+									.col_6
+										width 37px
+										padding-left 6px
+										position relative
+										.ico-src
+											position absolute
+											top 50%
+											left 50%
+											width 14px
+											margin-left 0
+											transform translateX(-50%) translateY(-50%)
+											background-image url('/images/playlist.png')
+											background-position -80px 0px
+						.bline
+							position absolute
+							left 555px
+							_left 553px
+							top -1px
+							z-index 2
+							width 6px
+							height 260px
+							background #000
+							opacity 0.5
+						.msk2
+							position absolute
+							left 560px
+							_left 560px
+							top 0
+							z-index 3
+							width 420px
+							height 250px
+							background #121212
+							opacity 0.01
+						.active
+							background-color rgba(0, 0, 0, 0.3)
+	.lock
+		width 52px
+		height 22px
+		position absolute
+		top -14px
+		right 15px
+		background-image url('/images/playbar.png')
+		background-position 0 -380px
+		.lock_bottom
+			display block
+			width 18px
+			height 18px
+			margin 6px 0 0 17px
+			background-image url('/images/playbar.png')
+			background-position -80px -380px
+		.isLock
+			background-position -100px -400px

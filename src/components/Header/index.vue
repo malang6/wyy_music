@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :class="$route.path.startsWith('/my') ? 'headerFixed' : ''">
     <div class="headerContainer">
       <div class="header-r">
         <div class="logo-container">
@@ -7,29 +7,31 @@
             <a href="/#">网易云音乐</a>
           </h1>
         </div>
-        <ul>
+        <ul @click="handleShow">
+          <router-link to="/">
+            <li>
+              <span>
+                <a :class="changebar ? 'headerActive' : ''">
+                  <em>发现音乐</em>
+                  <i :class="changebar ? 'cor' : ''">&nbsp;</i>
+                </a>
+              </span>
+            </li>
+          </router-link>
           <li>
             <span>
-              <a>
-                <em>发现音乐</em>
-                <i class="cor">&nbsp;</i>
-              </a>
-            </span>
-          </li>
-          <li>
-            <span>
-              <a>
+              <router-link to="/my">
                 <em>我的音乐</em>
-                <i class="cor">&nbsp;</i>
-              </a>
+                <i>&nbsp;</i>
+              </router-link>
             </span>
           </li>
           <li>
             <span>
-              <a>
+              <router-link to="/friend">
                 <em>朋友</em>
-                <i class="cor">&nbsp;</i>
-              </a>
+                <i>&nbsp;</i>
+              </router-link>
             </span>
           </li>
           <li>
@@ -60,21 +62,29 @@
         <div class="header-search">
           <span class="parent">
             <i class="iconfont icon-sousuo"></i>
-            <input type="text" />
-            <label>音乐/视频/电台/用户</label>
+            <input
+              type="text"
+              ref="search"
+              v-model="searchTxt"
+              @keyup.enter="goSearchSong"
+              @focus="isShow = false"
+              @blur="handleBlur"
+            />
+            <label v-show="isShow">音乐/视频/电台/用户</label>
           </span>
         </div>
         <div class="header-lc">
           <a>创作者中心</a>
         </div>
-        <div class="head-portrait">
+        <!-- 登录后 -->
+        <div class="head-portrait" v-if="token ? token : ltoken">
           <div class="hpp">
-            <img src="./img/01.jpg" />
+            <img :src="avatarUrl" />
             <div class="content">
               <span class="c-bor"></span>
               <ul class="contentList">
-                <li class="contentItem">
-                  <a>
+                <li class="contentItem" @click="goUserHome">
+                  <a href="javascript:;">
                     <i class="icn icn-hm"></i>
                     <em>我的主页</em>
                   </a>
@@ -109,7 +119,7 @@
                     <em>实名认证</em>
                   </a>
                 </li>
-                <li class="contentItem">
+                <li class="contentItem" @click="exit">
                   <a>
                     <i class="icn icn-ex"></i>
                     <em>退出</em>
@@ -119,57 +129,148 @@
             </div>
           </div>
         </div>
+        <!-- 登录 -->
+        <div class="head-login" v-else>
+          <a @click="login">登录</a>
+        </div>
+        <Login v-show="isShowLogin" class="login"></Login>
       </div>
     </div>
-    <div class="findBar">
+    <div class="findBar" v-if="changebar">
       <div class="findBar-container">
         <ul class="navList">
-          <li class="navItem">
-            <a class="navTitle">
-              <em>推荐</em>
-            </a>
-          </li>
-          <li class="navItem">
-            <a class="navTitle">
-              <em>排行榜</em>
-            </a>
-          </li>
-          <li class="navItem">
-            <a class="navTitle">
+          <li
+            class="navItem"
+            v-for="item in headerData.headerData"
+            :key="item.id"
+            @click="handleClick(item)"
+          >
+            <a
+              :class="{
+                navTitle: 'navTitle',
+                navActive: currentId === item.id ? 'navActive' : ''
+              }"
+            >
               <em>
-                歌单
-                <img src="./img/white-r-icon@3x.png" class="R-icon" />
+                {{ item.name }}
+                <img
+                  v-if="item.name === '歌单'"
+                  src="./img/white-r-icon@3x.png"
+                  class="R-icon"
+                />
               </em>
-            </a>
-          </li>
-          <li class="navItem">
-            <a class="navTitle">
-              <em>主播电台</em>
-            </a>
-          </li>
-          <li class="navItem">
-            <a class="navTitle">
-              <em>歌手</em>
-            </a>
-          </li>
-          <li class="navItem">
-            <a class="navTitle">
-              <em>新碟上架</em>
             </a>
           </li>
         </ul>
       </div>
     </div>
+    <div class="c-bar" v-else></div>
   </header>
 </template>
 
 <script>
+import Login from "@views/Login";
+import { mapState, mapMutations } from "vuex";
+import { default as headerData } from "@utils/headerData";
 export default {
   name: "Header",
+  data() {
+    return {
+      headerData: headerData,
+      isLogin: false, //是否登录
+      ltoken: window.localStorage.getItem("token"),
+      changebar: true, //红色导航条
+      searchTxt: "", //搜索关键字
+      isShow: true, //是否显示输入框placeholder提示文字
+      currentId:
+        JSON.parse(window.sessionStorage.getItem("selectedHeader"))
+          ?.currentId || 1,
+    };
+  },
+  computed: {
+    ...mapState({
+      isShowLogin: (state) => state.user.isShowLogin,
+      token: (state) => state.user.token,
+      profile: (state) => state.user.profile,
+    }),
+    avatarUrl() {
+      return window.localStorage.getItem("avatarUrl") || this.profile.avatarUrl;
+    },
+  },
+
+  methods: {
+    ...mapMutations(["CHANGE_SHOW", "EXIT"]),
+    handleShow() {
+      if (this.$route.path === "/") {
+        this.changebar = true;
+      } else {
+        this.changebar = false;
+      }
+    },
+    handleClick(item) {
+      console.log(1);
+      this.currentId = item.id;
+      let obj = {
+        currentId: this.currentId,
+      };
+      window.sessionStorage.setItem("selectedHeader", JSON.stringify(obj));
+      this.$router.push({ path: item.path });
+    },
+    //点击登录
+    login() {
+      this.CHANGE_SHOW(true);
+    },
+    //去我的主页
+    goUserHome() {
+      let userId = window.localStorage.getItem("userId");
+      // this.$router.push("/user/home?id=" + userId);
+      this.$router.push({ name: "home", query: { id: userId } });
+
+      this.changebar = false;
+    },
+    //退出登录
+    exit() {
+      localStorage.clear();
+      this.EXIT();
+      //回到首页
+      this.$router.replace("/");
+      window.location.reload();
+    },
+    //搜索框失去焦点事件
+    handleBlur() {
+      if (!this.searchTxt) {
+        this.isShow = true;
+      }
+    },
+    //搜索功能
+    goSearchSong() {
+      const { searchTxt } = this;
+      this.$router.push("/search/m?s=" + searchTxt);
+      this.$refs.search.blur();
+    },
+  },
+  created() {
+    let obj = {
+      currentId: 1,
+    };
+    window.sessionStorage.setItem("selectedHeader", JSON.stringify(obj));
+  },
+  mounted() {
+    // console.log(
+    //   JSON.parse(window.sessionStorage.getItem("selectedHeader")).currentId
+    // );
+  },
+  components: {
+    Login,
+  },
 };
 </script>
 
 <style lang="stylus" scoped>
+.headerFixed
+  position fixed
+  z-index 1
+  top 0
 .header
   width 100%
   background #242424
@@ -215,7 +316,7 @@ export default {
               border-right 8px solid transparent
               border-top 8px solid transparent
               border-bottom 8px solid #C20C0C
-        &:hover a
+        &:hover a, a.headerActive
           background #000
           text-decoration none
           color #fff
@@ -228,6 +329,7 @@ export default {
           height 14px
           border-radius 25px
     .header-l
+      position relative
       display flex
       .header-search
         width 158px
@@ -348,10 +450,22 @@ export default {
                     color #fff
           &:hover .content
             display block
+      .head-login
+        margin 27px 0 0 20px
+        a
+          color #787878
+          cursor pointer
+        &:hover
+          text-decoration underline
+      .login
+        position absolute
+        top 204px
+        left -478px
+        z-index 999
   .findBar
     position relative
     width 100%
-    z-index 90
+    z-index 1
     height 35px
     box-sizing border-box
     background #C20C0C
@@ -381,8 +495,15 @@ export default {
                 right 4px
                 width 8px
                 height 8px
-          &:hover
+          .navActive, &:hover
             cursor pointer
             em
               background #9B0909
+  .c-bar
+    position relative
+    width 100%
+    z-index 90
+    height 5px
+    box-sizing border-box
+    background #C20C0C
 </style>
