@@ -3,8 +3,8 @@ import VueRouter from "vue-router";
 const Djradio = () => import("@views/djradio");
 const Category = () => import("@views/category");
 const Artist = () => import("@views/artist");
-
-const Discover = () => import("@views/discover");
+const Discover = () => import("@views/discover/Discover");
+const Toplist = () => import("../views/TopList/TopList");
 const NavCont = () => import("@views/artist/navCont");
 const SingerTypeCont = () => import("@views/artist/singerTypeCont");
 import User from "@views/User";
@@ -51,7 +51,6 @@ const router = new VueRouter({
                 }
               ]
             },
-
             {
               name: "artist",
               path: "artist",
@@ -77,6 +76,10 @@ const router = new VueRouter({
                   redirect: "recommond"
                 }
               ]
+            },
+            {
+              path: "toplist",
+              component: Toplist
             }
           ]
         }

@@ -196,7 +196,7 @@ export default {
   methods: {
     ...mapMutations(["CHANGE_SHOW", "EXIT"]),
     handleClick(item) {
-   
+      console.log(1);
       this.currentId = item.id;
       let obj = {
         currentId: this.currentId
