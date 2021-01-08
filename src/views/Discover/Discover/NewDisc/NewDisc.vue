@@ -41,7 +41,7 @@ export default {
   name: 'NewDisc',
   data(){
     return{
-      keyPoint:3,
+      keyPoint:2,
       newAlbum:[]
     }
   },
@@ -86,11 +86,13 @@ export default {
         this.keyPoint=1
       }
       this.keyPoint++
+      // 无缝
       setTimeout(()=>{
         if(this.keyPoint>=3){
           this.keyPoint=0
         }
       },500)
+      // 节流定时器
       setTimeout(()=>{
         this.nextTrigger=false
       },501)

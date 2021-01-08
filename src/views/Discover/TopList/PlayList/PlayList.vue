@@ -83,20 +83,25 @@
       <div class="comment-ipt">
         <img
           class="avatar"
-          src="../../../../assets/Discover/images/nike.jpg"
-          alt=""
+          :src="avatarUrl"
+          v-if="avatarUrl"
+        />
+        <img
+          class="avatar"
+          src="../../../../assets/Discover/images/default_avatar.jpg"
+          v-else
         />
         <div class="ipt">
           <span class="arrow">◆</span>
           <span class="arrow-inside">◆</span>
-          <textarea class="textarea" cols="30" rows="10"> </textarea>
+          <textarea class="textarea" cols="30" rows="10" v-model="inputText"> </textarea>
           <div class="edit">
             <div>
               <div class="expression"></div>
               <div class="call"></div>
             </div>
             <div>
-              <span class="count">140</span>
+              <span class="count">{{leftWord}}</span>
               <div class="publish">评论</div>
             </div>
           </div>
@@ -117,7 +122,9 @@ export default {
   name: 'PlayList',
   data() {
     return {
-      commentCount:''
+      commentCount:'',
+      avatarUrl:'',
+      inputText:''
     }
   },
   components: {
@@ -156,11 +163,25 @@ export default {
       })
       return time
     },
+    // 计算剩余输入字数
+    leftWord(){
+      return this.inputText.length?140-this.inputText.length:140
+    }
   },
   methods:{
     getCommentCount(commentCount){
       this.commentCount=commentCount
+    },
+    // 是否已登录
+    async ifLogin(){
+      const avatarUrl=localStorage.getItem('avatarUrl')
+      if(avatarUrl){
+        this.avatarUrl=avatarUrl
+      }
     }
+  },
+  mounted(){
+    this.ifLogin()
   }
 }
 </script>
@@ -392,7 +413,7 @@ export default {
           resize none
           outline none
           padding 5px 8px
-          font-size 18px
+          font-size 12px
         .arrow
           position absolute
           font-size 28px
@@ -436,4 +457,6 @@ export default {
             color #fff
             font-size 14px
             line-height 25px
+            &:hover
+              cursor pointer
 </style>
