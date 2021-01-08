@@ -15,11 +15,11 @@
         :key="songList.id"
       >
         <dt class="listTitle">
-          <router-link :to="'/toplist?id='+songList.id">
+          <router-link :to="'/toplist?id=' + songList.id">
             <img :src="songList.coverImgUrl" alt="" class="listPic" />
           </router-link>
           <div class="listType">
-            <router-link :to="'/toplist?id='+songList.id">
+            <router-link :to="'/toplist?id=' + songList.id">
               <h3>{{ songList.name }}</h3>
             </router-link>
             <div class="control">
@@ -38,9 +38,9 @@
               <span class="songNum">{{ songIndex + 1 }}</span>
               <a href="" class="songName">{{ song.name }}</a>
               <div class="operate">
-                <a href="" class="play"></a>
-                <a href="" class="add"></a>
-                <a href="" class="collect"></a>
+                <a class="play" @click="handlePlay(song)"></a>
+                <a class="add"></a>
+                <a class="collect"></a>
               </div>
             </li>
           </ol>
@@ -54,44 +54,47 @@
 </template>
 
 <script>
-import { reqTopList, reqListSong } from '@api/Discover/topList'
+import { reqTopList, reqListSong } from "@api/Discover/topList";
+import {mapActions} from 'vuex'
 export default {
-  name: 'TopList',
+  name: "TopList",
   data() {
     return {
       topSongList: [],
-      totalSongList: [],
-    }
+      totalSongList: []
+    };
   },
   watch: {
     topSongList() {
-      this.getSongList()
-    },
+      this.getSongList();
+    }
   },
-  // computed:{
-  //   matchSongList(){
 
-  //   }
-  // },
   methods: {
+    ...mapActions(['getSongsDetail']),
+    // 播放歌曲
+    handlePlay(item) {
+      // console.log(item);
+      this.getSongsDetail(item.id)
+    },
     // 请求榜单
     async getTopSongList() {
-      const topSongList = await reqTopList()
-      this.topSongList = topSongList.list.slice(0, 3)
+      const topSongList = await reqTopList();
+      this.topSongList = topSongList.list.slice(0, 3);
     },
     // 获取榜单内歌曲
     getSongList() {
-      this.topSongList.map(async (songList) => {
-        const outSongList = await reqListSong(songList.id)
-        this.totalSongList.push(outSongList.playlist.tracks.slice(0, 10))
-        return
-      })
-    },
+      this.topSongList.map(async songList => {
+        const outSongList = await reqListSong(songList.id);
+        this.totalSongList.push(outSongList.playlist.tracks.slice(0, 10));
+        return;
+      });
+    }
   },
   mounted() {
-    this.getTopSongList()
-  },
-}
+    this.getTopSongList();
+  }
+};
 </script>
 
 <style lang="stylus" scoped>

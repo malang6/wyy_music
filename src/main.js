@@ -6,6 +6,7 @@ import "./styles/reset.css";
 import "./styles/iconfont.css";
 import "./plugins/element.js";
 import "./assets/my/iconfont/plus/iconfont"
+import "./styles/main/main.stylus"
 Vue.config.productionTip = false;
 
 
