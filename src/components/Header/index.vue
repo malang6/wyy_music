@@ -1,5 +1,8 @@
 <template>
-  <header class="header" :class="$route.path.startsWith('/my')?'headerFixed':''">
+  <header
+    class="header"
+    :class="$route.path.startsWith('/my') ? 'headerFixed' : ''"
+  >
     <div class="headerContainer">
       <div class="header-r">
         <div class="logo-container">
@@ -7,12 +10,12 @@
             <a href="/#">网易云音乐</a>
           </h1>
         </div>
-        <ul @click="changebar = true">
-          <li>
-            <span>
-              <a :class="changebar ? 'headerActive' : ''">
-                <em>发现音乐</em>
-                <i :class="changebar ? 'cor' : ''">&nbsp;</i>
+        <ul @click="handleShow">
+          <li >
+            <span >
+              <a :class="changebar ? 'headerActive' : ''" >
+                <em >发现音乐</em>
+                <i  :class="changebar ? 'cor' : ''">&nbsp;</i>
               </a>
             </span>
           </li>
@@ -187,16 +190,24 @@ export default {
   },
   computed: {
     ...mapState({
-      isShowLogin: (state) => state.user.isShowLogin,
-      token: (state) => state.user.token,
-      profile: (state) => state.user.profile,
+      isShowLogin: state => state.user.isShowLogin,
+      token: state => state.user.token,
+      profile: state => state.user.profile
     }),
     avatarUrl() {
       return window.localStorage.getItem("avatarUrl") || this.profile.avatarUrl;
-    },
+    }
   },
+
   methods: {
     ...mapMutations(["CHANGE_SHOW", "EXIT"]),
+    handleShow() {
+      if (this.$route.path === "/") {
+        this.changebar = true;
+      } else {
+        this.changebar = false;
+      }
+    },
     handleClick(item) {
       console.log(1);
       this.currentId = item.id;
