@@ -31,8 +31,9 @@
         <span class="cancel" @click="cancel">取 消</span>
       </div>
     </div>
-    <div>
+    <div class="playlist-img">
       <img class="img" :src="$route.query.image" alt="" />
+      <span @click="toEditImage" class="edit-image">编辑封面</span>
     </div>
     <!-- 选择歌单标签窗口 -->
     <div v-if="showDelWindow" class="add-window">
@@ -111,6 +112,16 @@ export default {
   methods: {
     ...mapActions(["getPlayListTags", "updatePlayList"]),
     ...mapMutations(["UPDATE_CREATE_PLAY_LIST"]),
+    //跳转到编辑封面页面
+    toEditImage(){
+      this.$router.push({
+        path:"/my/editimage",
+        query:{
+          name:this.name,
+          image:this.$route.query.image
+        }
+      })
+    },
     //取消编辑
     cancel() {
       this.$router.back();
@@ -277,9 +288,26 @@ export default {
     line-height 30px
   .form>div:nth-child(3)
     margin-top 10px
-  .img
-    height 140px
-    width 140px
+  .playlist-img
+    position relative
+    .img
+      height 140px
+      width 140px
+    .edit-image
+      cursor pointer
+      display inline-block
+      width 140px
+      height 26px
+      background #8e8e8e
+      color #fff
+      text-align center
+      line-height 26px
+      position absolute
+      bottom 3px
+      right 122px
+      opacity .8
+    .edit-image:hover
+      text-decoration underline
   .add-window
     background #fff
     width 530px

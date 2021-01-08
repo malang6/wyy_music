@@ -9,11 +9,16 @@ import Artist from "@views/My/Artist"
 import Edit from "@views/My/Edit"
 import PlayList from "@views/My/PlayList"
 import Radio from "@views/My/Radio"
+import EditImage from "@views/My/EditImage"
 
-//重写push
+//重写push,replace
 const push = VueRouter.prototype.push
 VueRouter.prototype.push = function (localtion, ontemplate, onAbort = () => { }) {
     return push.call(this, localtion, ontemplate, onAbort)
+}
+const replace = VueRouter.prototype.replace
+VueRouter.prototype.replace = function (localtion, ontemplate, onAbort = () => { }) {
+    return replace.call(this, localtion, ontemplate, onAbort)
 }
 
 Vue.use(VueRouter);
@@ -82,6 +87,10 @@ const router = new VueRouter({
                 {
                     path: "radio",
                     component: Radio
+                },
+                {
+                    path: "editimage",
+                    component: EditImage
                 },
                 {
                     path: "",
