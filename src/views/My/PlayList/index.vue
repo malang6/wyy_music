@@ -39,7 +39,7 @@
             }}
           </div>
         </div>
-        <div class="edit-label" v-if="playListInfo.tags.length">
+        <div class="edit-label" v-if="playListInfo.tags">
           标签：
           <span
             class="label"
@@ -184,8 +184,11 @@ export default {
   },
   watch: {
     //监听路由
-    $route() {
-      this.getPlayListInfo();
+    $route: {
+      handler:function(){
+        this.getPlayListInfo();
+      },
+      immediate:true
     },
   },
   filters: {

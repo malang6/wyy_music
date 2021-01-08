@@ -38,7 +38,8 @@
                       playList.id,
                       playList.name,
                       playList.image,
-                      playList.description
+                      playList.description,
+                      playList.tags
                     )
                   "
                 ></span>
@@ -148,7 +149,7 @@ export default {
       "delPlayList",
     ]),
     //编辑歌单
-    toEditPlayList(id, name, image, description) {
+    toEditPlayList(id, name, image, description,tags) {
       this.$router.push({
         path: "/my/edit",
         query: {
@@ -156,6 +157,7 @@ export default {
           name,
           image,
           description,
+          tags
         },
       });
     },
@@ -214,6 +216,11 @@ export default {
         },
       });
     },
+  },
+  watch:{
+    $route(){
+      this.$forceUpdate()
+    }
   },
   mounted() {
     //绑定滚轮事件

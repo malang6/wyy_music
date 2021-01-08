@@ -7,8 +7,11 @@
     </div>
     <div class="form">
       <div>
-        <span class="name">歌单名：</span>
-        <input class="songs" type="text" v-model="name" />
+        <ValidationProvider rules="required" v-slot="{ errors }">
+          <span class="name">歌单名：</span>
+          <input class="songs" type="text" v-model="name" />
+          <p style="color: red">{{ errors[0] }}</p>
+        </ValidationProvider>
       </div>
       <div>
         <span class="name">标签：</span>
@@ -24,9 +27,7 @@
         <textarea class="description" v-model="description"></textarea>
       </div>
       <div>
-        <span class="save" :class="{ active: isShowSaveBtn }" @click="save"
-          >保 存</span
-        >
+        <span class="save" :class="{ active: name }" @click="save">保 存</span>
         <span class="cancel" @click="cancel">取 消</span>
       </div>
     </div>
@@ -70,17 +71,26 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import { ValidationProvider, extend } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
+
+extend("required", {
+  ...required,
+  message: "歌单名不能为空",
+});
+
 export default {
   name: "Edit",
   data() {
     return {
       name: "", //歌单名
       description: "", //歌单介绍
+      earlyTags: [], //进来时有的标签
       isShowSaveBtn: false,
       showDelWindow: false, //是否显示选择标签窗口
-      newTags: {}, //处理过后的tags数据
-      tagSelected: [], //选择的标签
+      newTags: {}, //处理过后的所有tags数据
+      tagSelected: [], //选择后的标签
     };
   },
   filters: {
@@ -92,24 +102,32 @@ export default {
       if (value === "4") return "主题";
     },
   },
+  components: {
+    ValidationProvider,
+  },
   computed: {
     ...mapGetters(["tags"]),
   },
   methods: {
     ...mapActions(["getPlayListTags", "updatePlayList"]),
+    ...mapMutations(["UPDATE_CREATE_PLAY_LIST"]),
     //取消编辑
     cancel() {
       this.$router.back();
     },
     //保存
     save() {
+      if (!this.name) return;
       const data = {
         id: this.$route.query.id,
         name: this.name,
         desc: this.description,
         tags: this.tagSelected.join(";"),
       };
+      //发送修改请求
       this.updatePlayList(data);
+      //修改vuex数据
+      this.UPDATE_CREATE_PLAY_LIST(data);
       this.$router.back();
     },
     //删除已选标签
@@ -157,11 +175,16 @@ export default {
     $route() {
       this.name = this.$route.query.name;
       this.description = this.$route.query.description;
+      this.earlyTags = this.$route.query.tags;
+      this.tagSelected = this.earlyTags;
     },
   },
   mounted() {
     this.name = this.$route.query.name;
     this.description = this.$route.query.description;
+    this.earlyTags = this.$route.query.tags;
+    console.log(this.earlyTags)
+    this.tagSelected = this.earlyTags;
   },
 };
 </script>

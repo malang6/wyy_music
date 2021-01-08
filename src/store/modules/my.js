@@ -1,4 +1,4 @@
-import { reqUserPlayList, reqPlayListDerail, reqArtist, reqRadio, reqSubcount, reqPlayListComment, reqCreatePlayList, reqDelPlayList, reqPlayListTags,reqUpdatePlayList } from "@api/my"
+import { reqUserPlayList, reqPlayListDerail, reqArtist, reqRadio, reqSubcount, reqPlayListComment, reqCreatePlayList, reqDelPlayList, reqPlayListTags, reqUpdatePlayList } from "@api/my"
 const state = {
     createPlayList: [], //创建的歌单
     collectPlayList: [], //收藏的歌单
@@ -8,7 +8,7 @@ const state = {
     subCountList: {}, //收藏的歌单、歌手和电台数量
     commentList: [], //歌单评论
     hotCommentList: [], //歌单热门评论
-    tags:[], //歌单分类标签
+    tags: [], //歌单分类标签
 }
 const getters = {
     createPlayList: state => state.createPlayList,
@@ -65,12 +65,12 @@ const actions = {
         commit("DEL_PLAY_LIST", id)
     },
     //获取歌单标签分类
-    async getPlayListTags({commit}) {
+    async getPlayListTags({ commit }) {
         const result = await reqPlayListTags()
-        commit("WRITE_TAGS",result.data.tags)
+        commit("WRITE_TAGS", result.data.tags)
     },
     //更新歌单
-    updatePlayList({commit},data){
+    updatePlayList({ commit }, data) {
         console.log(commit)
         reqUpdatePlayList(data)
     }
@@ -177,12 +177,27 @@ const mutations = {
     DEL_PLAY_LIST(state, id) {
         state.createPlayList = state.createPlayList.filter(item => item.id !== id)
     },
-    WRITE_TAGS(state,res){
+    WRITE_TAGS(state, res) {
         state.tags = res.map(item => ({
-            name:item.name, //标签名
-            category:item.category, //标签种类
-            id:item.id, //id
+            name: item.name, //标签名
+            category: item.category, //标签种类
+            id: item.id, //id
         }))
+    },
+    //修改创建的歌单数据
+    UPDATE_CREATE_PLAY_LIST(state, data) {
+        //修改createPlayList的数据
+        state.createPlayList = state.createPlayList.map(item => {
+            if (item.id === +data.id) {
+                return {
+                    ...item,
+                    name: data.name,
+                    description: data.desc,
+                    tags: data.tags.split(";")
+                }
+            }
+            return item
+        })
     }
 }
 
