@@ -15,7 +15,7 @@ instance.interceptors.response.use(
     // console.log(response)
     // 请求成功，状态码200
     if (response.data.code === 200) { 
-      console.log('success')
+      // console.log('success')
       return response.data
     }
     // 请求状态码为2xx,但不是200

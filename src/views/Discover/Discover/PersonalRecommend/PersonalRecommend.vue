@@ -7,8 +7,8 @@
     <div class="recommendContainer">
       <div class="dateRecommend">
         <a href="" class="everyday">
-          <span class="day">星期一</span>
-          <span class="date">4</span>
+          <span class="day">星期{{ day }}</span>
+          <span class="date">{{ date }}</span>
           <span class="dateMask"></span>
         </a>
         <a href="" class="info">每日歌曲推荐</a>
@@ -18,27 +18,67 @@
           每天6:00更新
         </p>
       </div>
-      <div class="recommendItem" v-for="item in 3" :key="item">
+      <div
+        class="recommendItem"
+        v-for="songList in userSongList"
+        :key="songList.id"
+      >
         <div class="playList">
           <a href="">
-            <img src="../Carousel/static/aj1.jpg" alt="" class="pic" />
+            <img :src="songList.picUrl" alt="" class="pic" />
           </a>
           <div class="control">
             <span class="headphone"></span>
-            <span class="playCount">172万</span>
+            <span class="playCount">{{
+              songList.playcount > 100000000
+                ? Math.floor(songList.playcount / 100000000) + '亿'
+                : Math.floor(songList.playcount / 10000) + '万'
+            }}</span>
             <a href="" class="play"></a>
           </div>
         </div>
-        <a href="" class="info">赞新的一年，平安和美好都会接踵而来</a>
+        <a href="" class="info">{{ songList.name }}</a>
+        <div class="guessLike">
+          <span class="origin">{{ songList.copywriter }}</span>
+          <a href="" class="dislike">不感兴趣</a>
+        </div>
       </div>
-      
     </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
+import { reqUserSongList } from '@api/Discover/recommend'
 export default {
   name: 'PersonalRecommend',
+  data() {
+    return {
+      date: '',
+      day: '',
+      userSongList: [],
+    }
+  },
+  methods: {
+    // 获取时间
+    getDate() {
+      const time = moment(Date.now()).format('D-d')
+      const dayList = ['一', '二', '三', '四', '五', '六', '日']
+      this.date = time.split('-')[0]
+      this.day = dayList[time.split('-')[1] - 1]
+    },
+
+    // 获取用户推荐歌单
+    async getUserSongList() {
+      const userSongList = await reqUserSongList()
+      console.log(userSongList)
+      this.userSongList = userSongList.recommend.slice(0, 3)
+    },
+  },
+  mounted() {
+    this.getDate()
+    this.getUserSongList()
+  },
 }
 </script>
 
@@ -113,7 +153,6 @@ export default {
           text-decoration underline
       .attachment
         color #999
-        margin-top 3px
   .recommendContainer
     display flex
     margin 20px -42px 0 0
@@ -123,7 +162,6 @@ export default {
       flex-shrink 0
       padding 0 45px 30px 0
       flex-direction column
-      align-items center
       width 140px
       height 204px
       .playList
@@ -161,8 +199,30 @@ export default {
               background-position -1px -111px
       .info
         font-size 14px
+        margin 8px 0 3px
         color #000
         width 100%
         &:hover
           text-decoration underline
+      .guessLike
+        width 100%
+        height 30px
+        &:hover
+          >.origin
+            display none
+          >.dislike
+            display inline-block
+        .origin
+          color #999
+          display inline-block
+        .dislike
+          display none
+          color #666
+          width 60px
+          height 25px
+          line-height 25px
+          text-align center
+          border 1px solid #ccc
+          border-radius 3px
+          background-color #fcfcfc
 </style>

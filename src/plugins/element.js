@@ -8,3 +8,4 @@ import {
 Vue.use(Button)
 Vue.use(Carousel);
 Vue.use(CarouselItem);
+

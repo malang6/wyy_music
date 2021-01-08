@@ -1,24 +1,30 @@
 <template>
   <div class="append">
     <!-- 用户信息 -->
-    <div class="unLogin" v-if="true">
+    <!-- 未登录 -->
+    <div class="unLogin" v-if="userInfo.length === 0">
       <span class="unLoginInfo"
         >登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</span
       >
       <a class="login" href="">用户登录</a>
     </div>
+    <!-- 已登录 -->
     <div class="userLogin" v-else>
       <div class="userInfo">
         <a href="">
-          <img src="../Carousel/static/nike.jpg" alt="" />
+          <img :src="userInfo.profile.avatarUrl" alt="" class="avatar" />
         </a>
         <div class="info">
           <div class="name">
-            <a>用户名</a>
-            <span></span>
+            <a>{{ userInfo.profile.nickname }}</a>
+            <img
+              src="../../../../assets/Discover/images/vip.png"
+              class="vipIcon"
+              v-if="userInfo.profile.vipType !== 0"
+            />
           </div>
           <p>
-            <a href="" class="grade">lv9</a>
+            <a href="" class="grade">Lv.{{ userInfo.level }}</a>
           </p>
           <div>
             <a href="" class="sign">签到</a>
@@ -27,16 +33,16 @@
       </div>
       <div class="activity">
         <a href="">
-          <strong>0</strong>
+          <strong>{{ userInfo.profile.authority }}</strong>
           <span>动态</span>
         </a>
         <a href="">
-          <strong>0</strong>
-          <span>动态</span>
+          <strong>{{ userInfo.profile.follows }}</strong>
+          <span>关注</span>
         </a>
         <a href="">
-          <strong>0</strong>
-          <span>动态</span>
+          <strong>{{ userInfo.profile.followeds }}</strong>
+          <span>粉丝</span>
         </a>
       </div>
     </div>
@@ -92,6 +98,7 @@ export default {
       djList: [],
     }
   },
+  props: ['userInfo'],
   methods: {
     // 请求歌手
     async getSingerList() {
@@ -145,7 +152,7 @@ export default {
       height 90px
       display flex
       margin-left 20px
-      img
+      .avatar
         width 80px
         height 80px
         padding 3px
@@ -156,13 +163,20 @@ export default {
           font-size 14px
           color #333
           font-weight bold
+          display flex
+          .vipIcon
+            margin-left 5px
+            width 43px
+            height 16px
         .grade
-          border 1px solid #eaeaea
+          font-style italic
+          font-weight bold
+          border 1px solid #999
           display inline-block
-          height 18px
-          line-height 18px
+          height 17px
           width 40px
-          border-radius 20px
+          line-height 17px
+          border-radius 8px
           color #999
           text-align center
           margin-top 5px
@@ -224,7 +238,7 @@ export default {
           width 124px
           border 1px solid #e9e9e9
           border-left none
-          .name
+          img
             color #333
             font-size 14px
             font-weight bold

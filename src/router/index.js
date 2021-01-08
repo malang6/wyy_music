@@ -18,16 +18,58 @@ VueRouter.prototype.replace = function (location, onComplete) {
 const router = new VueRouter({
   routes: [
     {
-      path: '/',
-      component: Discover
+      path: '/discover',
+      component: Discover,
+      children: [
+        // {
+        //   path: '/',
+        //   component: Discover,
+        // },
+        // {
+        //   path: '/toplist',
+        //   component: Toplist,
+        // },
+        // {
+        //   path: '/playlist',
+        //   component: Playlist,
+        // },
+        // {
+        //     path: '/playlist',
+        //     component: Playlist,
+        // },
+        // {
+        //     path: '/djradio',
+        //     component: Djradio,
+        // },
+        // {
+        //     path: '/artist',
+        //     component: Artist,
+        // },
+        // {
+        //     path: '/album',
+        //     component: Album,
+        // }
+      ]
     },
     {
       path: '/toplist',
-      component: Toplist
-    }
+      component: Toplist,
+    },
+    {
+      path: '/',
+      redirect: '/discover',
+    },
+    // {
+    //   path:"/my/m/music/playlist",
+    //   component:MyMusic
+    // },
+    // {
+    //   path:"/friend",
+    //   component:Friend
+    // }
   ],
   scrollBehavior () {
     return { x: 0, y: 0 }
-  }
+  }   
 })
 export default router

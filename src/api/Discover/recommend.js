@@ -45,6 +45,32 @@ export const reqNewAlbum = () => {
   })
 }
 
+// 请求用户id
+export const reqUserId = () => { 
+  return request({
+    method: "GET",
+    url:"/user/account"
+  })
+}
+
+// 请求用户详细信息
+export const reqUserInfo = (uid) => { 
+  return request({
+    method: "GET",
+    url: "/user/detail",
+    params: {
+      uid
+    }
+  })
+}
+
+// 请求用户推荐歌单
+export const reqUserSongList = () => { 
+  return request({
+    method: "GET",
+    url:"/recommend/resource"
+  })
+}
 // 每日推荐歌单/recommend/resource
 // 榜单 
 // 新碟上架 /album/newest

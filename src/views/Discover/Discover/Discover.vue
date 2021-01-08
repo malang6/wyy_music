@@ -3,9 +3,6 @@
     <!-- 头部轮播图 -->
     <div class="header">
       <div class="banner">
-        <!-- 自己封装的轮播图 -->
-        <!-- <CarouselTop /> -->
-
         <!-- element-ui轮播图 -->
         <div class="block">
           <el-carousel trigger="click" height="284px" indicator-position="none">
@@ -28,7 +25,6 @@
       </div>
       <div class="download"></div>
     </div>
-
     <!-- 内容区 -->
     <div class="content">
       <!-- 左侧内容区 -->
@@ -36,14 +32,14 @@
         <!-- 热门推荐 -->
         <PopularRecommend />
         <!-- 个性化推荐 -->
-        <PersonalRecommend v-if="false"/>
+        <PersonalRecommend v-if="token"/>
         <!-- 新碟上架 -->
         <NewDisc />
         <!-- 榜单 -->
         <TopList />
       </div>
       <!-- 右侧内容区 -->
-      <Append />
+      <Append :userInfo="userInfo"/>
     </div>
 
     <!-- 回到顶部 -->
@@ -58,13 +54,15 @@ import NewDisc from './NewDisc/NewDisc'
 import PersonalRecommend from './PersonalRecommend/PersonalRecommend'
 import PopularRecommend from './PopularRecommend/PopularRecommend'
 import ReturnTop from '@comps/ReturnTop/ReturnTop'
-import {reqBanner} from '@api/Discover/recommend'
+import {reqBanner,reqUserInfo,reqUserId} from '@api/Discover/recommend'
 export default {
   name: 'Discover',
   data() {
     return {
       carouselList: [],
-      returnUpIsShow:'none'
+      returnUpIsShow:'none',
+      userInfo:[],
+      token:''
     }
   },
   methods:{
@@ -80,11 +78,23 @@ export default {
       }else(
         this.returnUpIsShow='none'
       )
+    },
+    // 登录状态
+    async ifLogin(){
+      const token=localStorage.getItem('token')
+      this.token=token
+      if(token){
+        const id = (await reqUserId()).account.id
+        const userInfo=await reqUserInfo(id)
+        this.userInfo=userInfo
+      }
     }
   },
   mounted(){
     this.getBanner()
+    this.ifLogin()
     window.addEventListener('scroll',this.scroll)
+    
   },
   beforeDestroy(){
     window.removeEventListener('scroll',this.scroll)
