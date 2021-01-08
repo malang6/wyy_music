@@ -7,12 +7,12 @@
             <a href="/#">网易云音乐</a>
           </h1>
         </div>
-        <ul>
+        <ul @click="changebar = true">
           <li>
             <span>
-              <a class="headerActive">
+              <a :class="changebar ? 'headerActive' : ''">
                 <em>发现音乐</em>
-                <i class="cor">&nbsp;</i>
+                <i :class="changebar ? 'cor' : ''">&nbsp;</i>
               </a>
             </span>
           </li>
@@ -60,8 +60,15 @@
         <div class="header-search">
           <span class="parent">
             <i class="iconfont icon-sousuo"></i>
-            <input type="text" />
-            <label>音乐/视频/电台/用户</label>
+            <input
+              type="text"
+              ref="search"
+              v-model="searchTxt"
+              @keyup.enter="goSearchSong"
+              @focus="isShow = false"
+              @blur="handleBlur"
+            />
+            <label v-show="isShow">音乐/视频/电台/用户</label>
           </span>
         </div>
         <div class="header-lc">
@@ -127,79 +134,75 @@
         <Login v-show="isShowLogin" class="login"></Login>
       </div>
     </div>
-    <div class="findBar">
+    <div class="findBar" v-if="changebar">
       <div class="findBar-container">
         <ul class="navList">
-          <li class="navItem">
-            <a class="navTitle navActive" @click="$router.push('/discover')">
-              <em>推荐</em>
-            </a>
-          </li>
-          <li class="navItem">
-            <a class="navTitle">
-              <em>排行榜</em>
-            </a>
-          </li>
-          <li class="navItem">
-            <a class="navTitle">
+          <li
+            class="navItem"
+            v-for="item in headerData.headerData"
+            :key="item.id"
+            @click="handleClick(item)"
+          >
+            <a
+              :class="{
+                navTitle: 'navTitle',
+                navActive: currentId === item.id ? 'navActive' : ''
+              }"
+            >
               <em>
-                歌单
-                <img src="./img/white-r-icon@3x.png" class="R-icon" />
+                {{ item.name }}
+                <img
+                  v-if="item.name === '歌单'"
+                  src="./img/white-r-icon@3x.png"
+                  class="R-icon"
+                />
               </em>
-            </a>
-          </li>
-          <li class="navItem" @click="$router.push({ name: 'djradio' })">
-            <a class="navTitle">
-              <em>主播电台</em>
-            </a>
-          </li>
-          <li class="navItem" @click="goToSinger">
-            <a class="navTitle">
-              <em>歌手</em>
-            </a>
-          </li>
-          <li class="navItem">
-            <a class="navTitle">
-              <em>新碟上架</em>
             </a>
           </li>
         </ul>
       </div>
     </div>
+    <div class="c-bar" v-else></div>
   </header>
 </template>
 
 <script>
 import Login from "@views/Login";
 import { mapState, mapMutations } from "vuex";
+import { default as headerData } from "@utils/headerData";
 export default {
   name: "Header",
   data() {
     return {
+      headerData: headerData,
       isLogin: false, //是否登录
       ltoken: window.localStorage.getItem("token"),
       avatarUrl: window.localStorage.getItem("avatarUrl"),
+      changebar: true, //红色导航条
+      searchTxt: "", //搜索关键字
+      isShow: true, //是否显示输入框placeholder提示文字
+      currentId:
+        JSON.parse(window.sessionStorage.getItem("selectedHeader"))
+          ?.currentId || 1
     };
   },
   computed: {
     ...mapState({
-      isShowLogin: (state) => state.user.isShowLogin,
-      token: (state) => state.user.token,
-      profile: (state) => state.user.profile,
-    }),
+      isShowLogin: state => state.user.isShowLogin,
+      token: state => state.user.token,
+      profile: state => state.user.profile
+    })
   },
-
   methods: {
     ...mapMutations(["CHANGE_SHOW", "EXIT"]),
-    // 跳转歌手页面
-    goToSinger() {
-      this.$router.push({ path: "/discover/artist" });
-      let status = {
-        count: 0,
-        type: null,
-        area: null,
+    handleClick(item) {
+   
+      this.currentId = item.id;
+      let obj = {
+        currentId: this.currentId
       };
-      window.sessionStorage.setItem("status", JSON.stringify(status));
+      window.sessionStorage.setItem("selectedHeader", JSON.stringify(obj));
+      this.$router.push({ path: item.path });
     },
     //点击登录
     login() {
@@ -207,19 +210,47 @@ export default {
     },
     //去我的主页
     goUserHome() {
-      this.$router.push("/user/home?id=" + this.profile.userId);
+      let userId = window.localStorage.getItem("userId");
+      // this.$router.push("/user/home?id=" + userId);
+      this.$router.push({ name: "home", query: { id: userId } });
+
+      this.changebar = false;
     },
     //退出登录
     exit() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("avatarUrl");
+      localStorage.clear();
       this.EXIT();
+      //回到首页
+      this.$router.replace("/");
       window.location.reload();
     },
+    //搜索框失去焦点事件
+    handleBlur() {
+      if (!this.searchTxt) {
+        this.isShow = true;
+      }
+    },
+    //搜索功能
+    goSearchSong() {
+      const { searchTxt } = this;
+      this.$router.push("/search/m?s=" + searchTxt);
+      this.$refs.search.blur();
+    }
+  },
+  created() {
+    let obj = {
+      currentId: 1
+    };
+    window.sessionStorage.setItem("selectedHeader", JSON.stringify(obj));
+  },
+  mounted() {
+    // console.log(
+    //   JSON.parse(window.sessionStorage.getItem("selectedHeader")).currentId
+    // );
   },
   components: {
-    Login,
-  },
+    Login
+  }
 };
 </script>
 
@@ -452,4 +483,11 @@ export default {
             cursor pointer
             em
               background #9B0909
+  .c-bar
+    position relative
+    width 100%
+    z-index 90
+    height 5px
+    box-sizing border-box
+    background #C20C0C
 </style>
