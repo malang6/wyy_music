@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <div v-if="isLogin">
+    <div v-if="isLogin" style="height:100%">
       <div class="song-list">
         <router-link to="/my/artist" class="list"
           >我的歌手({{ subCountList.artistCount }})</router-link
@@ -12,10 +12,7 @@
           <div class="arrow" :class="{ show: isShowSongList }"></div>
           创建的歌单({{ createPlayList.length }})
           <button class="add" @click.stop="showWindow('showAddWindow')">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-jia"></use>
-            </svg>
-            新建
+             新建
           </button>
         </div>
         <!-- 创建的歌单列表 -->
@@ -65,7 +62,10 @@
               <img class="img" :src="collection.image" />
               <div class="songs-info">
                 <div class="songs-name">{{ collection.name }}</div>
-                <span class="songs-count">{{ collection.trackCount }}首 by {{collection.nickName}}</span>
+                <span class="songs-count"
+                  >{{ collection.trackCount }}首 by
+                  {{ collection.nickName }}</span
+                >
               </div>
             </span>
           </div>
@@ -98,7 +98,7 @@
           <span class="close" @click="hideWindow('showDelWindow')">×</span>
         </div>
         <div class="form">
-          <span class="tap">是否删除此歌单？</span>
+          <span class="tap" style="margin-bottom:50px">是否删除此歌单？</span>
           <div class="edit">
             <div class="add" @click="del(willDelPlayListId)">删 除</div>
             <div class="cancel" @click="hideWindow('showDelWindow')">取 消</div>
@@ -129,7 +129,7 @@ export default {
       isLogin: true, //是否登录状态
       playListName: "", //新建歌单名
       showDelWindow: false, //删除确认窗口显示状态
-      willDelPlayListId: "", //即将删除歌单Id
+      willDelPlayListId: "" //即将删除歌单Id
     };
   },
   computed: {
@@ -137,8 +137,8 @@ export default {
       "createPlayList",
       "collectPlayList",
       "collectArtist",
-      "subCountList",
-    ]),
+      "subCountList"
+    ])
   },
   methods: {
     ...mapActions([
@@ -146,10 +146,10 @@ export default {
       "getPlayListDerail",
       "getSubcount",
       "addPlayList",
-      "delPlayList",
+      "delPlayList"
     ]),
     //编辑歌单
-    toEditPlayList(id, name, image, description,tags) {
+    toEditPlayList(id, name, image, description, tags) {
       this.$router.push({
         path: "/my/edit",
         query: {
@@ -157,8 +157,9 @@ export default {
           name,
           image,
           description,
-          tags
-        },
+          tags,
+          path:this.$route.path
+        }
       });
     },
     //显示删除或添加歌单提示窗口
@@ -212,14 +213,14 @@ export default {
         path: "/my/playlist",
         query: {
           ...data,
-          id,
-        },
+          id
+        }
       });
-    },
+    }
   },
-  watch:{
-    $route(){
-      this.$forceUpdate()
+  watch: {
+    $route() {
+      this.$forceUpdate();
     }
   },
   mounted() {
@@ -233,7 +234,7 @@ export default {
   beforeDestory() {
     //解除绑定滚轮事件
     document.removeEventListener("scroll", this.scrollChange);
-  },
+  }
 };
 </script>
 
@@ -368,6 +369,7 @@ export default {
     .form
       background #fff
       padding 40px 30px
+      height 130px
       .form-ipt
         font-size 12px
         color #333

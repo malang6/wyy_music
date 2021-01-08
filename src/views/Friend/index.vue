@@ -107,7 +107,7 @@
           <div class="star-item" v-for="item in 3" :key="item">
             <img class="avatar" src="../../assets/my/images/test.jpg" alt="" />
             <div>
-              <div class="name">赵琦</div>
+              <div class="name">赵嘉诚</div>
               <span class="status">著名音乐节目主持人</span>
             </div>
             <div class="btn">关注</div>

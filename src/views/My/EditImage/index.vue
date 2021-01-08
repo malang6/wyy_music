@@ -28,13 +28,14 @@
       </div>
       <div class="edit">
         <span class="btn">保 存</span>
-        <span class="btn">取 消</span>
+        <span class="btn" @click="cancel">取 消</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "EditImage",
   data() {
@@ -48,8 +49,22 @@ export default {
     this.image = this.$route.query.image;
   },
   methods: {
+    ...mapActions(["updateImage"]),
+    //返回
+    cancel(){
+      this.$router.back()
+    },
     getUploadFile(e) {
-      console.log(e.target.files);
+      //获取文件数据
+      const file = e.target.files[0];
+      //创建formData对象
+      let formData = new FormData();
+      //将数据插入
+      formData.append("image", file);
+      //发送上传图片请求
+      const id = this.$route.query.id;
+      this.updateImage({ id, formData });
+      this.$message.error("请求地址无效")
     },
   },
 };

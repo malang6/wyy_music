@@ -6,7 +6,7 @@
       <div class="edit">
         <div class="edit-title">
           <div class="title-cate"></div>
-          <span class="title">{{ playListInfo.name }}</span>
+          <span class="title">{{ $route.query.name && playListInfo.name }}</span>
         </div>
         <div class="edit-user">
           <img class="avatar" :src="playListInfo.avatarUrl" alt="" />

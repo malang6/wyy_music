@@ -1,12 +1,11 @@
-import Vue from "vue"
-import Vuex from "vuex"
-
-Vue.use(Vuex)
-
-import modules from "./modules"
-
+import Vue from "vue";
+import Vuex from "vuex";
+import { default as modules } from "./modules";
+Vue.use(Vuex);
 const store = new Vuex.Store({
-    modules
-})
+  modules
+});
 
-export default store
+export default store;
+
+

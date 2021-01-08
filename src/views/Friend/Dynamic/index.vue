@@ -37,7 +37,7 @@
     </div>
     <!-- 引入视频 -->
     <div v-if="dynamic.type === '分享MV'" class="video">
-      <video v-show="isPlayVideo" src=""></video>
+      <video v-show="isPlayVideo" :src="videoUrl"></video>
       <div
         v-show="!isPlayVideo"
         class="video-img"
@@ -57,7 +57,11 @@
         </div>
       </div>
       <!-- 播放按钮 -->
-      <span v-show="!isPlayVideo" class="play-btn" @click="playVideo(dynamic.content.mv.id)"></span>
+      <span
+        v-show="!isPlayVideo"
+        class="play-btn"
+        @click="playVideo(dynamic.content.mv.id)"
+      ></span>
       <!-- 视频底部 -->
       <div v-show="!isPlayVideo" class="video-footer">
         <span class="play-count">
@@ -120,14 +124,14 @@
 
 <script>
 import dayjs from "dayjs";
-import {mapActions} from "vuex"
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Dynamic",
   data() {
     return {
       isBigImg: false, //是否显示大图
       bigImgIndex: 0, //大图下标
-      isPlayVideo:false, //是否播放视频
+      isPlayVideo: false, //是否播放视频
     };
   },
   props: {
@@ -136,19 +140,26 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapGetters(["videoUrl"]),
+  },
   methods: {
-      ...mapActions(["getVideoUrl"]),
+    ...mapActions(["getVideoUrl"]),
     //点击切换大小图
     changeSize(flag, index) {
       this.isBigImg = flag;
       this.bigImgIndex = index;
     },
     //播放视频
-    playVideo(id){
-        this.isPlayVideo = true
-        //请求视频播放地址
-        this.getVideoUrl(id)
-    }
+    playVideo(id) {
+      if (!this.videoUrl) {
+        this.$message.error("请求地址无效");
+        return
+      }
+      this.isPlayVideo = true;
+      //请求视频播放地址
+      this.getVideoUrl(id);
+    },
   },
   filters: {
     //时间格式化

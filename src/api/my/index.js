@@ -45,7 +45,7 @@ export const reqPlayListComment = (id) => {
     return axios({
         method: "GET",
         url: "/comment/playlist",
-        params:{
+        params: {
             id
         }
     })
@@ -55,7 +55,7 @@ export const reqCreatePlayList = (name) => {
     return axios({
         method: "GET",
         url: "/playlist/create",
-        params:{
+        params: {
             name
         }
     })
@@ -65,7 +65,7 @@ export const reqDelPlayList = (id) => {
     return axios({
         method: "GET",
         url: "/playlist/delete",
-        params:{
+        params: {
             id
         }
     })
@@ -82,6 +82,20 @@ export const reqUpdatePlayList = (data) => {
     return axios({
         method: "GET",
         url: "/playlist/update",
-        params:data
+        params: data
+    })
+}
+//上传歌单封面图片
+export const reqUploadImage = (id, formData) => {
+    return axios({
+        method: "POST",
+        url: "/playlist/update",
+        params: {
+            id
+        },
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+        data: formData
     })
 }

@@ -3,7 +3,7 @@ import NProgress from 'nprogress'
 import { Message } from 'element-ui'
 import 'nprogress/nprogress'
 const instance = axios.create({
-  baseURL: '/api',
+  baseURL: '/api'
 })
 instance.interceptors.request.use((config) => {
   // Do something before request is sent
@@ -23,7 +23,7 @@ instance.interceptors.response.use(
   (error) => {
     // Do something with response error
     NProgress.done()
-    Message.error('网络错误，请刷新重试')
+    Message.error("网络错误，请刷新重试")
     return Promise.reject(error)
   }
 )

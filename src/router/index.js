@@ -1,107 +1,169 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+const Djradio = () => import("@views/djradio");
+const Category = () => import("@views/category");
+const Artist = () => import("@views/artist");
+const Discover = () => import("@views/Discover/Discover");
+const Toplist = () => import("../views/TopList/TopList");
+const NavCont = () => import("@views/artist/navCont");
+const SingerTypeCont = () => import("@views/artist/singerTypeCont");
+import User from "@views/User";
+import UHome from "@views/User/UHome";
+import UEvent from "@views/User/UEvent";
+import UFollow from "@views/User/UFollow";
+import Friend from "@views/Friend";
+import My from "@views/My";
+import myArtist from "@views/My/Artist";
+import Edit from "@views/My/Edit";
+import EditImage from "@views/My/EditImage";
+import PlayList from "@views/My/PlayList";
+import Radio from "@views/My/Radio";
+import SearchSong from "@views/SearchSong";
 
-import Header from "@comps/Header"
-import UserHome from "@views/UserHome"
-import Friend from "@views/Friend"
-import My from "@views/My"
-import Artist from "@views/My/Artist"
-import Edit from "@views/My/Edit"
-import PlayList from "@views/My/PlayList"
-import Radio from "@views/My/Radio"
-import EditImage from "@views/My/EditImage"
+const push = VueRouter.prototype.push;
+const replace = VueRouter.prototype.replace;
 
-//重写push,replace
-const push = VueRouter.prototype.push
-VueRouter.prototype.push = function (localtion, ontemplate, onAbort = () => { }) {
-    return push.call(this, localtion, ontemplate, onAbort)
-}
-const replace = VueRouter.prototype.replace
-VueRouter.prototype.replace = function (localtion, ontemplate, onAbort = () => { }) {
-    return replace.call(this, localtion, ontemplate, onAbort)
-}
-
+VueRouter.prototype.push = function (location, onComplete, onAbort) {
+  if (onComplete && onAbort) {
+    return push.call(this, location, onComplete, onAbort);
+  }
+  return push.call(this, location, onComplete, () => { });
+};
+VueRouter.prototype.replace = function (location, onComplete, onAbort) {
+  if (onComplete && onAbort) {
+    return replace.call(this, location, onComplete, onAbort);
+  }
+  return replace.call(this, location, onComplete, () => { });
+};
 Vue.use(VueRouter);
 const router = new VueRouter({
-    routes: [
+  routes: [
+    {
+      path: "/",
+      component: Discover,
+      children: [
         {
-            path: "/",
-            // component:Discover,
-            component: Header,
-            // children: [
-            //     {
-            //       path: '/discover',
-            //       component: Discover,
-            //     },
-            //     {
-            //         path: '/toplist',
-            //         component: Toplist,
-            //     },
-            //     {
-            //         path: '/playlist',
-            //         component: Playlist,
-            //     },
-            //     {
-            //         path: '/playlist',
-            //         component: Playlist,
-            //     },
-            //     {
-            //         path: '/djradio',
-            //         component: Djradio,
-            //     },
-            //     {
-            //         path: '/artist',
-            //         component: Artist,
-            //     },
-            //     {
-            //         path: '/album',
-            //         component: Album,
-            //     }
-            // ]
-        },
-        // {
-        //     path:"/my/m/music/playlist",
-        //     component:MyMusic
-        // },
-        {
-            path: "/friend",
-            component: Friend
-        },
-        {
-            path: "/my",
-            component: My,
-            children: [
+          path: "discover",
+          component: Discover,
+          children: [
+            {
+              name: "djradio",
+              path: "djradio",
+              component: Djradio,
+              children: [
                 {
-                    name: "artist",
-                    path: "artist",
-                    component: Artist
+                  name: "category",
+                  path: "category",
+                  component: Category
+                }
+              ]
+            },
+            {
+              name: "artist",
+              path: "artist",
+              component: Artist,
+              children: [
+                {
+                  name: "recommond",
+                  path: "recommond",
+                  component: NavCont
                 },
                 {
-                    path: "edit",
-                    component: Edit
+                  name: "signed",
+                  path: "signed",
+                  component: NavCont
                 },
                 {
-                    path: "playList",
-                    component: PlayList
+                  name: "cat",
+                  path: "cat",
+                  component: SingerTypeCont
                 },
                 {
-                    path: "radio",
-                    component: Radio
-                },
-                {
-                    path: "editimage",
-                    component: EditImage
-                },
-                {
-                    path: "",
-                    redirect: "artist"
-                },
-            ]
-        },
-        {
-            path: "/user/home",
-            component: UserHome,
+                  path: "",
+                  redirect: "recommond"
+                }
+              ]
+            },
+            {
+              path: "toplist",
+              component: Toplist
+            }
+          ]
         }
-    ]
-})
-export default router
+      ]
+    },
+    {
+      path: "",
+      redirect: Discover
+    },
+    {
+      path: "/user",
+      component: User,
+      children: [
+        {
+          name: "home",
+          path: "home",
+          component: UHome
+        },
+        {
+          name: "event",
+          path: "event",
+          component: UEvent
+        },
+        {
+          name: "follows",
+          path: "follows",
+          component: UFollow
+        },
+        {
+          name: "fans",
+          path: "fans",
+          component: UFollow
+        }
+      ]
+    },
+    {
+      path: "/search/m/",
+      component: SearchSong
+    },
+    {
+      path: "/friend",
+      component: Friend
+    },
+    {
+      path: "/my",
+      component: My,
+      children: [
+        {
+          name: "artist",
+          path: "artist",
+          component: myArtist
+        },
+        {
+          path: "edit",
+          component: Edit
+        },
+        {
+          path: "playList",
+          component: PlayList
+        },
+        {
+          path: "radio",
+          component: Radio
+        },
+        {
+          path: "editimage",
+          component: EditImage
+        },
+        {
+          path: "",
+          redirect: "artist"
+        }
+      ]
+    }
+  ],
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  }
+});
+export default router;

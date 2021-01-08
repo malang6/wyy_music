@@ -1,4 +1,4 @@
-import { reqUserPlayList, reqPlayListDerail, reqArtist, reqRadio, reqSubcount, reqPlayListComment, reqCreatePlayList, reqDelPlayList, reqPlayListTags, reqUpdatePlayList } from "@api/my"
+import { reqUserPlayList, reqPlayListDerail, reqArtist, reqRadio, reqSubcount, reqPlayListComment, reqCreatePlayList, reqDelPlayList, reqPlayListTags, reqUpdatePlayList,reqUploadImage } from "@api/my"
 const state = {
     createPlayList: [], //创建的歌单
     collectPlayList: [], //收藏的歌单
@@ -73,6 +73,12 @@ const actions = {
     updatePlayList({ commit }, data) {
         console.log(commit)
         reqUpdatePlayList(data)
+    },
+    //修改歌单封面图
+    async updateImage({commit},{id,data}){
+        console.log(commit)
+        const result = await reqUploadImage(id,data)
+        console.log(result)
     }
 }
 const mutations = {
