@@ -110,14 +110,14 @@
     </div>
     <div class="not-login" v-else>
       <div class="login-img">
-        <div class="login-btn"></div>
+        <div class="login-btn" @click="toLogin"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters,mapMutations } from "vuex";
 export default {
   name: "My",
   data() {
@@ -126,7 +126,7 @@ export default {
       isShowCollection: false, //是否展开收藏歌单列表
       showAddWindow: false, //新建歌单窗口显示从动态
       showTopBtn: false, //返回顶部按钮显示状态
-      isLogin: true, //是否登录状态
+      isLogin: false, //是否登录状态
       playListName: "", //新建歌单名
       showDelWindow: false, //删除确认窗口显示状态
       willDelPlayListId: "", //即将删除歌单Id
@@ -148,6 +148,11 @@ export default {
       "addPlayList",
       "delPlayList",
     ]),
+    ...mapMutations(["CHANGE_SHOW"]),
+    //点击登录
+    toLogin() {
+      this.CHANGE_SHOW(true);
+    },
     //编辑歌单
     toEditPlayList(id, name, image, description, tags) {
       this.$router.push({
@@ -226,12 +231,11 @@ export default {
   mounted() {
     //绑定滚轮事件
     document.addEventListener("scroll", this.scrollChange);
+    const uid = localStorage.getItem("userId");
     //读取localStorage,判断登录状态
     this.isLogin = localStorage.getItem("token") ? true : false;
     //如果是登录状态就请求数据
     if (this.isLogin) {
-      //请求歌单数据
-      const uid = localStorage.getItem("userId");
       this.getUserPlayList(uid);
       this.getSubcount();
     }
@@ -248,6 +252,7 @@ export default {
   width 980px
   height 100%
   margin 0 auto
+  margin-top 105px
   display flex
   .song-list
     overflow auto
@@ -428,7 +433,8 @@ export default {
     background-position -265px -47px
     cursor pointer
   .not-login
-    margin 0 auto
+    position relative
+    margin 105px auto
     border 1px solid #d3d3d3
     background #fff
     width 902px

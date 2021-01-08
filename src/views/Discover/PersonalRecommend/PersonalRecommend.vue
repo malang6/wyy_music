@@ -31,8 +31,8 @@
             <span class="headphone"></span>
             <span class="playCount">{{
               songList.playcount > 100000000
-                ? Math.floor(songList.playcount / 100000000) + '亿'
-                : Math.floor(songList.playcount / 10000) + '万'
+                ? Math.floor(songList.playcount / 100000000) + "亿"
+                : Math.floor(songList.playcount / 10000) + "万"
             }}</span>
             <a href="" class="play"></a>
           </div>
@@ -48,38 +48,37 @@
 </template>
 
 <script>
-import moment from 'moment'
-import { reqUserSongList } from '@api/Discover/recommend'
+import moment from "moment";
+import { reqUserSongList } from "@api/Discover/recommend";
 export default {
-  name: 'PersonalRecommend',
+  name: "PersonalRecommend",
   data() {
     return {
-      date: '',
-      day: '',
-      userSongList: [],
-    }
+      date: "",
+      day: "",
+      userSongList: []
+    };
   },
   methods: {
     // 获取时间
     getDate() {
-      const time = moment(Date.now()).format('D-d')
-      const dayList = ['一', '二', '三', '四', '五', '六', '日']
-      this.date = time.split('-')[0]
-      this.day = dayList[time.split('-')[1] - 1]
+      const time = moment(Date.now()).format("D-d");
+      const dayList = ["一", "二", "三", "四", "五", "六", "日"];
+      this.date = time.split("-")[0];
+      this.day = dayList[time.split("-")[1] - 1];
     },
 
     // 获取用户推荐歌单
     async getUserSongList() {
-      const userSongList = await reqUserSongList()
-      console.log(userSongList)
-      this.userSongList = userSongList.recommend.slice(0, 3)
-    },
+      const userSongList = await reqUserSongList();
+      this.userSongList = userSongList.recommend.slice(0, 3);
+    }
   },
   mounted() {
-    this.getDate()
-    this.getUserSongList()
-  },
-}
+    this.getDate();
+    this.getUserSongList();
+  }
+};
 </script>
 
 <style lang="stylus" scoped>
