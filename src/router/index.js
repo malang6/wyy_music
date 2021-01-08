@@ -18,6 +18,10 @@ import Edit from "@views/My/Edit";
 import PlayList from "@views/My/PlayList";
 import Radio from "@views/My/Radio";
 import SearchSong from "@views/SearchSong";
+import qPlaylist from "../views/Discover/playlist.vue";
+import PlaylistID from "../views/discoverID/playlistID.vue";
+import NewCD from "../views/newCD/newCD.vue";
+import Newcdinfo from "../views/newcdinfo/newcdinfo.vue";
 
 const push = VueRouter.prototype.push;
 const replace = VueRouter.prototype.replace;
@@ -86,6 +90,30 @@ const router = new VueRouter({
             {
               path: "toplist",
               component: Toplist
+            },
+            {
+              name: "Playlist",
+              path: "playlist",
+              component: qPlaylist,
+              children: [
+                {
+                  name: "PlaylistID",
+                  path: "playlistId",
+                  component: PlaylistID
+                }
+              ]
+            },
+            {
+              name: "NewCD",
+              path: "album",
+              component: NewCD,
+              children: [
+                {
+                  name: "Newcdinfo",
+                  path: "albumId",
+                  component: Newcdinfo
+                }
+              ]
             }
           ]
         }

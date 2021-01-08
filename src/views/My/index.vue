@@ -12,7 +12,7 @@
           <div class="arrow" :class="{ show: isShowSongList }"></div>
           创建的歌单({{ createPlayList.length }})
           <button class="add" @click.stop="showWindow('showAddWindow')">
-             新建
+            新建
           </button>
         </div>
         <!-- 创建的歌单列表 -->
@@ -126,7 +126,7 @@ export default {
       isShowCollection: false, //是否展开收藏歌单列表
       showAddWindow: false, //新建歌单窗口显示从动态
       showTopBtn: false, //返回顶部按钮显示状态
-      isLogin: true, //是否登录状态
+      isLogin: false, //是否登录状态
       playListName: "", //新建歌单名
       showDelWindow: false, //删除确认窗口显示状态
       willDelPlayListId: "" //即将删除歌单Id
@@ -227,8 +227,15 @@ export default {
     document.addEventListener("scroll", this.scrollChange);
     //请求歌单数据
     const uid = localStorage.getItem("userId");
+    //读取localStorage,判断登录状态
+    this.isLogin = localStorage.getItem("token") ? true : false;
+    //如果是登录状态就请求数据
+    if (this.isLogin) {
+      //请求动态数据
     this.getUserPlayList(uid);
     this.getSubcount();
+    }
+
   },
   beforeDestory() {
     //解除绑定滚轮事件
@@ -421,11 +428,13 @@ export default {
     background-position -265px -47px
     cursor pointer
   .not-login
-    margin 0 auto
+    position relative
+    margin 105px auto
     border 1px solid #d3d3d3
     background #fff
     width 902px
     height 100%
+    // z-index -1
     .login-img
       position relative
       width 902px

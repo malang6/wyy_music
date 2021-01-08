@@ -7,13 +7,12 @@ export default {
     },
     getters: {},
     actions: {
-        async getUserInfo(store, { phone, password }) {
+        async goLogin(store, { phone, password }) {
             const res = await phoneLogin(phone, password);
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("avatarUrl", res.data.profile.avatarUrl);
             localStorage.setItem("userId", res.data.profile.userId);
             store.commit("GET_USERINFO", res);
-            window.location.reload();
         },
 
     },

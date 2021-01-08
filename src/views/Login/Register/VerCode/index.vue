@@ -236,7 +236,6 @@ export default {
             password: this.password,
             nickname,
           });
-          console.log(res);
           this.verify = false;
         }
       }
@@ -244,7 +243,7 @@ export default {
     //点击我知道了，登录
     doLogin() {
       this.$store.commit("CHANGE_SHOW", false);
-      this.$store.dispatch("getUserInfo", {
+      this.$store.dispatch("goLogin", {
         phone: this.phoneNum,
         password: this.password,
       });
