@@ -55,7 +55,12 @@
               }"
             ></div>
             <div class="current" :style="{ width: processBarWidth + '%' }">
-              <span class="btn" @mousedown="handleDown" ref="runBar"></span>
+              <span
+                class="btn"
+                @mousedown="handleDown"
+                @mousemove="handlemove"
+                ref="runBar"
+              ></span>
             </div>
           </div>
           <div class="time">
@@ -219,6 +224,10 @@ export default {
     // 移动进度条
     handleDown() {
       console.log(1);
+    },
+    //
+    handlemove() {
+      console.log(2);
     },
     // 更新当前事件
     updateTime() {
