@@ -65,6 +65,7 @@ export default {
       this.$store.dispatch("goLogin", { phone, password });
       if (this.$store.state.token) return;
       this.$store.commit("CHANGE_SHOW", false);
+      this.$router.replace("/")
     },
     //点击其他的登录方式
     otherLogin() {
