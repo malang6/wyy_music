@@ -60,7 +60,12 @@
       :checkedId="checkedId"
       :followList="followList"
       :showSend.sync="showSend"
+      @changeShowSuccess="changeShowSuccess"
     />
+    <div class="sendSuccess" v-if="showSuccess">
+      <img src="../img/1.jpg" />
+      <p>发送私信成功~</p>
+    </div>
   </div>
 </template>
 
@@ -71,8 +76,9 @@ export default {
   name: "UFollow",
   data() {
     return {
-      showSend: false,
+      showSend: false, //显示发送私信弹框
       checkedId: 0,
+      showSuccess: false, //显示发送私信成功提示
     };
   },
   watch: {
@@ -82,6 +88,13 @@ export default {
         this.getFollowList(urlName);
       },
       immediate: true,
+    },
+    showSuccess: {
+      handler() {
+        this.timer = setTimeout(() => {
+          this.showSuccess = false;
+        }, 1500);
+      },
     },
   },
   computed: {
@@ -117,9 +130,16 @@ export default {
       this.showSend = true;
       this.checkedId = id;
     },
+    //修改showSuccess
+    changeShowSuccess() {
+      this.showSuccess = true;
+    },
   },
   components: {
     SendMsg,
+  },
+  beforeDestroy() {
+    clearTimeout(this.timer);
   },
 };
 </script>
@@ -220,4 +240,23 @@ export default {
               text-align left
               &.u-txt-8
                 color #fff
+  .sendSuccess
+    position absolute
+    top 360px
+    left 596px
+    width 200px
+    line-height 60px
+    background-color #fff
+    display flex
+    align-items center
+    justify-content center
+    border-radius 4px
+    box-shadow 0 5px 16px rgba(0, 0, 0, 0.8)
+    img
+      width 20px
+      height 20px
+      border-radius 5px
+      margin-right 10px
+    p
+      font-size 14px
 </style>

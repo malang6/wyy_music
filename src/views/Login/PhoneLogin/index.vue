@@ -62,7 +62,7 @@ export default {
       }
       phone = +phone;
 
-      this.$store.dispatch("getUserInfo", { phone, password });
+      this.$store.dispatch("goLogin", { phone, password });
       if (this.$store.state.token) return;
       this.$store.commit("CHANGE_SHOW", false);
     },

@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" :class="$route.path.startsWith('/my')?'headerFixed':''">
     <div class="headerContainer">
       <div class="header-r">
         <div class="logo-container">
@@ -82,7 +82,7 @@
               <span class="c-bor"></span>
               <ul class="contentList">
                 <li class="contentItem" @click="goUserHome">
-                  <a>
+                  <a href="javascript:;">
                     <i class="icn icn-hm"></i>
                     <em>我的主页</em>
                   </a>
@@ -172,13 +172,12 @@ export default {
       headerData: headerData,
       isLogin: false, //是否登录
       ltoken: window.localStorage.getItem("token"),
-      avatarUrl: window.localStorage.getItem("avatarUrl"),
       changebar: true, //红色导航条
       searchTxt: "", //搜索关键字
       isShow: true, //是否显示输入框placeholder提示文字
       currentId:
-        JSON.parse(window.sessionStorage.getItem("selectedHeader"))?.currentId ||
-        1,
+        JSON.parse(window.sessionStorage.getItem("selectedHeader"))
+          ?.currentId || 1,
     };
   },
   computed: {
@@ -187,6 +186,9 @@ export default {
       token: (state) => state.user.token,
       profile: (state) => state.user.profile,
     }),
+    avatarUrl() {
+      return window.localStorage.getItem("avatarUrl") || this.profile.avatarUrl;
+    },
   },
   methods: {
     ...mapMutations(["CHANGE_SHOW", "EXIT"]),
@@ -248,6 +250,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.headerFixed
+  position fixed
+  top 0
 .header
   width 100%
   background #242424
