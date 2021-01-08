@@ -78,7 +78,7 @@
     <div class="comment">
       <div class="comment-title">
         <span class="title">评论</span>
-        <span>共0条评论</span>
+        <span>共{{commentCount}}条评论</span>
       </div>
       <div class="comment-ipt">
         <img
@@ -104,7 +104,7 @@
       </div>
     </div>
     <!-- 精彩/最新评论 -->
-    <CommentList />
+    <CommentList @getCommentCount="getCommentCount"/>
   </div>
 </template>
 
@@ -116,13 +116,14 @@ import CommentList from '../CommentList/CommentList'
 export default {
   name: 'PlayList',
   data() {
-    return {}
+    return {
+      commentCount:''
+    }
   },
   components: {
     CommentList,
   },
   props:['songList'],
-  methods: {},
   watch: {
     // 歌单ID发生变化，请求歌单
     // async currentId(){
@@ -155,6 +156,11 @@ export default {
       })
       return time
     },
+  },
+  methods:{
+    getCommentCount(commentCount){
+      this.commentCount=commentCount
+    }
   }
 }
 </script>
@@ -362,7 +368,7 @@ export default {
     height 98px
     padding 0 30px 40px 40px
     .comment-title
-      padding 0 10px 0 32px
+      padding-right 10px
       height 35px
       font-size 12px
       color #666

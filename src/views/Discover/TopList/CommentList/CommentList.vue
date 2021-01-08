@@ -154,6 +154,9 @@ export default {
     currentId() {
       this.getCommentList(this.currentId)
     },
+    totalComment(){
+      this.$emit('getCommentCount',this.totalComment)
+    }
   },
 }
 </script>
