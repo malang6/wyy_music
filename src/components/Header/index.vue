@@ -270,6 +270,7 @@ export default {
 <style lang="stylus" scoped>
 .headerFixed
   position fixed
+  z-index 1
   top 0
 .header
   width 100%

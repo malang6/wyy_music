@@ -23,4 +23,21 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+html,
+body 
+  height 100%
+  background-color rgb(245, 245, 245)
+#app
+	min-width 982px
+	background-color #f5f5f5
+	position relative
+	.btm_bar
+		position fixed
+		bottom 0
+		height 20px
+		width 100%
+		z-index 10
+</script>
+
+

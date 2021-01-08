@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 const Djradio = () => import("@views/djradio");
 const Category = () => import("@views/category");
 const Artist = () => import("@views/artist");
-const Discover = () => import("../views/Discover/Discover");
+const Discover = () => import("@views/Discover/Discover");
 const Toplist = () => import("../views/TopList/TopList");
 const NavCont = () => import("@views/artist/navCont");
 const SingerTypeCont = () => import("@views/artist/singerTypeCont");
@@ -15,6 +15,7 @@ import Friend from "@views/Friend";
 import My from "@views/My";
 import myArtist from "@views/My/Artist";
 import Edit from "@views/My/Edit";
+import EditImage from "@views/My/EditImage";
 import PlayList from "@views/My/PlayList";
 import Radio from "@views/My/Radio";
 import SearchSong from "@views/SearchSong";
@@ -26,17 +27,17 @@ import Newcdinfo from "../views/newcdinfo/newcdinfo.vue";
 const push = VueRouter.prototype.push;
 const replace = VueRouter.prototype.replace;
 
-VueRouter.prototype.push = function(location, onComplete, onAbort) {
+VueRouter.prototype.push = function (location, onComplete, onAbort) {
   if (onComplete && onAbort) {
     return push.call(this, location, onComplete, onAbort);
   }
-  return push.call(this, location, onComplete, () => {});
+  return push.call(this, location, onComplete, () => { });
 };
-VueRouter.prototype.replace = function(location, onComplete, onAbort) {
+VueRouter.prototype.replace = function (location, onComplete, onAbort) {
   if (onComplete && onAbort) {
     return replace.call(this, location, onComplete, onAbort);
   }
-  return replace.call(this, location, onComplete, () => {});
+  return replace.call(this, location, onComplete, () => { });
 };
 Vue.use(VueRouter);
 const router = new VueRouter({
@@ -177,6 +178,10 @@ const router = new VueRouter({
         {
           path: "radio",
           component: Radio
+        },
+        {
+          path: "editimage",
+          component: EditImage
         },
         {
           path: "",

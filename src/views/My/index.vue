@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <div v-if="isLogin">
+    <div v-if="isLogin" style="height: 100%">
       <div class="song-list">
         <router-link to="/my/artist" class="list"
           >我的歌手({{ subCountList.artistCount }})</router-link
@@ -98,7 +98,7 @@
           <span class="close" @click="hideWindow('showDelWindow')">×</span>
         </div>
         <div class="form">
-          <span class="tap">是否删除此歌单？</span>
+          <span class="tap" style="margin-bottom: 50px">是否删除此歌单？</span>
           <div class="edit">
             <div class="add" @click="del(willDelPlayListId)">删 除</div>
             <div class="cancel" @click="hideWindow('showDelWindow')">取 消</div>
@@ -110,14 +110,14 @@
     </div>
     <div class="not-login" v-else>
       <div class="login-img">
-        <div class="login-btn"></div>
+        <div class="login-btn" @click="toLogin"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters,mapMutations } from "vuex";
 export default {
   name: "My",
   data() {
@@ -129,7 +129,7 @@ export default {
       isLogin: false, //是否登录状态
       playListName: "", //新建歌单名
       showDelWindow: false, //删除确认窗口显示状态
-      willDelPlayListId: "" //即将删除歌单Id
+      willDelPlayListId: "", //即将删除歌单Id
     };
   },
   computed: {
@@ -137,8 +137,8 @@ export default {
       "createPlayList",
       "collectPlayList",
       "collectArtist",
-      "subCountList"
-    ])
+      "subCountList",
+    ]),
   },
   methods: {
     ...mapActions([
@@ -146,8 +146,13 @@ export default {
       "getPlayListDerail",
       "getSubcount",
       "addPlayList",
-      "delPlayList"
+      "delPlayList",
     ]),
+    ...mapMutations(["CHANGE_SHOW"]),
+    //点击登录
+    toLogin() {
+      this.CHANGE_SHOW(true);
+    },
     //编辑歌单
     toEditPlayList(id, name, image, description, tags) {
       this.$router.push({
@@ -157,8 +162,9 @@ export default {
           name,
           image,
           description,
-          tags
-        }
+          tags,
+          path: this.$route.path,
+        },
       });
     },
     //显示删除或添加歌单提示窗口
@@ -212,35 +218,32 @@ export default {
         path: "/my/playlist",
         query: {
           ...data,
-          id
-        }
+          id,
+        },
       });
-    }
+    },
   },
   watch: {
     $route() {
       this.$forceUpdate();
-    }
+    },
   },
   mounted() {
     //绑定滚轮事件
     document.addEventListener("scroll", this.scrollChange);
-    //请求歌单数据
     const uid = localStorage.getItem("userId");
     //读取localStorage,判断登录状态
     this.isLogin = localStorage.getItem("token") ? true : false;
     //如果是登录状态就请求数据
     if (this.isLogin) {
-      //请求动态数据
-    this.getUserPlayList(uid);
-    this.getSubcount();
+      this.getUserPlayList(uid);
+      this.getSubcount();
     }
-
   },
   beforeDestory() {
     //解除绑定滚轮事件
     document.removeEventListener("scroll", this.scrollChange);
-  }
+  },
 };
 </script>
 
@@ -249,6 +252,7 @@ export default {
   width 980px
   height 100%
   margin 0 auto
+  margin-top 105px
   display flex
   .song-list
     overflow auto
@@ -375,6 +379,7 @@ export default {
     .form
       background #fff
       padding 40px 30px
+      height 130px
       .form-ipt
         font-size 12px
         color #333
@@ -434,7 +439,6 @@ export default {
     background #fff
     width 902px
     height 100%
-    // z-index -1
     .login-img
       position relative
       width 902px

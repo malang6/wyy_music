@@ -3,7 +3,7 @@ import NProgress from 'nprogress'
 import { Message } from 'element-ui'
 import 'nprogress/nprogress'
 const instance = axios.create({
-  baseURL: '/api',
+  baseURL: '/api'
 })
 instance.interceptors.request.use((config) => {
   // Do something before request is sent

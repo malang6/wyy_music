@@ -31,8 +31,9 @@
         <span class="cancel" @click="cancel">取 消</span>
       </div>
     </div>
-    <div>
+    <div class="playlist-img">
       <img class="img" :src="$route.query.image" alt="" />
+      <span @click="toEditImage" class="edit-image">编辑封面</span>
     </div>
     <!-- 选择歌单标签窗口 -->
     <div v-if="showDelWindow" class="add-window">
@@ -91,6 +92,7 @@ export default {
       showDelWindow: false, //是否显示选择标签窗口
       newTags: {}, //处理过后的所有tags数据
       tagSelected: [], //选择后的标签
+      beforePath: "", //之前的路径
     };
   },
   filters: {
@@ -111,6 +113,17 @@ export default {
   methods: {
     ...mapActions(["getPlayListTags", "updatePlayList"]),
     ...mapMutations(["UPDATE_CREATE_PLAY_LIST"]),
+    //跳转到编辑封面页面
+    toEditImage() {
+      this.$router.push({
+        path: "/my/editimage",
+        query: {
+          name: this.name,
+          image: this.$route.query.image,
+          id: this.$route.query.id,
+        },
+      });
+    },
     //取消编辑
     cancel() {
       this.$router.back();
@@ -128,7 +141,13 @@ export default {
       this.updatePlayList(data);
       //修改vuex数据
       this.UPDATE_CREATE_PLAY_LIST(data);
-      this.$router.back();
+      this.$router.back()
+/*       this.$router.replace({
+        path: this.beforePath,
+        query: {
+          name: this.name,
+        },
+      }); */
     },
     //删除已选标签
     closeTag(name) {
@@ -143,7 +162,7 @@ export default {
         return;
       }
       if (this.tagSelected.length >= 3) {
-        console.log("最多选择三个标签");
+        this.$message.error("最多选择三个标签");
         return;
       }
       this.tagSelected.push(name);
@@ -177,14 +196,15 @@ export default {
       this.description = this.$route.query.description;
       this.earlyTags = this.$route.query.tags;
       this.tagSelected = this.earlyTags;
+      this.beforePath = this.$route.query.path;
     },
   },
   mounted() {
     this.name = this.$route.query.name;
     this.description = this.$route.query.description;
     this.earlyTags = this.$route.query.tags;
-    console.log(this.earlyTags)
     this.tagSelected = this.earlyTags;
+    this.beforePath = this.$route.query.path;
   },
 };
 </script>
@@ -209,6 +229,8 @@ export default {
   .form
     float left
     margin-right 20px
+    position relative
+    z-index 1
   .form>div
     position relative
     padding-left 62px
@@ -277,9 +299,26 @@ export default {
     line-height 30px
   .form>div:nth-child(3)
     margin-top 10px
-  .img
-    height 140px
-    width 140px
+  .playlist-img
+    position relative
+    .img
+      height 140px
+      width 140px
+    .edit-image
+      cursor pointer
+      display inline-block
+      width 140px
+      height 26px
+      background #8e8e8e
+      color #fff
+      text-align center
+      line-height 26px
+      position absolute
+      bottom 3px
+      right 122px
+      opacity 0.8
+    .edit-image:hover
+      text-decoration underline
   .add-window
     background #fff
     width 530px
@@ -347,6 +386,7 @@ export default {
       padding 8px 20px
       border-top 1px solid rgb(215, 215, 215)
       .save
+        cursor pointer
         width 100px
         height 31px
         border-radius 5px

@@ -4,11 +4,13 @@ import { reqFriendDynamic, reqUser, reqVideo } from "@api/friend"
 
 const state = {
     friendDynamicList: [],
-    userInfo: {}
+    userInfo: {},
+    videoUrl:""
 }
 const getters = {
     friendDynamicList: state => state.friendDynamicList,
-    userInfo: state => state.userInfo
+    userInfo: state => state.userInfo,
+    videoUrl: state => state.videoUrl,
 }
 const actions = {
     //请求朋友动态数据
@@ -19,14 +21,13 @@ const actions = {
     //请求用户数据
     async getUser({ commit },id) {
         const result = await reqUser(id)
-        console.log("用户数据",result.data)
+        // console.log("用户数据",result.data)
         commit("WRITE_USER_INFO", result.data)
     },
     //请求视频播放地址
     async getVideoUrl({commit},id) {
-        console.log("vid",id,commit)
         const result = await reqVideo(id)
-        console.log("视频地址", result)
+        commit("WRITE_VIDEO_URL",result.data.urls)
     }
 }
 const mutations = {
@@ -57,6 +58,9 @@ const mutations = {
     //删除广告
     DEL_ADVERTISEMENT(state, id) {
         state.friendDynamicList = state.friendDynamicList.filter(item => item.id !== id)
+    },
+    WRITE_VIDEO_URL(state,res){
+        state.videoUrl = res[0]
     }
 }
 export default {
