@@ -1,8 +1,5 @@
 <template>
-  <header
-    class="header"
-    :class="$route.path.startsWith('/my') ? 'headerFixed' : ''"
-  >
+  <header class="header" :class="$route.path.startsWith('/my') ? 'headerFixed' : ''">
     <div class="headerContainer">
       <div class="header-r">
         <div class="logo-container">
@@ -11,14 +8,16 @@
           </h1>
         </div>
         <ul @click="handleShow">
-          <li >
-            <span >
-              <a :class="changebar ? 'headerActive' : ''" >
-                <em >发现音乐</em>
-                <i  :class="changebar ? 'cor' : ''">&nbsp;</i>
-              </a>
-            </span>
-          </li>
+          <router-link to="/">
+            <li>
+              <span>
+                <a :class="changebar ? 'headerActive' : ''">
+                  <em>发现音乐</em>
+                  <i :class="changebar ? 'cor' : ''">&nbsp;</i>
+                </a>
+              </span>
+            </li>
+          </router-link>
           <li>
             <span>
               <router-link to="/my">
@@ -185,18 +184,18 @@ export default {
       isShow: true, //是否显示输入框placeholder提示文字
       currentId:
         JSON.parse(window.sessionStorage.getItem("selectedHeader"))
-          ?.currentId || 1
+          ?.currentId || 1,
     };
   },
   computed: {
     ...mapState({
-      isShowLogin: state => state.user.isShowLogin,
-      token: state => state.user.token,
-      profile: state => state.user.profile
+      isShowLogin: (state) => state.user.isShowLogin,
+      token: (state) => state.user.token,
+      profile: (state) => state.user.profile,
     }),
     avatarUrl() {
       return window.localStorage.getItem("avatarUrl") || this.profile.avatarUrl;
-    }
+    },
   },
 
   methods: {
@@ -212,7 +211,7 @@ export default {
       console.log(1);
       this.currentId = item.id;
       let obj = {
-        currentId: this.currentId
+        currentId: this.currentId,
       };
       window.sessionStorage.setItem("selectedHeader", JSON.stringify(obj));
       this.$router.push({ path: item.path });
@@ -248,11 +247,11 @@ export default {
       const { searchTxt } = this;
       this.$router.push("/search/m?s=" + searchTxt);
       this.$refs.search.blur();
-    }
+    },
   },
   created() {
     let obj = {
-      currentId: 1
+      currentId: 1,
     };
     window.sessionStorage.setItem("selectedHeader", JSON.stringify(obj));
   },
@@ -262,8 +261,8 @@ export default {
     // );
   },
   components: {
-    Login
-  }
+    Login,
+  },
 };
 </script>
 

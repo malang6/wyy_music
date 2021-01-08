@@ -12,10 +12,9 @@
             }"
             v-for="special in specialList"
             :key="special.id"
-
             @click="getListInfo(special.id,special.updateFrequency)"
           >
-            <img :src="special.coverImgUrl" alt="" class="pic" />
+            <img :src="special.coverImgUrl" alt class="pic" />
             <div class="info">
               <p class="whichList">{{ special.name }}</p>
               <p class="updateTime">{{ special.updateFrequency }}</p>
@@ -36,7 +35,7 @@
             :key="global.id"
             @click="getListInfo(global.id,global.updateFrequency)"
           >
-            <img :src="global.coverImgUrl" alt="" class="pic" />
+            <img :src="global.coverImgUrl" alt class="pic" />
             <div class="info">
               <p class="whichList">{{ global.name }}</p>
               <p class="updateTime">{{ global.updateFrequency }}</p>
@@ -46,100 +45,100 @@
       </div>
     </div>
     <div class="listContainer">
-      <PlayList :songList="songList"/>
+      <PlayList :songList="songList" />
     </div>
     <!-- 回到顶部 -->
-    <ReturnTop :returnUpIsShow="returnUpIsShow"/>
+    <ReturnTop :returnUpIsShow="returnUpIsShow" />
   </div>
 </template>
 
 <script>
-import {mapMutations,mapState} from 'vuex'
-import PlayList from './PlayList/PlayList'
-import ReturnTop from '@comps/ReturnTop/ReturnTop'
-import { reqTopList,reqListSong} from '@api/Discover/topList'
+import { mapMutations, mapState } from "vuex";
+import PlayList from "./PlayList/PlayList";
+import ReturnTop from "@comps/ReturnTop/ReturnTop";
+import { reqTopList, reqListSong } from "@api/Discover/topList";
 export default {
-  name: 'Toplist',
+  name: "Toplist",
   data() {
     return {
       topList: [],
       songList: [],
-      updateFrequency: '',
-      returnUpIsShow:'none'
-    }
+      updateFrequency: "",
+      returnUpIsShow: "none",
+    };
   },
-  watch:{
-    $route:{
-      async handler(){
-        if(!this.$route.query.id)return
-        const songList = await reqListSong(this.$route.query.id)
-        this.songList = songList.playlist 
+  watch: {
+    $route: {
+      async handler() {
+        if (!this.$route.query.id) return;
+        const songList = await reqListSong(this.$route.query.id);
+        this.songList = songList.playlist;
       },
-      immediate:true
-    }
+      immediate: true,
+    },
   },
   methods: {
-    ...mapMutations(['saveData']),
-    
+    ...mapMutations(["saveData"]),
+
     // 点击获取歌曲列表
-    async getListInfo(currentId,updateFrequency) {
+    async getListInfo(currentId, updateFrequency) {
       this.$router.push({
-        path:'/toplist',
-        query:{ id:currentId }
-      })
-      this.saveData({currentId,updateFrequency})
+        path: "/discover/toplist",
+        query: { id: currentId },
+      });
+      this.saveData({ currentId, updateFrequency });
     },
 
     //组件挂载时获取歌单和更新数据
-    async getDataBegin(){
-      const topList = await reqTopList()
-      this.topList = topList.list
-      console.log(this.$route.query.id)
-      if(this.$route.query.id){
-        const currentId=+this.$route.query.id
-        const updateFrequency=this.topList.find(list=>list.id===currentId).updateFrequency
-        this.saveData({currentId,updateFrequency})
-        return 
+    async getDataBegin() {
+      const topList = await reqTopList();
+      this.topList = topList.list;
+      console.log(this.$route.query.id);
+      if (this.$route.query.id) {
+        const currentId = +this.$route.query.id;
+        const updateFrequency = this.topList.find(
+          (list) => list.id === currentId
+        ).updateFrequency;
+        this.saveData({ currentId, updateFrequency });
+        return;
       }
       // 当路径没有id且第一次挂载时
-      const {id:currentId,updateFrequency}=topList.list[0]
-      this.saveData({currentId,updateFrequency})
-      const songList = await reqListSong(currentId)
-      this.songList = songList.playlist 
+      const { id: currentId, updateFrequency } = topList.list[0];
+      this.saveData({ currentId, updateFrequency });
+      const songList = await reqListSong(currentId);
+      this.songList = songList.playlist;
     },
 
     // 回到顶部
-    scroll(){
-      if(window.pageYOffset!==0){
-        this.returnUpIsShow='block'
-      }else(
-        this.returnUpIsShow='none'
-      )
-    }
+    scroll() {
+      if (window.pageYOffset !== 0) {
+        this.returnUpIsShow = "block";
+      } else this.returnUpIsShow = "none";
+    },
   },
   components: {
     PlayList,
-    ReturnTop
+    ReturnTop,
   },
   computed: {
     specialList() {
-      return this.topList.length ? this.topList.slice(0, 4) : []
+      return this.topList.length ? this.topList.slice(0, 4) : [];
     },
     globalList() {
-      return this.topList.length ? this.topList.slice(4) : []
+      return this.topList.length ? this.topList.slice(4) : [];
     },
     ...mapState({
-      currentId:state=>state.topList.currentId
-    })
+      currentId: (state) => state.topList.currentId,
+    }),
   },
   mounted() {
-    this.getDataBegin()
-    window.addEventListener('scroll',this.scroll)
+    this.getDataBegin();
+    window.addEventListener("scroll", this.scroll);
   },
-  beforeDestroy(){
-     window.removeEventListener('scroll',this.scroll)
-  }
-}
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.scroll);
+  },
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -185,21 +184,4 @@ export default {
   .listContainer
     width 739px
     background-color rgb(255, 255, 255)
-
-  // .returnTop
-  //   position fixed
-  //   border 1px solid #ccc
-  //   border-radius 3px
-  //   left 50%
-  //   margin-left 500px
-  //   bottom 100px
-  //   background-color rgb(245, 245, 245)
-  //   a
-  //     width 50px
-  //     display flex
-  //     flex-direction column
-  //     span 
-  //       height 25px
-  //       text-align center
-  //       line-height 25px
 </style>
