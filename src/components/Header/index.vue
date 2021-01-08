@@ -131,7 +131,7 @@
       <div class="findBar-container">
         <ul class="navList">
           <li class="navItem">
-            <a class="navTitle navActive">
+            <a class="navTitle navActive" @click="$router.push('/discover')">
               <em>推荐</em>
             </a>
           </li>
@@ -418,7 +418,7 @@ export default {
   .findBar
     position relative
     width 100%
-    z-index 90
+    z-index 1
     height 35px
     box-sizing border-box
     background #C20C0C

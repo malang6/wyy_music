@@ -74,7 +74,10 @@ const router = new VueRouter({
         }
       ]
     },
-
+    {
+      path: "",
+      redirect: Discover
+    },
     {
       path: "/user/home",
       component: UserHome
