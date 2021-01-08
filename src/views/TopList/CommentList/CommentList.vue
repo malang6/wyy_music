@@ -74,27 +74,29 @@
 
 <script>
 import moment from 'moment'
-import { mapState } from 'vuex'
-import { reqSongListComment } from '@api/Discover/topList'
+import { mapState,mapActions } from 'vuex'
+// import { reqSongListComment } from '@api/Discover/topList'
 import Pagination from '@comps/Pagination/Pagination'
 export default {
   name: '',
   data() {
     return {
-      songCommentList: [],
-      totalComment:0,
+      // songCommentList: [],
+      // totalComment:0,
       pageNo:1
     }
   },
   methods:{
+    ...mapActions(['getComment']),
     // 发送请求评论函数
-    async getCommentList(currentId,time){
-      const songCommentList = await reqSongListComment(currentId,time)
-      this.songCommentList = songCommentList.comments
-      this.totalComment=songCommentList.total
+    getCommentList(currentId,time){
+      this.getComment({currentId,time})
+      // const songCommentList = await reqSongListComment(currentId,time)
+      // this.songCommentList = songCommentList.comments
+      // this.totalComment=songCommentList.total
     },
     // 点击分页
-    handleCurrentChange(pageNo){
+    async handleCurrentChange(pageNo){
       this.pageNo=pageNo
       const time=this.songCommentList[this.songCommentList.length-1].time
       this.getCommentList(this.currentId,time)
@@ -106,6 +108,8 @@ export default {
   computed: {
     ...mapState({
       currentId: (state) => state.topList.currentId,
+      songCommentList: (state) => state.topList.songCommentList,
+      totalComment: (state) => state.topList.totalComment,
     }),
 
     // 计算评论时间
@@ -152,7 +156,7 @@ export default {
   },
   watch: {
     currentId() {
-      this.getCommentList(this.currentId)
+      this.getCommentList(this.currentId,'')
     },
     totalComment(){
       this.$emit('getCommentCount',this.totalComment)

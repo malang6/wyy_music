@@ -23,3 +23,17 @@ export const reqSongListComment = (listId,time='') => {
     url:`/comment/playlist?id=${listId}${time?'&before='+time:''}`
   })
 }
+
+// 发表歌单评论
+export const commentSongList = (t,type,id,content) => { 
+  return request({
+    method: "GET",
+    url: "/comment",
+    params: {
+      t,
+      type,
+      id,
+      content
+    }
+  })
+}

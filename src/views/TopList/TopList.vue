@@ -94,7 +94,6 @@ export default {
     async getDataBegin(){
       const topList = await reqTopList()
       this.topList = topList.list
-      console.log(this.$route.query.id)
       if(this.$route.query.id){
         const currentId=+this.$route.query.id
         const updateFrequency=this.topList.find(list=>list.id===currentId).updateFrequency

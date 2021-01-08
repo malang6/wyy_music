@@ -102,7 +102,7 @@
             </div>
             <div>
               <span class="count">{{leftWord}}</span>
-              <div class="publish">评论</div>
+              <div class="publish" @click="comment">评论</div>
             </div>
           </div>
         </div>
@@ -114,10 +114,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState,mapActions } from 'vuex'
 import moment from 'moment'
 import CommentList from '../CommentList/CommentList'
-// import { reqListSong } from '@api/Discover/topList'
+import {commentSongList} from '@api/Discover/topList'
 export default {
   name: 'PlayList',
   data() {
@@ -169,6 +169,7 @@ export default {
     }
   },
   methods:{
+    ...mapActions(['getComment']),
     getCommentCount(commentCount){
       this.commentCount=commentCount
     },
@@ -178,6 +179,15 @@ export default {
       if(avatarUrl){
         this.avatarUrl=avatarUrl
       }
+    },
+    // 发布评论
+    async comment(){
+      if(this.inputText.length===0) return alert('请输入评论') 
+      await commentSongList(1,2,this.currentId,this.inputText)
+      console.log(1)
+      const currentId=this.currentId
+      const time=''
+      await this.getComment({currentId,time})
     }
   },
   mounted(){
