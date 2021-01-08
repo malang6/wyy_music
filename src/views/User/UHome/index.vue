@@ -49,6 +49,7 @@ export default {
   },
   async mounted() {
     const { id } = this.$route.query;
+    console.log(id);
     const userPlay = await getUserPlayList(id);
     this.userPlayList = userPlay.data.playlist;
 

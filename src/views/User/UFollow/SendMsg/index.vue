@@ -117,17 +117,10 @@ export default {
       this.inputfocus = false;
     },
 
-    // closeName(list) {
-    //   // console.log(name)
-    //   // let arr = this.followList.find((item) => item.nickname === name);
-    //   // this.list.push(arr);
-    //   // console.log(1);
-    //   // console.log(list);
-    //   const res = this.followList.find((item) => item.userId === list.userId);
-    //   console.log(res);
-    //   // this.list.push(res);
-    //   this.calcFollowList.push(res);
-    // },
+    closeName(list) {
+      const res = this.followList.find((item) => item.userId === list.userId);
+      this.list.push(res);
+    },
 
     //发送私信
     async sendMsg() {
@@ -135,8 +128,8 @@ export default {
       if (!txtArea) return;
       let id = this.sendId;
       await sendText(id, txtArea);
-      this.$message.success("发送私信成功！");
       this.$emit("update:showSend", false);
+      this.$emit("changeShowSuccess")
     },
   },
 };
@@ -147,7 +140,7 @@ export default {
   position relative
   .send-container
     position absolute
-    top -344px
+    top -442px
     left 214px
     width 480px
     border-radius 4px
@@ -281,4 +274,5 @@ export default {
             cursor pointer
             &:hover
               background-color #4497da
+
 </style>
