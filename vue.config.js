@@ -1,14 +1,14 @@
-const { resolve } = require("path")
+const { resolve } = require("path");
 module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        "@views": resolve(__dirname, 'src/views'),
-        "@api": resolve(__dirname, 'src/api'),
-        "@assets": resolve(__dirname, 'src/assets'),
-        "@comps": resolve(__dirname, 'src/components'),
-        "@store": resolve(__dirname, 'src/store'),
-        "@utils": resolve(__dirname, 'src/utils')
+        "@views": resolve(__dirname, "src/views"),
+        "@api": resolve(__dirname, "src/api"),
+        "@assets": resolve(__dirname, "src/assets"),
+        "@comps": resolve(__dirname, "src/components"),
+        "@store": resolve(__dirname, "src/store"),
+        "@utils": resolve(__dirname, "src/utils")
       }
     }
   },
@@ -18,9 +18,9 @@ module.exports = {
         target: "http://localhost:3000",
         changeOrigin: true,
         pathRewrite: {
-          "^/api": "",
-        },
+          "^/api": ""
+        }
       }
     }
   }
-}
+};
