@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <div v-if="isLogin" style="height:100%">
+    <div v-if="isLogin" style="height: 100%">
       <div class="song-list">
         <router-link to="/my/artist" class="list"
           >我的歌手({{ subCountList.artistCount }})</router-link
@@ -12,7 +12,7 @@
           <div class="arrow" :class="{ show: isShowSongList }"></div>
           创建的歌单({{ createPlayList.length }})
           <button class="add" @click.stop="showWindow('showAddWindow')">
-             新建
+            新建
           </button>
         </div>
         <!-- 创建的歌单列表 -->
@@ -98,7 +98,7 @@
           <span class="close" @click="hideWindow('showDelWindow')">×</span>
         </div>
         <div class="form">
-          <span class="tap" style="margin-bottom:50px">是否删除此歌单？</span>
+          <span class="tap" style="margin-bottom: 50px">是否删除此歌单？</span>
           <div class="edit">
             <div class="add" @click="del(willDelPlayListId)">删 除</div>
             <div class="cancel" @click="hideWindow('showDelWindow')">取 消</div>
@@ -129,7 +129,7 @@ export default {
       isLogin: true, //是否登录状态
       playListName: "", //新建歌单名
       showDelWindow: false, //删除确认窗口显示状态
-      willDelPlayListId: "" //即将删除歌单Id
+      willDelPlayListId: "", //即将删除歌单Id
     };
   },
   computed: {
@@ -137,8 +137,8 @@ export default {
       "createPlayList",
       "collectPlayList",
       "collectArtist",
-      "subCountList"
-    ])
+      "subCountList",
+    ]),
   },
   methods: {
     ...mapActions([
@@ -146,7 +146,7 @@ export default {
       "getPlayListDerail",
       "getSubcount",
       "addPlayList",
-      "delPlayList"
+      "delPlayList",
     ]),
     //编辑歌单
     toEditPlayList(id, name, image, description, tags) {
@@ -158,8 +158,8 @@ export default {
           image,
           description,
           tags,
-          path:this.$route.path
-        }
+          path: this.$route.path,
+        },
       });
     },
     //显示删除或添加歌单提示窗口
@@ -213,28 +213,33 @@ export default {
         path: "/my/playlist",
         query: {
           ...data,
-          id
-        }
+          id,
+        },
       });
-    }
+    },
   },
   watch: {
     $route() {
       this.$forceUpdate();
-    }
+    },
   },
   mounted() {
     //绑定滚轮事件
     document.addEventListener("scroll", this.scrollChange);
-    //请求歌单数据
-    const uid = localStorage.getItem("userId");
-    this.getUserPlayList(uid);
-    this.getSubcount();
+    //读取localStorage,判断登录状态
+    this.isLogin = localStorage.getItem("token") ? true : false;
+    //如果是登录状态就请求数据
+    if (this.isLogin) {
+      //请求歌单数据
+      const uid = localStorage.getItem("userId");
+      this.getUserPlayList(uid);
+      this.getSubcount();
+    }
   },
   beforeDestory() {
     //解除绑定滚轮事件
     document.removeEventListener("scroll", this.scrollChange);
-  }
+  },
 };
 </script>
 
